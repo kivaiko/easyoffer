@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ question_data.title }}</title>
+</head>
+<body>
+    <h1>{{ question_data.title }}</h1>
+    {% for comment in comments %}
+
+    <p>{{ comment.author }}, {{ comment.rating_qty }}</p>
+    <p>{{ comment.text }}</p>
+    <button> лучший краткий ответ | 31 </button>
+    <button> лучший подробный ответ | 21 </button>
+    {% endfor  %}
+
+
+</body>
+</html>

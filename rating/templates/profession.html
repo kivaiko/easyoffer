@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ prof_data.title }}, рейтинг вопросов с собеседований</title>
+</head>
+<body>
+
+    <h1>Рейтинг вопросов с собеседований на {{ prof_data.title }}</h1>
+
+    <p><a href="{{ question.get_url }}">{{ question.title }}</a></p>
+    <table class="table mt-5 table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Рейтинг</th>
+                <th>Вопрос</th>
+                <th>Тег</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+            <tr>
+                <td>{{ question.rating_qty }} <a href="{{ question.up_rating }}">+</a> </td>
+                <td><a href="{{ question.get_url }}">{{ question.title }}</a></td>
+                <td>{{ question.teg }}</td>
+            </tr>
+            {% endfor  %}
+        </tbody>
+    </table>
+
+</body>
+</html>
