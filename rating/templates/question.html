@@ -7,12 +7,30 @@
 <body>
     <h1>{{ question_data.title }}</h1>
     {% for comment in comments %}
-
-    <p>{{ comment.author }}, {{ comment.rating_qty }}</p>
-    <p>{{ comment.text }}</p>
-    <button> лучший краткий ответ | 31 </button>
-    <button> лучший подробный ответ | 21 </button>
+        <p>{{ comment.author }}</p>
+        <p>{{ comment.text }}</p>
+        <button> лучший краткий ответ | {{ comment.short_rating_qty }} </button>
+        <button> лучший подробный ответ | {{ comment.long_rating_qty }} </button>
     {% endfor  %}
+
+
+    <h2> Полезные ссылки </h2>
+    <table class="table mt-5 table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Рейтинг</th>
+                <th>Ссылка</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for link in links %}
+            <tr>
+                <td>{{ link.rating_qty }} <a href="{{ link.up_rating }}">+</a> </td>
+                <td><a href="{{ link.url }}">{{ link.title }}</a></td>
+            </tr>
+            {% endfor  %}
+        </tbody>
+    </table>
 
 
 </body>
