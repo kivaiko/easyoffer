@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ question_data.title }}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="pt-5">Какие вопросы Вам встречались на должность {{ prof_data.title }} ?</h1>
+    <table class="table mt-5 table-bordered">
+        <thead>
+            <tr>
+                <th>Вопрос</th>
+                <th>Встречался</th>
+                <th>Не встречался</th>
+            </tr>
+        </thead>
+        <form id="quiz" action="" method="post">
+            {% csrf_token %}
+        <tbody>
+                {% for rating in ratings %}
+                <tr>
+                    <td>{{ rating.question.title }}</td>
+                    <td align="center">
+                        <input type="radio" id="{{ rating.id }}" required name="{{ rating.id }}" value="Встречался">
+                    </td>
+                    <td align="center">
+                        <input type="radio" id="{{ rating.id }}" required name="{{ rating.id }}" value="Не встречался">
+                    </td>
+                </tr>
+                {% endfor  %}
+        </tbody>
+        </form>
+    </table>
+    <button type="submit" form="quiz" class="btn btn-warning"> Отправить </button>
+
+{% endblock %}

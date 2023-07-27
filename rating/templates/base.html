@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container">
+          <a class="navbar-brand" href="/">EasyOffer</a>
+          <button class="btn btn-outline-dark d-flex btn-sm" type="submit">RU</button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item active">
+                <a class="nav-link" href="/">Вопросы</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="/">Задачи</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/mentor">Менторы</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/mock">Мок-собесы</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Навыки</a>
+              </li>
+          </ul>
+            <!-- <button class="btn btn-outline-dark me-2 d-flex" type="submit"><i class="bi bi-telegram me-2"></i>Комьюнити</button>
+            <button class="btn btn-outline-dark d-flex" type="submit"><i class="bi bi-github me-2"></i>Github</button>-->
+        </div>
+      </div>
+    </nav>
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+
+</html>

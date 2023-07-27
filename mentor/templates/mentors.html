@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ course.title }}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="pt-5"> Менторы </h1>
+    <div class="container">
+        <div class="row align-items-start">
+            <div class="col-3">
+                <h5 class="mt-3">Направление:</h5>
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                  <option selected>Все</option>
+                  <option value="1">Python Developer</option>
+                  <option value="2">Java Developer</option>
+                  <option value="3">Android Developer</option>
+                </select>
+                <fieldset>
+                    <h5 class="mt-3">Тип вопроса:</h5>
+                    <div>
+                      <input type="checkbox" id="scales" name="scales" checked>
+                      <label for="scales"><small>Карьерная консультация</small></label>
+                    </div>
+                    <div>
+                      <input type="checkbox" id="horns" name="horns">
+                      <label for="horns"><small>Сопровождение в учебе</small></label>
+                    </div>
+                    <div>
+                      <input type="checkbox" id="horns" name="horns">
+                      <label for="horns"><small>Стажировка на реальном проекте</small></label>
+                    </div>
+                    <div>
+                      <input type="checkbox" id="horns" name="horns">
+                      <label for="horns"><small>Тестовое собеседование на английском</small></label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <h5 class="mt-3">Технологии:</h5>
+                    <div>
+                      <input type="checkbox" id="scales" name="scales" checked>
+                      <label for="scales"><small>Django</small></label>
+                    </div>
+                    <div>
+                      <input type="checkbox" id="horns" name="horns">
+                      <label for="horns"><small>FastAPI</small></label>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Ментор</th>
+                      <th scope="col">Должность</th>
+                      <th scope="col">Опыт(г.)</th>
+                      <th scope="col">Цена 1 ч.</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-group-divider">
+                    <tr>
+                      <td>Егоров Артем</td>
+                      <td>Senior Python Developer</td>
+                      <td>7 лет</td>
+                      <td>1000 руб.</td>
+                    </tr>
+                    <tr>
+                      <td>Jacob</td>
+                      <td>Senior Software Developer</td>
+                      <td>5 лет</td>
+                      <td>1200 руб.</td>
+                    </tr>
+                  </tbody>
+                </table>
+        </div>
+    </div>
+
+{% endblock %}

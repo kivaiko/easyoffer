@@ -1,14 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>Главная</h1>
-    {% for prof in professions %}
+{% extends 'base.html' %}
 
-    <p><a href="{{ prof.get_url }}">{{ prof.title }}</a></p>
-    {% endfor %}
-</body>
-</html>
+{% block title %}
+{{ course.title }}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mt-5 mb-5"> Рейтинг вопросов с собеседований </h1>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for prof in professions %}
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"><a class="link-offset-2 link-offset-3-hover link-underline
+            link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ prof.get_url }}">{{ prof.title }}</a></h5>
+                <p class="card-text">{{ prof.description }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor  %}
+    </div>
+
+{% endblock %}

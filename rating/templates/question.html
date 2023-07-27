@@ -1,37 +1,178 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ question_data.title }}</title>
-</head>
-<body>
-    <h1>{{ question_data.title }}</h1>
-    {% for comment in comments %}
-        <p>{{ comment.author }}</p>
-        <p>{{ comment.text }}</p>
-        <button> лучший краткий ответ | {{ comment.short_rating_qty }} </button>
-        <button> лучший подробный ответ | {{ comment.long_rating_qty }} </button>
-    {% endfor  %}
+{% extends 'base.html' %}
+
+{% block title %}
+{{ question_data.title }}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mt-5 mb-5">{{ question_data.title }}</h1>
+    <div class="row">
+        <div class="col-8">
+            {% if best_shor_comment %}
+            <!-- Best Short Answer -->
+            <div class="card border-success mb-3" >
+                <div class="card-body">
+                    <p class="card-text">{{ best_short_comment.text }}</p>
+                    <p class="card-text"><small class="text-muted">{{ best_short_comment.created_at }}, {{ best_short_comment.author }}</small></p>
+                    <div class="btn-group me-2" role="group" aria-label="Default button group">
+                        <button class="btn btn-success" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                        Самый лаконичный
+                        </button>
+                        <button type="button" class="btn btn-outline-success" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">{{ best_short_comment.short_rating }}</button>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Default button group">
+                        <button class="btn btn-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                        Развернутый
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">{{ best_short_comment.long_rating }}</button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <!-- Best Long Answer -->
+            <div class="card border-primary mb-3" >
+                <div class="card-body">
+                    <p class="card-text">{{ best_long_comment.text }}</p>
+                    <p class="card-text"><small class="text-muted">{{ best_long_comment.created_at }}, {{ best_long_comment.author }}</small></p>
+                    <div class="btn-group me-2" role="group" aria-label="Default button group">
+                        <button class="btn btn-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                        Самый лаконичный
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">{{ best_long_comment.short_rating }}</button>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Default button group">
+                        <button class="btn btn-primary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                        Развернутый
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">{{ best_long_comment.long_rating }}</button>
+                    </div>
+                </div>
+            </div>
+            {% for comment in any_comments %}
+            <div class="card mb-3" >
+                <div class="card-body">
+                    <p class="card-text">{{ comment.text }}</p>
+                    <p class="card-text"><small class="text-muted">{{ comment.created_at }}, {{ comment.author }}</small></p>
+                    <div class="btn-group me-2" role="group" aria-label="Default button group">
+                        <button class="btn btn-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                        Самый лаконичный
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">{{ comment.short_rating }}</button>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Default button group">
+                        <button class="btn btn-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                        Развернутый
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">{{ comment.long_rating }}</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <h2 class="mb-3 fs-4" >Добавить ответ</h2>
+
+            <div class="form-error">{{ comment_form.non_field_errors }}</div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                    <label class="form-text" for="{{ comment_form.text.id_for_label }}">
+                        {{ comment_form.text.label }}:
+                    </label> {{ comment_form.text }}
+                <p>
+                    <label class="form-label" for="{{ comment_form.author.id_for_label }}">
+                        {{ comment_form.author.label }}:
+                    </label> {{ comment_form.author }}
+                </p>
+                <button class="btn btn-light" type="submit"><i class="bi bi-plus-lg me-2"></i>Добавить ответ</button>
+            </form>
+        </div>
+
+        <div class="col">
+        <h2 class="mb-3 fs-4" >Ответы из mock-собесов</h2>
+
+        <ul class="list-group list-group-flush mb-3">
+            {% for link in video_links %}
+                <li class="list-group-item"><small><a href="{{ link.url }}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank">
+                    {{ link.title }}</a></small></li>
+            {% endfor %}
+        </ul>
+
+        <button type="button" class="btn btn-light btn-sm " data-bs-toggle="modal" data-bs-target="#VideoAnswerModal">
+          <i class="bi bi-plus-lg me-1"></i> Добавить ответ из mock-собесов
+        </button>
+
+        <h2 class="mb-3 mt-5 fs-4">Дополнительные материалы</h2>
+
+        <ul class="list-group list-group-flush mb-3">
+            {% for link in extra_links %}
+                <li class="list-group-item"><small><a href="{{ link.url}}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank">
+                    {{ link.title }}</a></small></li>
+            {% endfor %}
+        </ul>
+
+        <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#ExtraContentModal">
+          <i class="bi bi-plus-lg me-1"></i> Добавить ссылку на доп. матераил
+        </button>
+        </div>
+    </div>
 
 
-    <h2> Полезные ссылки </h2>
-    <table class="table mt-5 table-bordered table-striped table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Рейтинг</th>
-                <th>Ссылка</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for link in links %}
-            <tr>
-                <td>{{ link.rating_qty }} <a href="{{ link.up_rating }}">+</a> </td>
-                <td><a href="{{ link.url }}">{{ link.title }}</a></td>
-            </tr>
-            {% endfor  %}
-        </tbody>
-    </table>
+
+    <!-- ExtraContentModal -->
+    <div class="modal fade" id="ExtraContentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Добавить ссылку на доп. матераил</h1>
+          </div>
+          <div class="modal-body">
+               <form action="" method="POST">
+                    {% csrf_token %}
+                      <div class="mb-3">
+                        <label for="{{ extra_content_form.title.id_for_label }}" class="col-form-label">{{ extra_content_form.title.label }}</label>
+                        {{ extra_content_form.title }}
+                      </div>
+                      <div class="mb-3">
+                        <label for="{{ extra_content_form.url.id_for_label }}" class="col-form-label">{{ extra_content_form.url.label }}</label>
+                        {{ extra_content_form.url }}
+                      </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-warning">Добавить ссылку </button>
+                    </div>
+                </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VideoAnswerModal -->
+    <div class="modal fade" id="VideoAnswerModal" tabindex="-1" aria-labelledby="VideoAnswerModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="VideoAnswerModalLabel">Добавить ответ из mock-собесов</h1>
+          </div>
+          <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                      <div class="mb-3">
+                        <label for="{{ video_answer_form.title.id_for_label }}" class="col-form-label">{{ video_answer_form.title.label }}</label>
+                        {{ video_answer_form.title }}
+                      </div>
+                      <div class="mb-3">
+                        <label for="{{ video_answer_form.url.id_for_label }}" class="col-form-label">{{ video_answer_form.url.label }}</label>
+                        {{ video_answer_form.url }}
+                      </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-warning">Добавить ответ в видео </button>
+                    </div>
+                </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
-</body>
-</html>
+{% endblock %}

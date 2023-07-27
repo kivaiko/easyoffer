@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ prof_data.title }}, рейтинг вопросов с собеседований</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-    <h1>Рейтинг вопросов с собеседований на {{ prof_data.title }}</h1>
+{% block title %}
+{{ course.title }}
+{% endblock %}
 
-    <p><a href="{{ question.get_url }}">{{ question.title }}</a></p>
-    <table class="table mt-5 table-bordered table-striped table-hover">
-        <thead class="table-dark">
+{% block content %}
+
+    <h1 class="mt-5"> Рейтинг вопросов с собеседований на {{ prof_data.title }}</h1>
+    <a href="{{ prof_data.get_url_quiz }}" class="btn btn-warning mt-3">Поучаствовать в опросе</a>
+    <table class="table mt-5 table-bordered table-hover ">
+        <thead>
             <tr>
                 <th>Рейтинг</th>
                 <th>Вопрос</th>
@@ -18,16 +17,48 @@
             </tr>
         </thead>
         <tbody>
-            {% for question in questions %}
+            {% for rating in ratings %}
             <tr>
-                <td>{{ question.rating_qty }} <a href="{{ question.up_rating }}">+</a> </td>
-                <td><a href="{{ question.get_url }}">{{ question.title }}</a></td>
-                <td>{{ question.tag }}</td>
+                <td align="center">{{ rating.rating }}</td>
+                <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                <td>{{ rating.question.tag }}</td>
             </tr>
             {% endfor  %}
         </tbody>
     </table>
 
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <i class="bi bi-plus-lg me-1"></i> Добавить вопрос
+    </button>
 
-</body>
-</html>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Добавление вопроса</h5>
+            <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+              <span  aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                      <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="col-form-label">{{ form.title.label }}</label>
+                        {{ form.title }}
+                      </div>
+                      <div class="mb-3">
+                        <label for="{{ form.tag.id_for_label }}" class="col-form-label">{{ form.tag.label }}</label>
+                        {{ form.tag }}
+                      </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-warning">Добавить вопрос </button>
+                    </div>
+                </form>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
