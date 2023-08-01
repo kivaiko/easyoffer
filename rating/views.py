@@ -4,7 +4,7 @@ from .models import *
 
 
 def index(request):
-    professions = Profession.objects.filter(status='public')
+    professions = Profession.objects.filter(public_rating=True)
     return render(request, 'index.html', {'professions': professions})
 
 
@@ -108,8 +108,9 @@ def thx_data(request):
 
 
 def mock(request):
-    mocks = MockInterview.objects.all()
-    profs = Profession.objects.get
+    mocks = MockInterview.objects.filter(status=True)
+    profs = Profession.objects.filter(public_rating=True)
     return render(request, 'mock.html', {
         'mocks': mocks,
+        'profs': profs
     })

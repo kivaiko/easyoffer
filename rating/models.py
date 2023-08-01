@@ -7,15 +7,13 @@ class Profession(models.Model):
     class Meta:
         db_table = 'professions'
 
-    STATUSES = [
-        ('public', 'Public'),
-        ('disabled', 'Disabled'),
-    ]
-
     title = models.CharField(max_length=255)
     prof_slug = models.SlugField(max_length=255)
-    status = models.CharField(max_length=100, choices=STATUSES, default='disabled')
-    description = models.TextField(max_length=500, default='212')
+    public_rating = models.BooleanField()
+    public_mock = models.BooleanField()
+    public_mentor = models.BooleanField()
+    public_analytic = models.BooleanField()
+    description = models.TextField(max_length=500)
 
     def __str__(self):
         return self.title
@@ -143,12 +141,6 @@ class MockInterview(models.Model):
     class Meta:
         db_table = 'mock_interviews'
 
-    STATUSES = [
-        ('public', 'Public'),
-        ('moderation', 'Moderation'),
-        ('disabled', 'Disabled'),
-    ]
-
     GRADES = [
         ('without', 'Without'),
         ('trainee', 'Trainee'),
@@ -160,35 +152,9 @@ class MockInterview(models.Model):
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
     title = models.CharField(max_length=300)
     url = models.URLField()
-    status = models.CharField(max_length=100, choices=STATUSES, default='moderation')
+    status = models.BooleanField()
     grades = models.CharField(max_length=100, choices=GRADES, default='without')
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.title
-
-
-class Skill(models.Model):
-    class Meta:
-        db_table = 'skills'
-
-    profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
-    frequency = models.IntegerField(default=1)
-    created_at = models.DateField(default=timezone.now)
-
-    def __str__(self):
-        return self.title, self.frequency
-
-
-class KeyWord(models.Model):
-    class Meta:
-        db_table = 'keywords'
-
-    profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
-    frequency = models.IntegerField(default=1)
-    created_at = models.DateField(default=timezone.now)
-
-    def __str__(self):
-        return self.title, self.frequency

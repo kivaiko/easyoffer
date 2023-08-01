@@ -6,30 +6,60 @@
 
 {% block content %}
 
-    <h1 class="mt-5"> Рейтинг вопросов с собеседований на {{ prof_data.title }}</h1>
-    <a href="{{ prof_data.get_url_quiz }}" class="btn btn-warning mt-3">Поучаствовать в опросе</a>
-    <table class="table mt-5 table-bordered table-hover ">
-        <thead>
-            <tr>
-                <th>Рейтинг</th>
-                <th>Вопрос</th>
-                <th>Тег</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for rating in ratings %}
-            <tr>
-                <td align="center">{{ rating.rating }}</td>
-                <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
-                <td>{{ rating.question.tag }}</td>
-            </tr>
-            {% endfor  %}
-        </tbody>
-    </table>
-
-    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      <i class="bi bi-plus-lg me-1"></i> Добавить вопрос
-    </button>
+    <h1 class="mt-5"> Вопросы с собеседований на {{ prof_data.title }}</h1>
+    <p class="fs-5 mt-3 align-middle"> Вероятность встречи вопроса на осонове 130 проголосовавших. <a href="{{ prof_data.get_url_quiz }}">Поучаствовать в опросе</a> </p>
+    <div class="row align-items-start">
+            <div class="col-2">
+                <fieldset>
+                    <h5 class="mt-3">Тег</h5>
+                    <div>
+                      <input type="checkbox" id="scales" name="scales" checked>
+                      <label for="scales">Общий</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" id="horns" name="horns">
+                      <label for="horns">Python</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" id="horns" name="horns">
+                      <label for="horns">ООП</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" id="horns" name="horns">
+                      <label for="horns">Django</label>
+                    </div>
+                </fieldset>
+                <div class="card border-primary mt-3">
+                  <div class="card-body">
+                    <h5 class="card-title">Java Chat</h5>
+                    <p class="card-text">Вступай в Telegtam-чат нашего сообщества по Java</p>
+                    <a href="#" class="btn btn-primary">Перейти </a>
+                  </div>
+                </div>
+            </div>
+            <div class="col">
+                <table class="table mt-5 table-bordered table-hover ">
+                    <thead>
+                        <tr>
+                            <th>Вероятность</th>
+                            <th>Вопрос</th>
+                            <th>Тег</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rating in ratings %}
+                        <tr>
+                            <td align="center">{{ rating.rating }}</td>
+                            <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                            <td>{{ rating.question.tag }}</td>
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  <i class="bi bi-plus-lg me-1"></i> Добавить вопрос
+                </button>
+            </div>
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

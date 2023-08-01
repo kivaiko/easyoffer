@@ -13,7 +13,9 @@
                 <h5 class="mt-3">Направление:</h5>
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example">
                   <option selected>Все</option>
-                  <option value="1">Python Developer</option>
+                    {% for prof in profs %}
+                  <option value="{{ prof.id }}"> {{ prof.title }}</option>
+                    {% endfor %}
                 </select>
                 <fieldset>
                     <h5 class="mt-3">Грейд:</h5>
@@ -22,6 +24,13 @@
                       <label for="scales"><small>Карьерная консультация</small></label>
                     </div>
                 </fieldset>
+                <div class="card border-primary mt-3">
+                  <div class="card-body">
+                    <h5 class="card-title">EasyOffer C# Chat</h5>
+                    <p class="card-text">Вступай в чат нашего сообщества по Java в телеграмме</p>
+                    <a href="#" class="btn btn-primary">Перейти </a>
+                  </div>
+                </div>
             </div>
             <div class="col">
                 <table class="table">
