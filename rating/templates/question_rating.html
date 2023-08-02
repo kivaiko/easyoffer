@@ -7,7 +7,7 @@
 {% block content %}
 
     <h1 class="mt-5"> Вопросы с собеседований на {{ prof_data.title }}</h1>
-    <p class="fs-5 mt-3 align-middle"> Вероятность встречи вопроса на осонове 130 проголосовавших. <a href="{{ prof_data.get_url_quiz }}">Поучаствовать в опросе</a> </p>
+    <p class="fs-5 mt-3 align-middle"> Шанс на основе {{ prof_data.votes }} проголосовавших. <a href="{{ prof_data.get_url_quiz }}">Поучаствовать в опросе</a> </p>
     <div class="row align-items-start">
             <div class="col-2">
                 <fieldset>
@@ -32,7 +32,7 @@
                 <div class="card border-primary mt-3">
                   <div class="card-body">
                     <h5 class="card-title">Java Chat</h5>
-                    <p class="card-text">Вступай в Telegtam-чат нашего сообщества по Java</p>
+                    <p class="card-text">Вступай в Telegtam-чат нашего сообщества по {{ prof_data.title }}</p>
                     <a href="#" class="btn btn-primary">Перейти </a>
                   </div>
                 </div>
@@ -41,7 +41,7 @@
                 <table class="table mt-5 table-bordered table-hover ">
                     <thead>
                         <tr>
-                            <th>Вероятность</th>
+                            <th>Шанс</th>
                             <th>Вопрос</th>
                             <th>Тег</th>
                         </tr>
@@ -49,7 +49,11 @@
                     <tbody>
                         {% for rating in ratings %}
                         <tr>
-                            <td align="center">{{ rating.rating }}</td>
+                            {% if rating.chance >= 10 %}
+                            <td align="center" class="fw-bold text-success">{{ rating.chance }}%</td>
+                            {% else %}
+                            <td align="center" class="fw-bold text-warning">{{ rating.chance }}%</td>
+                            {% endif %}
                             <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
                             <td>{{ rating.question.tag }}</td>
                         </tr>

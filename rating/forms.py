@@ -20,3 +20,9 @@ class VideoAnswerForm(forms.Form):
 class ExtraContentForm(forms.Form):
     title = forms.CharField(max_length=255, label='Название: ')
     url = forms.URLField(label='Ссылка: ')
+
+
+class MockForm(forms.ModelForm):
+    class Meta:
+        model = MockInterview
+        fields = ['profession', 'grade']

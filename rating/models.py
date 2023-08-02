@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
 from django.urls import reverse
 
@@ -14,12 +15,15 @@ class Profession(models.Model):
     public_mentor = models.BooleanField()
     public_analytic = models.BooleanField()
     description = models.TextField(max_length=500)
+    telegram_chat = models.URLField()
+    votes = models.PositiveIntegerField()
+    votes_access = models.BooleanField()
 
     def __str__(self):
         return self.title
 
     def get_url(self):
-        return reverse('profession', args=[self.prof_slug])
+        return reverse('question_rating', args=[self.prof_slug])
 
     def get_url_quiz(self):
         return reverse('quiz', args=[self.prof_slug])
@@ -39,16 +43,9 @@ class Question(models.Model):
     class Meta:
         db_table = 'questions'
 
-    GRADES = [
-        ('without', 'Without'),
-        ('junior', 'Junior'),
-        ('middle', 'Middle'),
-        ('senior', 'Senior'),
-    ]
-
     title = models.CharField(max_length=255)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    grade = models.CharField(max_length=100, choices=GRADES, default='without')
+    grade = models.CharField(max_length=100, choices=settings.GRADES, default='Не указан')
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -62,16 +59,10 @@ class Rating(models.Model):
     class Meta:
         db_table = 'ratings'
 
-    STATUSES = [
-        ('public', 'Public'),
-        ('moderation', 'Moderation'),
-        ('disabled', 'Disabled'),
-    ]
-
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="ratings")
     rating = models.IntegerField(default=1)
-    status = models.CharField(max_length=100, choices=STATUSES, default='moderation')
+    public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -82,17 +73,12 @@ class Comment(models.Model):
     class Meta:
         db_table = 'comments'
 
-    STATUSES = [
-        ('public', 'Public'),
-        ('moderation', 'Moderation'),
-    ]
-
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.TextField()
     author = models.CharField(max_length=50)
     short_rating = models.IntegerField(default=1)
     long_rating = models.IntegerField(default=1)
-    status = models.CharField(max_length=100, choices=STATUSES, default='moderation')
+    public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -103,15 +89,10 @@ class VideoAnswerLink(models.Model):
     class Meta:
         db_table = 'video_answer_links'
 
-    STATUSES = [
-        ('public', 'Public'),
-        ('moderation', 'Moderation'),
-    ]
-
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     url = models.URLField()
-    status = models.CharField(max_length=100, choices=STATUSES, default='moderation')
+    public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -122,15 +103,10 @@ class ExtraContentLink(models.Model):
     class Meta:
         db_table = 'extra_content_links'
 
-    STATUSES = [
-        ('public', 'Public'),
-        ('moderation', 'Moderation'),
-    ]
-
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     url = models.URLField()
-    status = models.CharField(max_length=100, choices=STATUSES, default='moderation')
+    public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -141,20 +117,12 @@ class MockInterview(models.Model):
     class Meta:
         db_table = 'mock_interviews'
 
-    GRADES = [
-        ('without', 'Without'),
-        ('trainee', 'Trainee'),
-        ('junior', 'Junior'),
-        ('middle', 'Middle'),
-        ('senior', 'Senior'),
-    ]
-
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
     title = models.CharField(max_length=300)
     url = models.URLField()
-    status = models.BooleanField()
-    grades = models.CharField(max_length=100, choices=GRADES, default='without')
+    public = models.BooleanField(default=False)
+    grade = models.CharField(max_length=100, choices=settings.GRADES, default='Не указан')
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return self.title
+        return f"{self.title} – {self.profession} – {self.public}"

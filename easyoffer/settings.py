@@ -108,5 +108,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+GRADES = [
+    ('Не указан', 'Не указан'),
+    ('Trainee', 'Trainee'),
+    ('Junior', 'Junior'),
+    ('Middle', 'Middle'),
+    ('Senior', 'Senior'),
+]
+
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

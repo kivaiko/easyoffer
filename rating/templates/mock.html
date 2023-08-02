@@ -8,21 +8,12 @@
 
     <h1 class="pt-5">Публичные собеседования</h1>
     <div class="container">
-        <div class="row align-items-start">
+        <div class="row">
             <div class="col-3">
-                <h5 class="mt-3">Направление:</h5>
-                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                  <option selected>Все</option>
-                    {% for prof in profs %}
-                  <option value="{{ prof.id }}"> {{ prof.title }}</option>
-                    {% endfor %}
-                </select>
-                <fieldset>
-                    <h5 class="mt-3">Грейд:</h5>
-                    <div>
-                      <input type="checkbox" id="scales" name="scales" checked>
-                      <label for="scales"><small>Карьерная консультация</small></label>
-                    </div>
+                <form action="" method="get">
+                    {{ mock_filter }}
+                    <button class="btn btn-light" type="submit">Получить</button>
+                </form>
                 </fieldset>
                 <div class="card border-primary mt-3">
                   <div class="card-body">
@@ -47,7 +38,7 @@
                       <td><a href="{{ mock.url }}" target="_blank" class="link-offset-2 link-offset-3-hover link-underline
             link-underline-opacity-0 link-underline-opacity-75-hover">{{ mock.title }}</a></td>
                       <td>{{ mock.profession }}</td>
-                      <td>{{ mock.grades }}</td>
+                      <td>{{ mock.grade }}</td>
                     </tr>
                   {% endfor %}
                   </tbody>

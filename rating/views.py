@@ -1,11 +1,18 @@
 from django.shortcuts import render, redirect
+from django.views import View
+from django.conf import settings
+from django.views.generic.base import TemplateView
+from django.views.generic import ListView
+from django.db.models import F, Value
 from .forms import *
 from .models import *
 
 
-def index(request):
-    professions = Profession.objects.filter(public_rating=True)
-    return render(request, 'index.html', {'professions': professions})
+class IndexView(ListView):
+    """Список профессий"""
+    template_name = 'index.html'
+    model = Profession
+    queryset = Profession.objects.filter(public_rating=True)
 
 
 def profession(request, prof_slug):
@@ -24,8 +31,8 @@ def profession(request, prof_slug):
 
     form = AddQuestion()
     prof_data = Profession.objects.get(prof_slug=prof_slug)
-    ratings = Rating.objects.select_related('question').filter(profession=prof_data, status='public').order_by("-rating")
-    return render(request, 'profession.html', {
+    ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by("-rating").annotate(chance=F('rating') * 100 / prof_data.votes)
+    return render(request, 'question_rating.html', {
         'prof_data': prof_data,
         'ratings': ratings,
         'form': form
@@ -62,15 +69,15 @@ def question(request, question_id):
     video_answer_form = VideoAnswerForm(prefix='video')
     extra_content_form = ExtraContentForm(prefix='content')
     question_data = Question.objects.get(id=question_id)
-    comments_count = Comment.objects.filter(question__id=question_data.id, status='public').count()
-    best_short_comment = Comment.objects.filter(question__id=question_data.id, status='public').order_by("-short_rating").first()
-    best_long_comment = Comment.objects.filter(question__id=question_data.id, status='public').order_by("-long_rating").first()
+    comments_count = Comment.objects.filter(question__id=question_data.id, public=True).count()
+    best_short_comment = Comment.objects.filter(question__id=question_data.id, public=True).order_by("-short_rating").first()
+    best_long_comment = Comment.objects.filter(question__id=question_data.id, public=True).order_by("-long_rating").first()
     if best_long_comment and best_short_comment:
         pass
-    comments = Comment.objects.filter(question__id=question_data.id, status='public')
-    any_comments = Comment.objects.filter(question__id=question_data.id, status='public').exclude(id=best_short_comment.id).exclude(id=best_long_comment.id).order_by("-short_rating").order_by("-long_rating")
-    video_links = VideoAnswerLink.objects.filter(question__id=question_data.id, status='public')
-    extra_links = ExtraContentLink.objects.filter(question__id=question_data.id, status='public')
+    comments = Comment.objects.filter(question__id=question_data.id, public=True)
+    any_comments = Comment.objects.filter(question__id=question_data.id, public=True).exclude(id=best_short_comment.id).exclude(id=best_long_comment.id).order_by("-short_rating").order_by("-long_rating")
+    video_links = VideoAnswerLink.objects.filter(question__id=question_data.id, public=True)
+    extra_links = ExtraContentLink.objects.filter(question__id=question_data.id, public=True)
     return render(request, 'question.html', {
         'comments_count': comments_count,
         'best_short_comment': best_short_comment,
@@ -96,21 +103,49 @@ def quiz(request, prof_slug):
         # q = Rating.objects.filter(id__in=ids)
         return redirect('profession', prof_slug=prof_slug)
     prof_data = Profession.objects.get(prof_slug=prof_slug)
-    ratings = Rating.objects.select_related('question').filter(profession=prof_data, status='public').order_by("-rating")
+    ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by("-rating")
     return render(request, 'quiz.html', {
         'prof_data': prof_data,
         'ratings': ratings,
     })
 
 
-def thx_data(request):
-    return render(request, 'thx_data.html')
+class ThxView(TemplateView):
+    """Спасибо страница за предложенный контент (вопрос, коммент, ссылка на youtube, ссылка на доп. контент)"""
+    template_name = 'thx_data.html'
+
+
+class MockView(ListView):
+    """Список мок-интервью"""
+    template_name = 'mock.html'
+    model = MockInterview
+    queryset = MockInterview.objects.filter(public=True)
 
 
 def mock(request):
-    mocks = MockInterview.objects.filter(status=True)
-    profs = Profession.objects.filter(public_rating=True)
+    id = request.GET.get("profession")
+    grade = request.GET.get("grade")
+    if id and grade:
+        mocks = MockInterview.objects.filter(public=True, grade=grade, profession=id)
+    else:
+        mocks = MockInterview.objects.filter(public=True)
+    profs = Profession.objects.filter(public_mock=True)
+    mock_filter = MockForm
     return render(request, 'mock.html', {
         'mocks': mocks,
-        'profs': profs
+        'profs': profs,
+        'mock_filter': mock_filter,
     })
+
+
+# def mock(request):
+#     id = request.GET.get("profession")
+#     grade = request.GET.get("grade")
+#     mock_filter = MockForm
+#     profs = Profession.objects.filter(public_mock=True)
+#     mocks = MockInterview.objects.filter(public=True, )
+#     return render(request, 'mock.html', {
+#         'mocks': mocks,
+#         'profs': profs,
+#         'mock_filter': mock_filter,
+#     })
