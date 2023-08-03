@@ -123,10 +123,10 @@ class MockView(ListView):
 
 
 def mock(request):
-    id = request.GET.get("profession")
+    profession_id = request.GET.get("profession")
     grade = request.GET.get("grade")
-    if id and grade:
-        mocks = MockInterview.objects.filter(public=True, grade=grade, profession=id)
+    if profession_id and grade:
+        mocks = MockInterview.objects.filter(public=True, grade=grade, profession=profession_id)
     else:
         mocks = MockInterview.objects.filter(public=True)
     profs = Profession.objects.filter(public_mock=True)
