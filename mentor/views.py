@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from .models import *
 
 
 def mentors(request):
-    return render(request, 'mentors.html')
+    mentors_list = Mentor.objects.filter(public=True)
+    return render(request, 'mentors.html', {'mentors': mentors_list})
 
 
 def mentor(request, username):

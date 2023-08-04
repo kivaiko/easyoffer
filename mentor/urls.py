@@ -3,5 +3,5 @@ from mentor import views
 
 urlpatterns = [
     path('mentor', views.mentors, name='mentors'),
-    path('mentor/<username>', views.mentor, name='mentor')
+    path('mentor/<slug:username>', views.mentor, name='mentor')
 ]

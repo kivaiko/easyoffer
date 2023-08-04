@@ -55,22 +55,22 @@
                       <th scope="col">Ментор</th>
                       <th scope="col">Должность</th>
                       <th scope="col">Опыт(г.)</th>
-                      <th scope="col">Цена 1 ч.</th>
+                      <th scope="col">30 мин.</th>
+                      <th scope="col">1 ч.</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
+                  {% for mentor in mentors %}
                     <tr>
-                      <td>Егоров Артем</td>
-                      <td>Senior Python Developer</td>
-                      <td>7 лет</td>
-                      <td>1000 руб.</td>
+                      <td><a class="link-offset-2 link-offset-3-hover link-underline
+            link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ mentor.get_mentor_url }}">
+                          {{ mentor.surname }} {{ mentor.name }}</a></td>
+                      <td>{{ mentor.profession }}</td>
+                      <td>{{ mentor.experience }}</td>
+                      <td>{{ mentor.cost_30m }} руб.</td>
+                      <td>{{ mentor.cost_1h }} руб.</td>
                     </tr>
-                    <tr>
-                      <td>Jacob</td>
-                      <td>Senior Software Developer</td>
-                      <td>5 лет</td>
-                      <td>1200 руб.</td>
-                    </tr>
+                  {% endfor %}
                   </tbody>
                 </table>
         </div>

@@ -28,6 +28,9 @@ class Profession(models.Model):
     def get_url_quiz(self):
         return reverse('quiz', args=[self.prof_slug])
 
+    def get_url_analytic(self):
+        return reverse('analytic', args=[self.prof_slug])
+
 
 class Tag(models.Model):
     class Meta:

@@ -125,7 +125,7 @@ class Mentor(models.Model):
 
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
-    username = models.CharField(max_length=50)
+    username = models.SlugField(max_length=255)
     UTC = models.CharField(max_length=100, choices=UTC, default='UTC+0')
     profession = models.CharField(max_length=50)
     skills = models.ManyToManyField(Skill)
@@ -136,13 +136,9 @@ class Mentor(models.Model):
     languages = models.ManyToManyField(Language)
     country_Experience_online = models.ManyToManyField(CountryExperienceOnline)
     country_Experience_offline = models.ManyToManyField(CountryExperienceOffline)
-    years_experience = models.PositiveIntegerField()
-    free_15min = models.BooleanField()
-    cost_1week_chat = models.PositiveIntegerField()
+    experience = models.PositiveIntegerField()
     cost_30m = models.PositiveIntegerField()
     cost_1h = models.PositiveIntegerField()
-    cost_4h = models.PositiveIntegerField()
-    cost_8h = models.PositiveIntegerField()
     cv_link = models.URLField(blank=True)
     about_me = models.TextField()
     telegram = models.CharField(max_length=50)
@@ -151,11 +147,11 @@ class Mentor(models.Model):
     github = models.URLField()
     portfolio = models.URLField(blank=True)
     priority = models.BooleanField()
-    status = models.CharField(max_length=100, choices=STATUSES, default='moderation')
+    public = models.BooleanField()
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
         return f"{self.name} {self.surname} – {self.username}"
 
-    def get_url(self):
-        return reverse('mentor', args=[self.id])
+    def get_mentor_url(self):
+        return reverse('mentor', args=[self.username])
