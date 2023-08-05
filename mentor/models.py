@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
+from django.conf import settings
 
 
 class Direction(models.Model):
@@ -87,46 +88,10 @@ class Mentor(models.Model):
     class Meta:
         db_table = 'mentors'
 
-    STATUSES = [
-        ('public', 'Public'),
-        ('moderation', 'Moderation'),
-        ('disabled', 'Disabled'),
-    ]
-
-    UTC = [
-        ('UTC−12', 'UTC−12'),
-        ('UTC−11', 'UTC−11'),
-        ('UTC−10', 'UTC−10'),
-        ('UTC−9', 'UTC−9'),
-        ('UTC−8', 'UTC−8'),
-        ('UTC−7', 'UTC−7'),
-        ('UTC−6', 'UTC−6'),
-        ('UTC−5', 'UTC−5'),
-        ('UTC−4', 'UTC−4'),
-        ('UTC−3', 'UTC−3'),
-        ('UTC−2', 'UTC−2'),
-        ('UTC−1', 'UTC−1'),
-        ('UTC+0', 'UTC+0'),
-        ('UTC+1', 'UTC+1'),
-        ('UTC+2', 'UTC+2'),
-        ('UTC+3', 'UTC+3'),
-        ('UTC+4', 'UTC+4'),
-        ('UTC+5', 'UTC+5'),
-        ('UTC+6', 'UTC+6'),
-        ('UTC+7', 'UTC+7'),
-        ('UTC+8', 'UTC+8'),
-        ('UTC+9', 'UTC+9'),
-        ('UTC+10', 'UTC+10'),
-        ('UTC+11', 'UTC+11'),
-        ('UTC+12', 'UTC+12'),
-        ('UTC+13', 'UTC+13'),
-        ('UTC+14', 'UTC+14'),
-    ]
-
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
     username = models.SlugField(max_length=255)
-    UTC = models.CharField(max_length=100, choices=UTC, default='UTC+0')
+    utc = models.CharField(max_length=100, choices=settings.UTC, default='UTC+0')
     profession = models.CharField(max_length=50)
     skills = models.ManyToManyField(Skill)
     topics = models.ManyToManyField(Topic)

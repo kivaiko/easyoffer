@@ -16,9 +16,22 @@
                       <img src="..." class="img-thumbnail" alt="...">
                     </div>
                     <div class="col">
-                        <h2>Алексей Кивайко</h2>
-                        <p>Python Developer | 10+ лет опыта</p>
+                        <h2>{{ mentor.name }} {{ mentor.surname }}</h2>
+                        <p>{{ mentor.profession }} |
+                            {% if mentor.experience == 1 %}
+                            {{ mentor.experience }} год опыта
+                            {% elif mentor.experience < 5 %}
+                            {{ mentor.experience }} года опыта
+                            {% else %}
+                            {{ mentor.experience }} лет опыта
+                            {% endif %}
+                            | {{ mentor.utc }}</p>
+                        {% if mentor.telegram %}
                         <button class="btn btn-primary">Telegram</button>
+                        {% endif %}
+                        {% if mentor.whatsapp %}
+                        <button class="btn btn-primary">Telegram</button>
+                        {% endif %}
                         <button class="btn btn-primary">WhatsApp</button>
                     </div>
                   </div>
@@ -47,12 +60,6 @@
                 </div>
                 <br>
                 <span class="badge rounded-pill text-bg-primary">Django</span>
-                <span class="badge rounded-pill text-bg-primary">FastAPI</span>
-                <span class="badge rounded-pill text-bg-primary">FastAPI</span>
-                <span class="badge rounded-pill text-bg-primary">FastAPI</span>
-                <span class="badge rounded-pill text-bg-primary">FastAPI</span>
-                <span class="badge rounded-pill text-bg-primary">FastAPI</span>
-                <span class="badge rounded-pill text-bg-primary">FastAPI</span>
                 <br><br>
 
             </div>

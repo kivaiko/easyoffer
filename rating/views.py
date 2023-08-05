@@ -130,11 +130,11 @@ def mock(request):
     else:
         mocks = MockInterview.objects.filter(public=True)
     profs = Profession.objects.filter(public_mock=True)
-    mock_filter = MockForm
+    form_filter = MockForm
     return render(request, 'mock.html', {
         'mocks': mocks,
         'profs': profs,
-        'mock_filter': mock_filter,
+        'form_filter': form_filter,
     })
 
 

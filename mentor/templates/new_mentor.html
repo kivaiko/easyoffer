@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ course.title }}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="pt-5">Форма ментора</h1>
+    <form action="/your-name/" method="post">
+        {% csrf_token %}
+        <! -- Имя -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.name.id_for_label }}" class="col-form-label">{{ form.name.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.name }}
+            </div>
+        </div>
+        <br>
+        <! -- Фамилия -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.surname.id_for_label }}" class="col-form-label">{{ form.surname.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.surname }}
+            </div>
+        </div>
+        <br>
+        <! -- Username -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.username.id_for_label }}" class="col-form-label">{{ form.username.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.username }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    Будет в URL: easyoffer.me/mentor/username
+                </span>
+            </div>
+        </div>
+        <br>
+        <! -- Должность -->
+        <div class="row g-3 align-items-center">
+            <div class="col-2">
+                <label for="{{ form.profession.id_for_label }}" class="col-form-label">{{ form.profession.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.profession }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    Можете указать и компанию: "Senior Python Developer в Ozon"
+                </span>
+            </div>
+        </div>
+        <br>
+        <! -- Должность -->
+        <div class="row g-3 align-items-center">
+            <div class="col-2">
+                <label for="{{ form.utc.id_for_label }}" class="col-form-label">{{ form.utc.label }}</label>
+            </div>
+            <div class="col-auto">
+                {{ form.utc }}
+            </div>
+            <div class="col-auto">
+            </div>
+        </div>
+        <br>
+        <! -- Навыки -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.skills.id_for_label }}" class="col-form-label">{{ form.skills.label }}</label>
+            </div>
+            <div class="col-3 form-check form-check-inline">
+                {{ form.skills }}
+            </div>
+        </div>
+        <br>
+        <br>
+        <br><br><br><br><br>
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+    </form>
+{% endblock %}

@@ -12,6 +12,11 @@
             <div class="col-3">
                 <form action="" method="get">
                     <div class="form-group mt-3">
+                        <select class="form-control" id="profession" name="profession">
+                            {% for form in form_filter %}
+                            <option for="profession" value="{{ form.profession.id_for_label }}">{{ form.profession.title }}</option>
+                            {% endfor %}
+                        </select>
                         <select class="form-control" id="profession_select" name="profession">
                             {% for prof in profs %}
                             <option for="profession_select" value="{{ prof.id }}">{{ prof.title }}</option>

@@ -116,7 +116,35 @@ GRADES = [
     ('Senior', 'Senior'),
 ]
 
-
+UTC = [
+    ('UTC−12', 'UTC−12'),
+    ('UTC−11', 'UTC−11'),
+    ('UTC−10', 'UTC−10'),
+    ('UTC−9', 'UTC−9'),
+    ('UTC−8', 'UTC−8'),
+    ('UTC−7', 'UTC−7'),
+    ('UTC−6', 'UTC−6'),
+    ('UTC−5', 'UTC−5'),
+    ('UTC−4', 'UTC−4'),
+    ('UTC−3', 'UTC−3'),
+    ('UTC−2', 'UTC−2'),
+    ('UTC−1', 'UTC−1'),
+    ('UTC+0', 'UTC+0'),
+    ('UTC+1', 'UTC+1'),
+    ('UTC+2', 'UTC+2'),
+    ('UTC+3', 'UTC+3'),
+    ('UTC+4', 'UTC+4'),
+    ('UTC+5', 'UTC+5'),
+    ('UTC+6', 'UTC+6'),
+    ('UTC+7', 'UTC+7'),
+    ('UTC+8', 'UTC+8'),
+    ('UTC+9', 'UTC+9'),
+    ('UTC+10', 'UTC+10'),
+    ('UTC+11', 'UTC+11'),
+    ('UTC+12', 'UTC+12'),
+    ('UTC+13', 'UTC+13'),
+    ('UTC+14', 'UTC+14'),
+]
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

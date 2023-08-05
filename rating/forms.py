@@ -22,7 +22,6 @@ class ExtraContentForm(forms.Form):
     url = forms.URLField(label='Ссылка: ')
 
 
-class MockForm(forms.ModelForm):
-    class Meta:
-        model = MockInterview
-        fields = ['profession', 'grade']
+class MockForm(forms.Form):
+    profession = forms.ModelChoiceField(queryset=Profession.objects.all(), empty_label=None, label='Профессия:')
+    grade = forms.CharField(max_length=255, label='Грейд: ')
