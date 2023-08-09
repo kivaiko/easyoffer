@@ -22,6 +22,16 @@ class ExtraContentForm(forms.Form):
     url = forms.URLField(label='Ссылка: ')
 
 
-class MockForm(forms.Form):
-    profession = forms.ModelChoiceField(queryset=Profession.objects.all(), empty_label=None, label='Профессия:')
-    grade = forms.CharField(max_length=255, label='Грейд: ')
+class MockForm(forms.ModelForm):
+    class Meta:
+        model = MockInterview
+        exclude = ['public', 'url', 'title', 'created_at']
+        widgets = {
+            'profession': forms.Select(attrs={'class': 'form-select'}),
+            'grade': forms.CheckboxSelectMultiple(),
+        }
+        labels = {
+            'profession': 'Должность:',
+            'grade': 'Грейд:',
+        }
+

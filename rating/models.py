@@ -72,15 +72,14 @@ class Rating(models.Model):
         return f"{self.profession}, {self.question}"
 
 
-class Comment(models.Model):
+class Answer(models.Model):
     class Meta:
         db_table = 'comments'
 
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.TextField()
     author = models.CharField(max_length=50)
-    short_rating = models.IntegerField(default=1)
-    long_rating = models.IntegerField(default=1)
+    rating = models.IntegerField(default=1)
     public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 

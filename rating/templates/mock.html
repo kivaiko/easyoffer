@@ -11,48 +11,7 @@
         <div class="row">
             <div class="col-3">
                 <form action="" method="get">
-                    <div class="form-group mt-3">
-                        <select class="form-control" id="profession" name="profession">
-                            {% for form in form_filter %}
-                            <option for="profession" value="{{ form.profession.id_for_label }}">{{ form.profession.title }}</option>
-                            {% endfor %}
-                        </select>
-                        <select class="form-control" id="profession_select" name="profession">
-                            {% for prof in profs %}
-                            <option for="profession_select" value="{{ prof.id }}">{{ prof.title }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-check mt-3">
-                        <input class="form-check-input" type="radio" name="grade" id="exampleRadios1" value="Не указан" checked>
-                        <label class="form-check-label" for="exampleRadios1">
-                          Не указан
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="grade" id="exampleRadios2" value="Trainee">
-                        <label class="form-check-label" for="exampleRadios2">
-                          Trainee
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="grade" id="exampleRadios3" value="Junior">
-                        <label class="form-check-label" for="exampleRadios3">
-                          Junior
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="grade" id="exampleRadios4" value="Middle">
-                        <label class="form-check-label" for="exampleRadios4">
-                          Middle
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="grade" id="exampleRadios5" value="Senior">
-                        <label class="form-check-label" for="exampleRadios5">
-                          Senior
-                        </label>
-                    </div>
+                    {{ form_filter.as_p }}
                     <button class="btn btn-primary mt-3" type="submit">Применить</button>
                 </form>
 

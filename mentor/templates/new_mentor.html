@@ -6,8 +6,8 @@
 
 {% block content %}
 
-    <h1 class="pt-5">Форма ментора</h1>
-    <form action="/your-name/" method="post">
+    <h1 class="pt-5 pb-5">Форма ментора</h1>
+    <form action="" method="post">
         {% csrf_token %}
         <! -- Имя -->
         <div class="row g-3 align-items-center">
@@ -46,7 +46,7 @@
         <br>
         <! -- Должность -->
         <div class="row g-3 align-items-center">
-            <div class="col-2">
+            <div class="col-1">
                 <label for="{{ form.profession.id_for_label }}" class="col-form-label">{{ form.profession.label }}</label>
             </div>
             <div class="col-3">
@@ -59,31 +59,177 @@
             </div>
         </div>
         <br>
-        <! -- Должность -->
-        <div class="row g-3 align-items-center">
-            <div class="col-2">
-                <label for="{{ form.utc.id_for_label }}" class="col-form-label">{{ form.utc.label }}</label>
-            </div>
-            <div class="col-auto">
-                {{ form.utc }}
-            </div>
-            <div class="col-auto">
-            </div>
-        </div>
-        <br>
-        <! -- Навыки -->
+        <! -- Опыт в года -->
         <div class="row g-3 align-items-center">
             <div class="col-1">
-                <label for="{{ form.skills.id_for_label }}" class="col-form-label">{{ form.skills.label }}</label>
+                <label for="{{ form.experience.id_for_label }}" class="col-form-label">{{ form.experience.label }}</label>
             </div>
-            <div class="col-3 form-check form-check-inline">
-                {{ form.skills }}
+            <div class="col-3">
+                {{ form.experience }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    Суммарный релевантный опыт в годах
+                </span>
             </div>
         </div>
         <br>
+        <! -- Консультация 30 мин -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.cost_30m.id_for_label }}" class="col-form-label">{{ form.cost_30m.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.cost_30m }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    Стоимость консультации в руб. за 30 минут / Минимум 500 руб.
+                </span>
+            </div>
+        </div>
         <br>
-        <br><br><br><br><br>
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
+        <! -- Консультация 1 час -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.cost_1h.id_for_label }}" class="col-form-label">{{ form.cost_1h.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.cost_1h }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    Стоимость консультации в руб. за 1 час / Минимум 1000 руб.
+                </span>
+            </div>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+        </div>
+        <br>
+        <! -- Направление -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.directions.id_for_label }}" class="col-form-label">{{ form.directions.label }}</label>
+            </div>
+            <div class="col-3 form-check form-check-inline">
+                {{ form.directions }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    В каких разделах отображать?
+                </span>
+            </div>
+        </div>
+        <br>
+        <! -- Могу помочь -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.topics.id_for_label }}" class="col-form-label">{{ form.topics.label }}</label>
+            </div>
+            <div class="col-3 form-check form-check-inline">
+                {{ form.topics }}
+            </div>
+        </div>
+        <br>
+        <! -- Telegram -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.telegram.id_for_label }}" class="col-form-label">{{ form.telegram.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.telegram }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    username / обязательно для заполнения
+                </span>
+            </div>
+        </div>
+        <br>
+        <! -- Instagram -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.instagram.id_for_label }}" class="col-form-label">{{ form.instagram.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.instagram }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    username
+                </span>
+            </div>
+        </div>
+        <br>
+        <! -- LinkedIn -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.linkedin.id_for_label }}" class="col-form-label">{{ form.linkedin.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.linkedin }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    Ссылка на профиль / обязательно для заполнения
+                </span>
+            </div>
+        </div>
+        <br>
+        <! -- Github -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.github.id_for_label }}" class="col-form-label">{{ form.github.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.github }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    Ссылка на профиль / обязательно для заполнения прогерам
+                </span>
+            </div>
+        </div>
+        <br>
+        <! -- Behance -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.behance.id_for_label }}" class="col-form-label">{{ form.behance.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.behance }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    Ссылка на профиль / обязательно для заполнения дизайнерам
+                </span>
+            </div>
+        </div>
+        <br>
+        <! -- Личный сайт -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.website.id_for_label }}" class="col-form-label">{{ form.website.label }}</label>
+            </div>
+            <div class="col-3">
+                {{ form.website }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    Личный сайт / Блог / Портфолио
+                </span>
+            </div>
+        </div>
+        <br>
+        <! -- О себе -->
+        <div class="row g-3 align-items-center">
+            <div class="mb-3">
+                <label for="{{ form.about_me.id_for_label }}" class="form-label">{{ form.about_me.label }}</label>
+                {{ form.about_me }}
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary mt-3 mb-3" type="submit" value="Submit">Отправить</button>
     </form>
 {% endblock %}

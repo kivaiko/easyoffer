@@ -1,6 +1,4 @@
 from django.shortcuts import render, redirect
-from django.views import View
-from django.conf import settings
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.db.models import F, Value
@@ -45,7 +43,7 @@ def question(request, question_id):
         video_form = VideoAnswerForm(request.POST, prefix='video')
         extra_content_form = ExtraContentForm(request.POST, prefix='content')
         if comment_form.is_valid():
-            Comment.objects.create(
+            Answer.objects.create(
                 question_id=question_id,
                 text=comment_form.cleaned_data["text"],
                 author=comment_form.cleaned_data["author"]
@@ -69,25 +67,15 @@ def question(request, question_id):
     video_answer_form = VideoAnswerForm(prefix='video')
     extra_content_form = ExtraContentForm(prefix='content')
     question_data = Question.objects.get(id=question_id)
-    comments_count = Comment.objects.filter(question__id=question_data.id, public=True).count()
-    best_short_comment = Comment.objects.filter(question__id=question_data.id, public=True).order_by("-short_rating").first()
-    best_long_comment = Comment.objects.filter(question__id=question_data.id, public=True).order_by("-long_rating").first()
-    if best_long_comment and best_short_comment:
-        pass
-    comments = Comment.objects.filter(question__id=question_data.id, public=True)
-    any_comments = Comment.objects.filter(question__id=question_data.id, public=True).exclude(id=best_short_comment.id).exclude(id=best_long_comment.id).order_by("-short_rating").order_by("-long_rating")
+    answers = Answer.objects.filter(question__id=question_data.id, public=True)
     video_links = VideoAnswerLink.objects.filter(question__id=question_data.id, public=True)
     extra_links = ExtraContentLink.objects.filter(question__id=question_data.id, public=True)
     return render(request, 'question.html', {
-        'comments_count': comments_count,
-        'best_short_comment': best_short_comment,
-        'best_long_comment': best_long_comment,
-        'any_comments': any_comments,
         'comment_form': comment_form,
         'video_answer_form': video_answer_form,
         'extra_content_form': extra_content_form,
         'question_data': question_data,
-        'comments': comments,
+        'answers': answers,
         'video_links': video_links,
         'extra_links': extra_links,
     })
@@ -137,15 +125,3 @@ def mock(request):
         'form_filter': form_filter,
     })
 
-
-# def mock(request):
-#     id = request.GET.get("profession")
-#     grade = request.GET.get("grade")
-#     mock_filter = MockForm
-#     profs = Profession.objects.filter(public_mock=True)
-#     mocks = MockInterview.objects.filter(public=True, )
-#     return render(request, 'mock.html', {
-#         'mocks': mocks,
-#         'profs': profs,
-#         'mock_filter': mock_filter,
-#     })

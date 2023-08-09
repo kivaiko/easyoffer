@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import DetailView, CreateView
-from django.views import View
+from django.views.generic import DetailView, CreateView, TemplateView
+from django.urls import reverse_lazy
 from .models import *
 from .forms import MentorForm
 
@@ -18,6 +18,13 @@ def mentor(request, username):
 
 
 class NewMentor(CreateView):
+    """Страница добавления нового ментора"""
     model = Mentor
     form_class = MentorForm
     template_name = 'new_mentor.html'
+    success_url = reverse_lazy('thx')
+
+
+class ThxView(TemplateView):
+    """Страница с успешным добавлением нового ментора"""
+    template_name = 'thx.html'
