@@ -47,6 +47,7 @@ class Mentor(models.Model):
     priority = models.BooleanField(default=False)
     public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
+    image = models.FileField(upload_to='mentors_images')
 
     def __str__(self):
         return f"{self.name} {self.surname} – {self.username}"

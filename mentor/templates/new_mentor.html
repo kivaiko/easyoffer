@@ -7,7 +7,7 @@
 {% block content %}
 
     <h1 class="pt-5 pb-5">Форма ментора</h1>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <! -- Имя -->
         <div class="row g-3 align-items-center">
@@ -218,6 +218,21 @@
             <div class="col-auto">
                 <span class="form-text">
                     Личный сайт / Блог / Портфолио
+                </span>
+            </div>
+        </div>
+        <br>
+        <! -- Файл -->
+        <div class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="{{ form.image.id_for_label }}" class="col-form-label">{{ form.image.label }}</label>
+            </div>
+            <div class="col-3">
+              {{ form.image }}
+            </div>
+            <div class="col-auto">
+                <span class="form-text">
+                    Файл?
                 </span>
             </div>
         </div>

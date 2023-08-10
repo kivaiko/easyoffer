@@ -25,6 +25,7 @@ class MentorForm(forms.ModelForm):
             'behance': forms.URLInput(attrs={'class': 'form-control'}),
             'github': forms.URLInput(attrs={'class': 'form-control'}),
             'website': forms.URLInput(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
         }
         labels = {
             'name': 'Имя:',
@@ -43,6 +44,7 @@ class MentorForm(forms.ModelForm):
             'behance': 'Behance:',
             'website': 'Сайт:',
             'about_me': 'О себе:',
+            'image': 'Фото:',
         }
 
 

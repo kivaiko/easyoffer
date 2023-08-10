@@ -12,11 +12,11 @@
             <div class="col-8">
                 <div class="container p-0">
                   <div class="row">
-                    <div class="col-3">
-                      <img src="..." class="img-thumbnail" alt="...">
+                    <div class="col-4">
+                      <img src="{{ mentor.image.url }}" class="img-fluid rounded" height="400" width="400">
                     </div>
                     <div class="col">
-                        <h2>{{ mentor.name }} {{ mentor.surname }}</h2>
+                        <h2>{{ mentor.name|title }} {{ mentor.surname|title }}</h2>
                         <p>{{ mentor.profession }} |
                             {% if mentor.experience == 1 %}
                             {{ mentor.experience }} год опыта
@@ -24,58 +24,54 @@
                             {{ mentor.experience }} года опыта
                             {% else %}
                             {{ mentor.experience }} лет опыта
+                            {% endif %}</p>
+                        <a href="https://telegram.me/{{ mentor.telegram }}" class="btn btn-primary" target="_blank"><i class="bi bi-telegram me-2"></i>Написать в Telegram</a>
+                        <br><br>
+                        <p class="fs-5">
+                            {% if mentor.instagram %}
+                            <a href="https://www.instagram.com/{{ mentor.instagram }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-instagram"></i></a>
                             {% endif %}
-                            | {{ mentor.utc }}</p>
-                        {% if mentor.telegram %}
-                        <button class="btn btn-primary">Telegram</button>
-                        {% endif %}
-                        {% if mentor.whatsapp %}
-                        <button class="btn btn-primary">Telegram</button>
-                        {% endif %}
-                        <button class="btn btn-primary">WhatsApp</button>
+                            {% if mentor.linkedin %}
+                            <a href="{{ mentor.linkedin }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-linkedin"></i></a>
+                            {% endif %}
+                            {% if mentor.github %}
+                            <a href="{{ mentor.github }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-github"></i></a>
+                            {% endif %}
+                            {% if mentor.behance %}
+                            <a href="{{ mentor.behance }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-behance"></i></a>
+                            {% endif %}
+                            {% if mentor.website %}
+                            <a href="{{ mentor.website }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-box-arrow-up-right"></i></a>
+                            {% endif %}
+                        </p>
                     </div>
                   </div>
                 </div>
                 <br>
-                <p>Большой и разносторонний опыт в области продуктовой разработки. Организация процессов, лучшие практики, System Design, backend разработка, менторство, технические интервью.</p>
-                <br>
-                <div class="container p-0">
-                  <div class="row">
-                    <div class="col-5">
-                        <ul class="list-group">
-                          <li class="list-group-item">Общая консультация</li>
-                          <li class="list-group-item">Составить план обучения</li>
-                          <li class="list-group-item">Обучение до трудоустройства</li>
-                          <li class="list-group-item">Стажировка на реальном проекте</li>
-                        </ul>
-                    </div>
-                    <div class="col">
-                        <p><b class="fw-semibold">Направления:</b> Python Backend </p>
-                        <p><b class="fw-semibold">Языки:</b> Русский</p>
-                        <p><b class="fw-semibold">Оплата:</b> Российская карта, Иностранная карта, PayPal</p>
-                        <p><b class="fw-semibold">Опыт оффлайн на страны:</b> </p>
-                        <p><b class="fw-semibold">Опыт онлайн на страны:</b> </p>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <span class="badge rounded-pill text-bg-primary">Django</span>
-                <br><br>
+                <p>Направления:
+                    {% for item in mentor.directions.all %}
+                    <span class="badge rounded-pill text-bg-primary">{{ item.title }}</span>
+                    {% endfor %}
+                </p>
+                <p>Могу помочь:
+                    {% for item in mentor.topics.all %}
+                    <span class="badge rounded-pill text-bg-primary">{{ item.title }}</span>
+                    {% endfor %}
+                </p>
 
+                <p>{{ mentor.about_me }}</p>
             </div>
             <div class="col">
                 <div class="card mb-3">
                   <div class="card-body">
-                    <h5 class="card-title">Первая консультация 15 мин.</h5>
-                    <p class="card-text"></p>
-                    <p class="card-text">Бесплатно</p>
+                    <h5 class="card-title">Консультация 30 минут</h5>
+                    <p class="card-text">{{ mentor.cost_30m }} руб.</p>
                   </div>
                 </div>
                 <div class="card mb-3">
                   <div class="card-body">
-                    <h5 class="card-title">Код-ревью</h5>
-                    <p class="card-text">Разбор кода вашего проекта. Вы скидываете поект на git-hub и я письменно делаю разбор</p>
-                    <p class="card-text">1200 руб. / за 1 проект</p>
+                    <h5 class="card-title">Консультация 1 час</h5>
+                    <p class="card-text">{{ mentor.cost_1h }} руб.</p>
                   </div>
                 </div>
             </div>
