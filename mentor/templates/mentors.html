@@ -10,43 +10,10 @@
     <div class="container">
         <div class="row align-items-start">
             <div class="col-3">
-                <h5 class="mt-3">Направление:</h5>
-                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                  <option selected>Все</option>
-                  <option value="1">Python Developer</option>
-                  <option value="2">Java Developer</option>
-                  <option value="3">Android Developer</option>
-                </select>
-                <fieldset>
-                    <h5 class="mt-3">Тип вопроса:</h5>
-                    <div>
-                      <input type="checkbox" id="scales" name="scales" checked>
-                      <label for="scales"><small>Карьерная консультация</small></label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="horns" name="horns">
-                      <label for="horns"><small>Сопровождение в учебе</small></label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="horns" name="horns">
-                      <label for="horns"><small>Стажировка на реальном проекте</small></label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="horns" name="horns">
-                      <label for="horns"><small>Тестовое собеседование на английском</small></label>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <h5 class="mt-3">Технологии:</h5>
-                    <div>
-                      <input type="checkbox" id="scales" name="scales" checked>
-                      <label for="scales"><small>Django</small></label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="horns" name="horns">
-                      <label for="horns"><small>FastAPI</small></label>
-                    </div>
-                </fieldset>
+                <form action="" method="get">
+                    {{ form.as_p }}
+                    <button class="btn btn-primary mt-3" type="submit">Применить</button>
+                </form>
             </div>
             <div class="col">
                 <table class="table">

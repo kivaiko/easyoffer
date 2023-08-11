@@ -2,12 +2,21 @@ from django.shortcuts import render
 from django.views.generic import DetailView, CreateView, TemplateView
 from django.urls import reverse_lazy
 from .models import *
-from .forms import MentorForm
+from .forms import MentorForm, MentorFilterForm
 
 
 def mentors(request):
-    mentors_list = Mentor.objects.filter(public=True)
-    return render(request, 'mentors.html', {'mentors': mentors_list})
+    direction = request.GET.get("directions")
+    topic = request.GET.get("topics")
+    if direction and topic:
+        mentors_list = Mentor.objects.filter(public=True, topics=topic, directions=direction)
+    else:
+        mentors_list = Mentor.objects.filter(public=True)
+    form = MentorFilterForm
+    return render(request, 'mentors.html', {
+        'mentors': mentors_list,
+        'form': form,
+    })
 
 
 def mentor(request, username):

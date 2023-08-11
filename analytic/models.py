@@ -1,27 +1,43 @@
 from django.db import models
 from django.urls import reverse
 from rating.models import Profession
+from django.utils import timezone
+
+
+class Search(models.Model):
+    class Meta:
+        db_table = 'searches'
+
+    title = models.CharField(max_length=255)
+    profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
+    url = models.URLField()
+    amount_vacancies = models.PositiveIntegerField()
+    public = models.BooleanField(default=False)
+    last_update = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.title} – {self.profession}"
 
 
 class Skill(models.Model):
     class Meta:
         db_table = 'anaytics_skills'
 
-    profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     amount = models.IntegerField(default=1)
+    search = models.ForeignKey(Search, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title, self.frequency
+        return f"{self.title} – {self.amount} – {self.search}"
 
 
 class KeyWord(models.Model):
     class Meta:
         db_table = 'anaytics_keywords'
 
-    profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     amount = models.IntegerField(default=1)
+    search = models.ForeignKey(Search, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title, self.frequency
+        return f"{self.title} – {self.amount} – {self.search}"

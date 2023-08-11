@@ -48,3 +48,18 @@ class MentorForm(forms.ModelForm):
         }
 
 
+class MentorFilterForm(forms.ModelForm):
+    class Meta:
+        model = Mentor
+        exclude = ['public', 'created_at', 'priority', 'name', 'surname', 'username', 'profession', 'experience',
+                   'cost_30m', 'cost_1h', 'telegram', 'instagram', 'linkedin', 'github', 'behance', 'website',
+                   'about_me', 'image']
+        widgets = {
+            'directions': forms.Select(attrs={'class': 'form-select'}),
+            'topics': forms.CheckboxSelectMultiple(),
+        }
+        labels = {
+            'directions': 'Направление:',
+            'topics': 'Тип вопроса:',
+        }
+

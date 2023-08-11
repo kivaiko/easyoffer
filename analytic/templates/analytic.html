@@ -6,100 +6,54 @@
 
 {% block content %}
 
-    <h1 class="mt-5"> Требования на должность {{ prof_data.title }}</h1>
-
-        <h5>Анализ актуален на 27.04.2023, сотавлен на основе поискового запороса на 400 вакансий</h5>
-            <p class="d-inline-flex gap-1">
-              <a class="" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Навыки?
-              </a>
-            </p>
-            <div class="collapse" id="collapseExample">
-              <div class="card card-body">
-                <small><b>Навыки</b> собираются из блока "ключевые навыки". SEO HeadHunter устроено так, что навыки, которые вы
-                указываете в своем резюме мэтчатся с навыками которые указал рекрутер в вакансии. Релевантные отклики
-                показываются выше, рекрутер их видет чаще. Добавив в свое резюме навыки из этого списка, вы будите получать
-                больше просмотров среди других откликов, а также в общем поиске по резюме на HeadHunter ваша вакансия будет
-                показываться выше.</small>
-              </div>
-            </div>
-                <p class="d-inline-flex gap-1">
-              <a class="" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
-                KeyWords?
-              </a>
-            </p>
-            <div class="collapse" id="collapseExample2">
-              <div class="card card-body">
-                <small><b>Keywords</b> - слова, которые чаще всего упомянаются в описании вакансий. Ключевые слова более точно
-                характеризуют, то что сейчас реально требует рынок от кандидата. Используйте этот список для планирования
-                своей учебы, а также постарайтесь указать как можно больше ключевых слов из топа в своем резюме, это влияет на SEO.
-                Ваше резюме будет чаще показываться в общем поиске.
-                </small>
-              </div>
-            </div>
-
+    <h1 class="mt-5 fs-3"> Требования на должность {{ search.profession }}</h1>
+    <p class="fs-5">Анализ актуален на {{ search.last_update}}, сотавлен на основе <a href="{{ search.url }}">поискового запороса.</a> Число вакансий: {{ search.amount_vacancies }}</p>
         <div class="row">
-            <div class="col-3">
-                <h4 class="mt-2">Направление:</h4>
-                <select class="form-select form-select-lg" aria-label=".form-select-sm example">
-                  <option selected>Все</option>
-                  <option value="1">Python Developer</option>
-                  <option value="2">Java Developer</option>
-                  <option value="3">Android Developer</option>
-                </select>
-                <fieldset>
-                    <h4 class="mt-3">Грейд:</h4>
-                    <div>
-                      <input type="checkbox" id="scales" name="scales" checked>
-                      <label for="scales">Trainee</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="horns" name="horns">
-                      <label for="horns">Junior</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="horns" name="horns">
-                      <label for="horns">Middle</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="horns" name="horns">
-                      <label for="horns">Senior</label>
-                    </div>
-                </fieldset>
+            <div class="col-3 mt-4">
+                <form action="" method="get">
+                    <h4 class="mt-2">Направление:</h4>
+                    <select class="form-select form-select-lg" aria-label=".form-select-sm example" name="title">
+                        <option selected>{{ search.title }}</option>
+                        {% for search in search_all %}
+                      <option  value="{{ search.title }}">{{ search.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-3">Применить</button>
+                </form>
             </div>
-            <div class="col">
-                <h2 class="fs-4">Навыки</h2>
-                <table class="table mt-5 table-bordered table-hover ">
+            <div class="col mt-4">
+                <p><b>Навыки</b> – из раздела "навыки" в вакансиях на HeadHuner</p>
+                <table class="table table-sm table-bordered table-hover ">
                     <thead>
                         <tr>
                             <th>Навык</th>
-                            <th>Количество</th>
+                            <th>Упоминаний</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for rating in ratings %}
+                        {% for skill in skills %}
                         <tr>
-                            <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
-                            <td>{{ rating.question.tag }}</td>
+                            <td>{{ skill.title }}</td>
+                            <td>{{ skill.amount }}</td>
                         </tr>
                         {% endfor  %}
                     </tbody>
                 </table>
             </div>
-            <div class="col">
-                <h2 class="fs-4">Keywords</h2>
-                <table class="table mt-5 table-bordered table-hover ">
+            <div class="col mt-4">
+                <p><b>Ключевые слова</b> – из описаний вакансий на HeadHuner</p>
+                <table class="table table-sm table-bordered table-hover ">
                     <thead>
                         <tr>
-                            <th>Навык</th>
-                            <th>Количество</th>
+                            <th>Ключевое слово</th>
+                            <th>Упоминаний</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for rating in ratings %}
+                        {% for keyword in keywords %}
                         <tr>
-                            <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
-                            <td>{{ rating.question.tag }}</td>
+                            <td>{{ keyword.title }}</td>
+                            <td>{{ keyword.amount }}</td>
                         </tr>
                         {% endfor  %}
                     </tbody>

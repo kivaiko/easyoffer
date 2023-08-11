@@ -8,9 +8,22 @@ class ChoiceProfession(ListView):
     """Список профессий"""
     template_name = 'choice.html'
     model = Profession
-    queryset = Profession.objects.filter(public_rating=True)
-
+    queryset = Profession.objects.filter(public_analytic=True)
 
 
 def analytic(request, prof_slug):
-    return render(request, 'analytic.html')
+    title = request.GET.get("title")
+    prof_data = Profession.objects.get(prof_slug=prof_slug)
+    search_all = Search.objects.filter(profession=prof_data)
+    if title:
+        search = Search.objects.get(profession=prof_data, title=title)
+    else:
+        search = Search.objects.get(profession=prof_data, title='Все')
+    skills = Skill.objects.filter(search=search)
+    keywords = KeyWord.objects.filter(search=search)
+    return render(request, 'analytic.html', {
+        'search': search,
+        'skills': skills,
+        'keywords': keywords,
+        'search_all': search_all,
+    })
