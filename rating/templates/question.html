@@ -8,17 +8,51 @@
 
     <h1 class="mt-5 mb-5">{{ question_data.title }}</h1>
     <div class="row">
-        <div class="col-8">
+        <div class="col-3">
+        <h2 class="mb-3 fs-4" >Примеры ответов:</h2>
+
+        <ul class="list-group list-group-flush mb-3">
+            {% for link in video_links %}
+                <li class="list-group-item"><small><a href="{{ link.url }}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank">
+                    <i class="bi bi-youtube me-1"></i>{{ link.title }}</a></small></li>
+            {% endfor %}
+        </ul>
+
+        <button type="button" class="btn btn-light btn-sm " data-bs-toggle="modal" data-bs-target="#VideoAnswerModal">
+          <i class="bi bi-plus-lg me-1"></i> Добавить ответ из mock-собесов
+        </button>
+
+        <h2 class="mb-3 mt-5 fs-4">Дополнительные материалы</h2>
+
+        <ul class="list-group list-group-flush mb-3">
+            {% for link in extra_links %}
+                <li class="list-group-item"><small><a href="{{ link.url}}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank">
+                    {{ link.title }}</a></small></li>
+            {% endfor %}
+        </ul>
+
+        <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#ExtraContentModal">
+          <i class="bi bi-plus-lg me-1"></i> Добавить ссылку на доп. матераил
+        </button>
+        </div>
+        <div class="col">
             {% for answer in answers %}
-            <div class="card mb-3" >
-                <div class="card-body">
-                    <p class="card-text">{{ answer.text }}</p>
-                    <p class="card-text"><small class="text-muted">{{ answer.created_at }}, {{ answer.author }}</small></p>
-                    <div class="btn-group me-2" role="group" aria-label="Default button group">
-                        <button class="btn btn-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                        Самый лаконичный
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">{{ answer.rating }}</button>
+            <div class="row">
+                <div class="col-1">
+                    <div class="center-block">
+                        25
+                    </div>
+                </div>
+                <div class="card mb-3 col" >
+                    <div class="card-body">
+                        <p class="card-text">{{ answer.text }}</p>
+                        <p class="card-text"><small class="text-muted">{{ answer.created_at }}, {{ answer.author }}</small></p>
+                        <div class="btn-group me-2" role="group" aria-label="Default button group">
+                            <button class="btn btn-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                            Самый лаконичный
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">{{ answer.rating }}</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -39,34 +73,6 @@
                 </p>
                 <button class="btn btn-light" type="submit"><i class="bi bi-plus-lg me-2"></i>Добавить ответ</button>
             </form>
-        </div>
-
-        <div class="col">
-        <h2 class="mb-3 fs-4" >Ответы из mock-собесов</h2>
-
-        <ul class="list-group list-group-flush mb-3">
-            {% for link in video_links %}
-                <li class="list-group-item"><small><a href="{{ link.url }}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank">
-                    {{ link.title }}</a></small></li>
-            {% endfor %}
-        </ul>
-
-        <button type="button" class="btn btn-light btn-sm " data-bs-toggle="modal" data-bs-target="#VideoAnswerModal">
-          <i class="bi bi-plus-lg me-1"></i> Добавить ответ из mock-собесов
-        </button>
-
-        <h2 class="mb-3 mt-5 fs-4">Дополнительные материалы</h2>
-
-        <ul class="list-group list-group-flush mb-3">
-            {% for link in extra_links %}
-                <li class="list-group-item"><small><a href="{{ link.url}}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank">
-                    {{ link.title }}</a></small></li>
-            {% endfor %}
-        </ul>
-
-        <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#ExtraContentModal">
-          <i class="bi bi-plus-lg me-1"></i> Добавить ссылку на доп. матераил
-        </button>
         </div>
     </div>
 

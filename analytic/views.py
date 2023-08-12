@@ -27,3 +27,7 @@ def analytic(request, prof_slug):
         'keywords': keywords,
         'search_all': search_all,
     })
+
+
+print('Hello World')
+print('Пук, пук, среньк')

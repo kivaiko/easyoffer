@@ -4,12 +4,23 @@ from django.utils import timezone
 from django.urls import reverse
 
 
+class Tag(models.Model):
+    class Meta:
+        db_table = 'tags'
+
+    title = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title
+
+
 class Profession(models.Model):
     class Meta:
         db_table = 'professions'
 
     title = models.CharField(max_length=255)
     prof_slug = models.SlugField(max_length=255)
+    tags = models.ManyToManyField(Tag, blank=False)
     public_rating = models.BooleanField()
     public_mock = models.BooleanField()
     public_mentor = models.BooleanField()
@@ -30,16 +41,6 @@ class Profession(models.Model):
 
     def get_url_analytic(self):
         return reverse('analytic', args=[self.prof_slug])
-
-
-class Tag(models.Model):
-    class Meta:
-        db_table = 'tags'
-
-    title = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.title
 
 
 class Question(models.Model):

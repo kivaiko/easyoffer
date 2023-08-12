@@ -7,38 +7,31 @@
 {% block content %}
 
     <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
-    <p class="fs-5 mt-3 align-middle fs-6"> Шанс встретить вопрос на основе {{ prof_data.votes }} проголосовавших. <a href="{{ prof_data.get_url_quiz }}">Поучаствовать в опросе</a> </p>
-    <div class="row align-items-start">
+    <p class="fs-5 mt-3 align-middle fs-6"> Шанс встретить вопрос на основе {{ prof_data.votes }} проголосовавших.
+        Вы можете
+        <a href="{{ prof_data.get_url_quiz }}">Поучаствовать в опросе</a>
+        а также
+        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
+    </p>
+    <div class="row align-items-start mt-5">
             <div class="col-2">
-                <fieldset>
-                    <h5 class="mt-3">Тег</h5>
-                    <div>
-                      <input type="checkbox" id="scales" name="scales" checked>
-                      <label for="scales">Общий</label>
+                <p class="mt-2">Сортировка:</p>
+                <form action="">
+                    <div class="form-check">
+                      <input type="radio" class="form-check-input" id="Все" name="tag" value="Все">
+                      <label class="form-check-label" for="Все">Все</label>
                     </div>
-                    <div>
-                      <input type="checkbox" id="horns" name="horns">
-                      <label for="horns">Python</label>
+                    {% for tag in prof_data.tags.all %}
+                    <div class="form-check">
+                      <input type="radio" class="form-check-input" id="{{ tag }}" name="tag" value="{{ tag }}">
+                      <label class="form-check-label" for="{{ tag }}">{{ tag }}</label>
                     </div>
-                    <div>
-                      <input type="checkbox" id="horns" name="horns">
-                      <label for="horns">ООП</label>
-                    </div>
-                    <div>
-                      <input type="checkbox" id="horns" name="horns">
-                      <label for="horns">Django</label>
-                    </div>
-                </fieldset>
-                <div class="card border-primary mt-3">
-                  <div class="card-body">
-                    <h5 class="card-title">Java Chat</h5>
-                    <p class="card-text">Вступай в Telegtam-чат нашего сообщества по {{ prof_data.title }}</p>
-                    <a href="#" class="btn btn-primary">Перейти </a>
-                  </div>
-                </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-sm btn-primary mt-3">Сортировать</button>
+                </form>
             </div>
             <div class="col">
-                <table class="table table-hover">
+                <table class="table table-sm table-hover">
                     <thead>
                         <tr>
                             <th>Шанс</th>
@@ -60,21 +53,6 @@
                         {% endfor  %}
                     </tbody>
                 </table>
-                <div class="card text-center">
-                  <div class="card-header">
-                    Показано 10 вопросов из 800
-                  </div>
-                    <div class="card-body">
-                       <h5 class="card-title fs-3">Подпишись, чтобы увидеть все вопросы</h5>
-                         <p>Поддержите проект донатом на boosty или бесплатно подпиской на telegram</p>
-                       <a href="#" class="btn btn-secondary me-2" style="background-color: #f4916e; border-color: #f4916e">Boosty (200 руб.)</a>
-                           или
-                       <a href="#" class="btn btn-primary ms-2" style="background-color: #28a9eb; border-color: #28a9eb"><i class="bi bi-telegram me-2"></i>Telegram (бесплатно)</a>
-                    </div>
-                </div>
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  <i class="bi bi-plus-lg me-1"></i> Добавить вопрос
-                </button>
             </div>
 
     <!-- Modal -->

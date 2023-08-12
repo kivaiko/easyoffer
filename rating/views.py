@@ -29,7 +29,8 @@ def profession(request, prof_slug):
 
     form = AddQuestion()
     prof_data = Profession.objects.get(prof_slug=prof_slug)
-    ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by("-rating").annotate(chance=F('rating') * 100 / prof_data.votes)
+    ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by("-rating")\
+        .annotate(chance=F('rating') * 100 / prof_data.votes)
     return render(request, 'question_rating.html', {
         'prof_data': prof_data,
         'ratings': ratings,
