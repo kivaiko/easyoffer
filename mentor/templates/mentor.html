@@ -6,17 +6,16 @@
 
 {% block content %}
 
-    <h1 class="pt-5">  </h1>
-    <div class="container">
+    <div class="container mt-5">
         <div class="row align-items-start">
             <div class="col-8">
                 <div class="container p-0">
                   <div class="row">
-                    <div class="col-4">
+                    <div class="col-3">
                       <img src="{{ mentor.image.url }}" class="img-fluid rounded" height="400" width="400">
                     </div>
                     <div class="col">
-                        <h2>{{ mentor.name|title }} {{ mentor.surname|title }}</h2>
+                        <h1 class="fs-3">{{ mentor.name|title }} {{ mentor.surname|title }}</h1>
                         <p>{{ mentor.profession }} |
                             {% if mentor.experience == 1 %}
                             {{ mentor.experience }} год опыта

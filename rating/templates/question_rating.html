@@ -7,15 +7,15 @@
 {% block content %}
 
     <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
-    <p class="fs-5 mt-3 align-middle fs-6"> Шанс встретить вопрос на основе {{ prof_data.votes }} проголосовавших.
+    <p class="fs-5 mt-3 mb-5 fs-6"> Шанс встретить вопрос на основе {{ prof_data.votes }} проголосовавших.
         Вы можете
         <a href="{{ prof_data.get_url_quiz }}">Поучаствовать в опросе</a>
         а также
         <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
     </p>
-    <div class="row align-items-start mt-5">
+    <div class="row align-items-start">
             <div class="col-2">
-                <p class="mt-2">Сортировка:</p>
+                <p class="">Сортировка:</p>
                 <form action="">
                     <div class="form-check">
                       <input type="radio" class="form-check-input" id="Все" name="tag" value="Все">
@@ -70,7 +70,6 @@
                     {% csrf_token %}
                     <div class="mb-3">
                            <p class="fs-5">Вы добавляете вопрос для {{ prof_data.title}}</p>
-
                         <label for="{{ form.title.id_for_label }}" class="col-form-label">{{ form.title.label }}</label>
                         {{ form.title }}
                       </div>

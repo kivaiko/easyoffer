@@ -7,12 +7,12 @@
 {% block content %}
 
     <h1 class="mt-5 fs-3"> Требования на должность {{ search.profession }}</h1>
-    <p class="fs-5">Анализ актуален на {{ search.last_update}}, сотавлен на основе <a href="{{ search.url }}">поискового запороса.</a> Число вакансий: {{ search.amount_vacancies }}</p>
+    <p class="fs-6 mt-3 mb-5">Анализ проведен {{ search.last_update}}, сотавлен на основе <a href="{{ search.url }}">поискового запороса.</a> Число вакансий: {{ search.amount_vacancies }}</p>
         <div class="row">
-            <div class="col-3 mt-4">
+            <div class="col-2">
                 <form action="" method="get">
-                    <h4 class="mt-2">Направление:</h4>
-                    <select class="form-select form-select-lg" aria-label=".form-select-sm example" name="title">
+                    <p>Направление:</p>
+                    <select class="form-select form-select" aria-label=".form-select-sm example" name="title">
                         <option selected>{{ search.title }}</option>
                         {% for search in search_all %}
                       <option  value="{{ search.title }}">{{ search.title }}</option>
@@ -21,7 +21,7 @@
                     <button type="submit" class="btn btn-primary mt-3">Применить</button>
                 </form>
             </div>
-            <div class="col mt-4">
+            <div class="col">
                 <p><b>Навыки</b> – из раздела "навыки" в вакансиях на HeadHuner</p>
                 <table class="table table-sm table-bordered table-hover ">
                     <thead>
@@ -40,7 +40,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col mt-4">
+            <div class="col">
                 <p><b>Ключевые слова</b> – из описаний вакансий на HeadHuner</p>
                 <table class="table table-sm table-bordered table-hover ">
                     <thead>

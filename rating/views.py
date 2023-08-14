@@ -91,13 +91,18 @@ def quiz(request, prof_slug):
         profession_votes = Profession.objects.get(prof_slug=prof_slug)
         profession_votes.votes += 1
         profession_votes.save()
-        return redirect('question_rating', prof_slug=prof_slug)
+        return redirect('thx_quiz')
     prof_data = Profession.objects.get(prof_slug=prof_slug)
     ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by("-rating")
     return render(request, 'quiz.html', {
         'prof_data': prof_data,
         'ratings': ratings,
     })
+
+
+class ThxQuizView(TemplateView):
+    """Спасибо страница за участие в опросе"""
+    template_name = 'thx_quiz.html'
 
 
 class ThxView(TemplateView):
