@@ -43,9 +43,9 @@
                         {% for rating in ratings %}
                         <tr>
                             {% if rating.chance >= 10 %}
-                            <td align="center" class="fw-bold text-success">{{ rating.chance }}%</td>
+                            <td align="center" class=" text-success">{{ rating.chance }}%</td>
                             {% else %}
-                            <td align="center" class="fw-bold text-warning">{{ rating.chance }}%</td>
+                            <td align="center" class=" text-warning">{{ rating.chance }}%</td>
                             {% endif %}
                             <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
                             <td>{{ rating.question.tag }}</td>
