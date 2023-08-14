@@ -26,7 +26,6 @@ def profession(request, prof_slug):
                 question=Question.objects.latest('id')
             )
             return redirect('thx_data')
-
     form = AddQuestion()
     prof_data = Profession.objects.get(prof_slug=prof_slug)
     ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by("-rating")\
@@ -89,8 +88,10 @@ def quiz(request, prof_slug):
                 question = Rating.objects.get(id=i)
                 question.rating += 1
                 question.save()
-        # q = Rating.objects.filter(id__in=ids)
-        return redirect('profession', prof_slug=prof_slug)
+        profession_votes = Profession.objects.get(prof_slug=prof_slug)
+        profession_votes.votes += 1
+        profession_votes.save()
+        return redirect('question_rating', prof_slug=prof_slug)
     prof_data = Profession.objects.get(prof_slug=prof_slug)
     ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by("-rating")
     return render(request, 'quiz.html', {

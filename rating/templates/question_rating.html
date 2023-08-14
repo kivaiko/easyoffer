@@ -68,7 +68,9 @@
           <div class="modal-body">
                 <form action="" method="POST">
                     {% csrf_token %}
-                      <div class="mb-3">
+                    <div class="mb-3">
+                           <p class="fs-5">Вы добавляете вопрос для {{ prof_data.title}}</p>
+
                         <label for="{{ form.title.id_for_label }}" class="col-form-label">{{ form.title.label }}</label>
                         {{ form.title }}
                       </div>
