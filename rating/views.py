@@ -67,7 +67,7 @@ def question(request, question_id):
     video_answer_form = VideoAnswerForm(prefix='video')
     extra_content_form = ExtraContentForm(prefix='content')
     question_data = Question.objects.get(id=question_id)
-    answers = Answer.objects.filter(question__id=question_data.id, public=True)
+    answers = Answer.objects.filter(question__id=question_data.id, public=True).order_by("-rating")
     video_links = VideoAnswerLink.objects.filter(question__id=question_data.id, public=True)
     extra_links = ExtraContentLink.objects.filter(question__id=question_data.id, public=True)
     return render(request, 'question.html', {
