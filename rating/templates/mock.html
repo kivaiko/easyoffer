@@ -6,7 +6,10 @@
 
 {% block content %}
 
-    <h1 class="mt-5 mb-5 fs-3">Публичные собеседования</h1>
+    <h1 class="mt-5 fs-3">Публичные собеседования</h1>
+    <p class="mt-3 mb-5">Вы можете
+        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить мок-интервью </a>
+    </p>
     <div class="container">
         <div class="row">
             <div class="col-3">
@@ -39,5 +42,27 @@
                 </table>
         </div>
     </div>
-
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Добавление мок-интервью</h5>
+            <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+              <span  aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p}}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-warning">Добавить мок-интервью </button>
+                    </div>
+                </form>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}

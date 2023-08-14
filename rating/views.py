@@ -118,15 +118,27 @@ class MockView(ListView):
 
 
 def mock(request):
+    if request.method == "POST":
+        form = AddMockForm(request.POST)
+        if form.is_valid():
+            MockInterview.objects.create(
+                profession=form.cleaned_data["profession"],
+                title=form.cleaned_data["title"],
+                url=form.cleaned_data["url"],
+                grade=form.cleaned_data["grade"]
+            )
+            return redirect('thx_data')
     profession_id = request.GET.get("profession")
     grade = request.GET.get("grade")
     if profession_id and grade:
         mocks = MockInterview.objects.filter(public=True, grade=grade, profession=profession_id)
     else:
         mocks = MockInterview.objects.filter(public=True)
-    form_filter = MockForm
+    form_filter = MockFilterForm
+    form = AddMockForm
     return render(request, 'mock.html', {
         'mocks': mocks,
         'form_filter': form_filter,
+        'form': form,
     })
 

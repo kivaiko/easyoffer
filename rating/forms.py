@@ -24,7 +24,7 @@ class ExtraContentForm(forms.Form):
     url = forms.URLField(label='Ссылка: ', widget=forms.URLInput(attrs={'class': 'form-control'}))
 
 
-class MockForm(forms.ModelForm):
+class MockFilterForm(forms.ModelForm):
     class Meta:
         model = MockInterview
         exclude = ['public', 'url', 'title', 'created_at']
@@ -37,3 +37,20 @@ class MockForm(forms.ModelForm):
             'grade': 'Грейд:',
         }
 
+
+class AddMockForm(forms.ModelForm):
+    class Meta:
+        model = MockInterview
+        exclude = ['public', 'created_at']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'url': forms.URLInput(attrs={'class': 'form-control'}),
+            'profession': forms.Select(attrs={'class': 'form-select'}),
+            'grade': forms.Select(attrs={'class': 'form-select'}),
+        }
+        labels = {
+            'profession': 'Должность:',
+            'title': 'Название:',
+            'url': 'Ссылка:',
+            'grade': 'Грейд:',
+        }
