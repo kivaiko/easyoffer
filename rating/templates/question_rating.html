@@ -7,12 +7,19 @@
 {% block content %}
 
     <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
-    <p class="fs-5 mt-3 mb-5 fs-6"> Шанс встретить вопрос на основе {{ prof_data.votes }} проголосовавших.
+    {% if prof_data.votes_access %}
+    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}. Проголосовавших: {{ prof_data.votes }}.
         Вы можете
         <a href="{{ prof_data.get_url_quiz }}">Поучаствовать в опросе</a>
         а также
         <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
     </p>
+    {% else %}
+    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}. На данный момент мало вопросов,
+        чтобы инициировать опрос. Вы можете
+        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
+    </p>
+    {% endif %}
     <div class="row align-items-start">
             <div class="col-2">
                 <p class="">Сортировка:</p>
@@ -31,6 +38,7 @@
                 </form>
             </div>
             <div class="col">
+                {% if prof_data.votes_access %}
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
@@ -53,6 +61,24 @@
                         {% endfor  %}
                     </tbody>
                 </table>
+                {% else %}
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>Вопрос</th>
+                            <th>Тег</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rating in page_obj %}
+                        <tr>
+                            <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                            <td>{{ rating.question.tag }}</td>
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+                </table>
+                {% endif %}
                 {% if ratings.count > 100 %}
                 <nav>
                   <ul class="pagination pagination-sm">
