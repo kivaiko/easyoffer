@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import DetailView, CreateView, TemplateView
+from django.views.generic import DetailView, CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
 from .models import *
 from .forms import MentorForm, MentorFilterForm
@@ -32,6 +32,14 @@ class NewMentor(CreateView):
     form_class = MentorForm
     template_name = 'new_mentor.html'
     success_url = reverse_lazy('thx')
+
+
+class MentorUpdate(UpdateView):
+    """Страница обновления данных ментора"""
+    model = Mentor
+    form_class = MentorForm
+    template_name = 'mentors.html'
+    success_url = reverse_lazy('mentors')
 
 
 class ThxView(TemplateView):
