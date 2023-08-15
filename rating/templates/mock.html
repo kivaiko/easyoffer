@@ -30,7 +30,7 @@
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
-                  {% for mock in mocks %}
+                  {% for mock in page_obj %}
                     <tr>
                       <td><a href="{{ mock.url }}" target="_blank" class="link-offset-2 link-offset-3-hover link-underline
             link-underline-opacity-0 link-underline-opacity-75-hover">{{ mock.title }}</a></td>
@@ -40,6 +40,21 @@
                   {% endfor %}
                   </tbody>
                 </table>
+                {% if mocks.count > 1 %}
+                <nav>
+                  <ul class="pagination pagination-sm">
+                      {% for p in page_obj.paginator.page_range %}
+                      {% if page_obj.number == p %}
+                      <li class="page-item active" aria-current="page">
+                      <span class="page-link">{{ p }}</span>
+                      </li>
+                      {% else %}
+                      <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                      {% endif %}
+                      {% endfor %}
+                  </ul>
+                </nav>
+                {% endif %}
         </div>
     </div>
     <!-- Modal -->

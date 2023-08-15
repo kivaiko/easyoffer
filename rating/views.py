@@ -139,10 +139,14 @@ def mock(request):
         mocks = MockInterview.objects.filter(public=True, grade=grade, profession=profession_id)
     else:
         mocks = MockInterview.objects.filter(public=True)
+    paginator = Paginator(mocks, 2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     form_filter = MockFilterForm
     form = AddMockForm
     return render(request, 'mock.html', {
         'mocks': mocks,
+        'page_obj': page_obj,
         'form_filter': form_filter,
         'form': form,
     })
