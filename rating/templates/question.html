@@ -18,11 +18,11 @@
             {% endfor %}
         </ul>
 
-        <button type="button" class="btn btn-light btn-sm " data-bs-toggle="modal" data-bs-target="#VideoAnswerModal">
-          <i class="bi bi-plus-lg me-1"></i> Добавить ответ из mock-собесов
+        <button type="button" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#VideoAnswerModal">
+          Добавить ссылку
         </button>
 
-        <h2 class="mb-3 mt-5 fs-4">Дополнительные материалы</h2>
+        <h2 class="mb-3 mt-5 fs-4">Доп. материалы:</h2>
 
         <ul class="list-group list-group-flush mb-3">
             {% for link in extra_links %}
@@ -31,8 +31,8 @@
             {% endfor %}
         </ul>
 
-        <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#ExtraContentModal">
-          <i class="bi bi-plus-lg me-1"></i> Добавить ссылку на доп. матераил
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ExtraContentModal">
+          Добавить ссылку
         </button>
         </div>
         <div class="col">
@@ -67,7 +67,7 @@
                         {{ comment_form.author.label }}:
                     </label> {{ comment_form.author }}
                 </p>
-                <button class="btn btn-light" type="submit"><i class="bi bi-plus-lg me-2"></i>Добавить ответ</button>
+                <button class="btn btn-primary btn-sm" type="submit">Добавить ответ</button>
             </form>
         </div>
     </div>
@@ -94,7 +94,7 @@
                       </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-warning">Добавить ссылку </button>
+                        <button type="submit" class="btn btn-primary">Добавить</button>
                     </div>
                 </form>
           </div>
@@ -122,7 +122,7 @@
                       </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-warning">Добавить ответ в видео </button>
+                        <button type="submit" class="btn btn-primary">Добавить</button>
                     </div>
                 </form>
           </div>
