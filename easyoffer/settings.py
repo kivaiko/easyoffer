@@ -108,6 +108,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = []
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/gallery/'
@@ -121,3 +122,26 @@ GRADES = [
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# hh_api
+CLIENT_ID = "GT11P1DLO4KP6OTSN0KQOQ4OA99KLPFAMRD4BJUKQ2RQS3SIA4COQEE738PRA5I7"
+CLIENT_SECRET = "VQ2JNMG0579HOSRVD6M9B4TQLET5MN52M4R842QRVIETUNU549MI5DRHNKLFS9Q8"
+ACCESS_TOKEN = "APPLPBBQB1CDN4DHJAPCSTR92M73395AU7RPU4K8LI6NSDDSUCFF87049KTUC9DR"
+
+HEADERS = {
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'User-Agent': 'skill rating (alexagree1@gmail.com)',
+    'Authorization': 'Bearer APPLPBBQB1CDN4DHJAPCSTR92M73395AU7RPU4K8LI6NSDDSUCFF87049KTUC9DR',
+    'Content-Type': 'application/json'
+}
+
+# redis
+REDIS_HOST = '0.0.0.0'
+REDIS_PORT = '6379'
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

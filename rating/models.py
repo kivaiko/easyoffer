@@ -66,6 +66,7 @@ class Rating(models.Model):
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="ratings")
     rating = models.IntegerField(default=1)
+    position = models.IntegerField(default=1000)
     public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 
