@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import *
 from django.views.generic import ListView
 from rating.models import Profession
+# from .tasks import count_words_for_search
 
 
 class ChoiceProfession(ListView):
@@ -21,6 +22,7 @@ def analytic(request, prof_slug):
         search = Search.objects.get(profession=prof_data, title='Все')
     skills = Skill.objects.filter(search=search)
     keywords = KeyWord.objects.filter(search=search)
+    # count_words_for_search.delay(search.url)
     return render(request, 'analytic.html', {
         'search': search,
         'skills': skills,
