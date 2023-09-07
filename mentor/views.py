@@ -3,6 +3,7 @@ from django.views.generic import DetailView, CreateView, TemplateView, UpdateVie
 from django.urls import reverse_lazy
 from .models import *
 from .forms import MentorForm, MentorFilterForm
+from django.db.models import Avg
 
 
 def mentors(request):
@@ -21,8 +22,12 @@ def mentors(request):
 
 def mentor(request, username):
     mentor_detail = Mentor.objects.get(username=username)
+    reviews = Review.objects.filter(mentor=mentor_detail)
+    avg_rating = Review.objects.filter(mentor=mentor_detail).aggregate(Avg('rating'))
     return render(request, 'mentor.html', {
         'mentor': mentor_detail,
+        'reviews': reviews,
+        'avg_rating': avg_rating,
     })
 
 

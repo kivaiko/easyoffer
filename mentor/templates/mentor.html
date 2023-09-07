@@ -43,6 +43,9 @@
                             <a href="{{ mentor.website }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-box-arrow-up-right"></i></a>
                             {% endif %}
                         </p>
+                        {% if avg_rating %}
+                        <p> Ср. оценка: {{ avg_rating.rating__avg }} </p>
+                        {% endif %}
                     </div>
                   </div>
                 </div>
@@ -57,8 +60,24 @@
                     <span class="badge rounded-pill text-bg-primary">{{ item.title }}</span>
                     {% endfor %}
                 </p>
-
+                <p>Навыки:
+                    {% for item in mentor.skills.all %}
+                    <span class="badge rounded-pill text-bg-primary">{{ item.title }}</span>
+                    {% endfor %}
+                </p>
                 <p>{{ mentor.about_me }}</p>
+                {% if reviews %}
+                <h2 class="fs-4">Отзывы:</h2>
+                {% endif%}
+                {% for review in reviews %}
+                <div class="card mb-3 col" >
+                    <div class="card-body">
+                        <p class="card-text"> Оценка: {{ review.rating }} </p>
+                        <p class="card-text">{{ review.text }}</p>
+                        <p class="card-text"><small class="text-muted">{{ review.created_at }}, {{ review.author }}</small></p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
             <div class="col">
                 <div class="card mb-3">

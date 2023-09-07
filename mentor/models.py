@@ -14,6 +14,17 @@ class Direction(models.Model):
         return self.title
 
 
+class Skill(models.Model):
+    class Meta:
+        db_table = 'skills'
+
+    title = models.CharField(max_length=30)
+    directions = models.ManyToManyField(Direction, blank=False)
+
+    def __str__(self):
+        return self.title
+
+
 class Topic(models.Model):
     class Meta:
         db_table = 'topics'
@@ -33,6 +44,7 @@ class Mentor(models.Model):
     username = models.SlugField(max_length=255)
     profession = models.CharField(max_length=50)
     topics = models.ManyToManyField(Topic)
+    skills = models.ManyToManyField(Skill)
     about_me = models.TextField(blank=True)
     directions = models.ManyToManyField(Direction, blank=False)
     experience = models.PositiveIntegerField(blank=False)
@@ -54,3 +66,26 @@ class Mentor(models.Model):
 
     def get_mentor_url(self):
         return reverse('mentor', args=[self.username])
+
+
+class Review(models.Model):
+    class Meta:
+        db_table = 'reviews'
+
+    GRADE = [
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+    ]
+
+    author = models.CharField(max_length=30)
+    text = models.TextField(max_length=1000)
+    mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+    rating = models.CharField(max_length=1, choices=GRADE)
+    public = models.BooleanField(default=False)
+    created_at = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return f'{self.author}, {self.mentor}'
