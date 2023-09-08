@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'ckeditor_uploader',
     'rating',
     'mentor',
     'analytic',
@@ -108,9 +110,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATIC_DIR = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [STATIC_DIR]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [STATIC_DIR]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/gallery/'
 
@@ -136,7 +138,7 @@ HEADERS = {
 }
 
 # redis
-REDIS_HOST = '127.0.0.1'
+REDIS_HOST = 'redis'
 REDIS_PORT = '6379'
 
 # celery
@@ -153,6 +155,6 @@ CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
         'height': 300,
-        'width': 300,
+        'width': 600,
     },
 }

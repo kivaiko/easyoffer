@@ -26,7 +26,7 @@
                 {% for rating in ratings %}
                 <tr>
                     <td align="center">
-                        1
+                        {{ forloop.counter }}
                     </td>
                     <td align="center">
                         <input type="radio" id="{{ rating.id }}" required name="{{ rating.id }}" value="Встречался">

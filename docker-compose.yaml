@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  webapp:
+    restart: always
+    build: ./
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "python manage.py makemigrations && 
+      python manage.py migrate 
+      && python manage.py runserver 0.0.0.0:8000"
+
+  worker:
+    restart: always
+    build: .
+    volumes:
+      - ./:/app
+    depends_on:
+      - redis
+      - webapp
+    command: 'celery -A easyoffer worker -l info'
+
+  beat:
+    restart: always
+    build: .
+    volumes:
+      - ./:/app
+    depends_on:
+      - redis
+      - webapp
+      - worker
+    command: 'celery -A easyoffer beat -l info'

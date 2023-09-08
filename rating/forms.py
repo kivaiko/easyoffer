@@ -1,9 +1,10 @@
 from django import forms
 from .models import *
+from ckeditor.widgets import CKEditorWidget
 
 
 class CommentForm(forms.Form):
-    text = forms.CharField(label='Ответ', widget=forms.Textarea)
+    text = forms.CharField(label='Ответ', widget=CKEditorWidget())
     author = forms.CharField(max_length=50, label='Автор')
 
 

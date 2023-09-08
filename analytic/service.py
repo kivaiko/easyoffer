@@ -3,13 +3,13 @@ import json
 import re
 import bleach
 from collections import Counter
-from word_filter import words_filter
+from .word_filter import words_filter
 from easyoffer.settings import HEADERS
 from .models import Search
 
 
 search_url = 'https://hh.ru/search/vacancy?search_field=name&search_field=company_name&search_field=description&text=NAME%3A%28%21%22flask%22%29+and+DESCRIPTION%3A%28%21%22flask%22%29&ored_clusters=true&enable_snippets=true&L_save_area=true'
-search_python = Search.objects.all(id=2)
+# search_python = Search.objects.all(id=2)
 
 
 def get_link(url):
@@ -82,4 +82,4 @@ def count_words(url):
     print(Counter(keywords).most_common(50))
 
 
-print(search_python)
+# print(search_python)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
-from django.db.models import F, Value
+from django.db.models import F, Value, Q
 from django.core.paginator import Paginator
 from .forms import *
 from .models import *
@@ -29,9 +29,9 @@ def profession(request, prof_slug):
             return redirect('thx_data')
     form = AddQuestion()
     prof_data = Profession.objects.get(prof_slug=prof_slug)
-    tag = request.GET.get("grade")
+    tag = request.GET.get("tag")
     if tag:
-        ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True, tag=tag).order_by(
+        ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True, question__tag__title=tag).order_by(
             "-rating") \
             .annotate(chance=F('rating') * 100 / prof_data.votes)
     else:
@@ -142,10 +142,11 @@ def mock(request):
             return redirect('thx_data')
     profession_id = request.GET.get("profession")
     grade = request.GET.get("grade")
-    if profession_id and grade:
-        mocks = MockInterview.objects.filter(public=True, grade=grade, profession=profession_id)
-    else:
-        mocks = MockInterview.objects.filter(public=True)
+    mocks = MockInterview.objects.filter(public=True).filter(Q(grade=grade) | Q(profession=profession_id))
+    # if profession_id and grade:
+    #     mocks = MockInterview.objects.filter(public=True, grade=grade, profession=profession_id)
+    # else:
+    #     mocks = MockInterview.objects.filter(public=True)
     paginator = Paginator(mocks, 2)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -156,5 +157,7 @@ def mock(request):
         'page_obj': page_obj,
         'form_filter': form_filter,
         'form': form,
+        'profession_id': profession_id,
+        'grade': grade,
     })
 

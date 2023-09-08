@@ -41,7 +41,7 @@ class Mentor(models.Model):
 
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
-    username = models.SlugField(max_length=255)
+    username = models.SlugField(max_length=255, unique=True)
     profession = models.CharField(max_length=50)
     topics = models.ManyToManyField(Topic)
     skills = models.ManyToManyField(Skill)
