@@ -115,8 +115,6 @@ MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/gallery/'
 
 GRADES = [
-    ('Не указан', 'Не указан'),
-    ('Trainee', 'Trainee'),
     ('Junior', 'Junior'),
     ('Middle', 'Middle'),
     ('Senior', 'Senior'),

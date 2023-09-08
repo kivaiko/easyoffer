@@ -29,9 +29,16 @@ def profession(request, prof_slug):
             return redirect('thx_data')
     form = AddQuestion()
     prof_data = Profession.objects.get(prof_slug=prof_slug)
-    ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by("-rating")\
-        .annotate(chance=F('rating') * 100 / prof_data.votes)
-    paginator = Paginator(ratings, 100)
+    tag = request.GET.get("grade")
+    if tag:
+        ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True, tag=tag).order_by(
+            "-rating") \
+            .annotate(chance=F('rating') * 100 / prof_data.votes)
+    else:
+        ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by(
+            "-rating") \
+            .annotate(chance=F('rating') * 100 / prof_data.votes)
+    paginator = Paginator(ratings, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'question_rating.html', {
