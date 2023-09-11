@@ -38,7 +38,7 @@ def profession(request, prof_slug):
         ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by(
             "-rating") \
             .annotate(chance=F('rating') * 100 / prof_data.votes)
-    paginator = Paginator(ratings, 5)
+    paginator = Paginator(ratings, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'question_rating.html', {
@@ -144,7 +144,7 @@ def mock(request):
     grade = request.GET.get("grade")
     mocks = MockInterview.objects.filter(public=True).filter(Q(grade=grade) | Q(profession=profession_id))
     # if profession_id and grade:
-    #     mocks = MockInterview.objects.filter(public=True, grade=grade, profession=profession_id)
+    #     mocks = MockInterview.objects.filter(public=True).filter(Q(grade=grade) | Q(profession=profession_id))
     # else:
     #     mocks = MockInterview.objects.filter(public=True)
     paginator = Paginator(mocks, 2)

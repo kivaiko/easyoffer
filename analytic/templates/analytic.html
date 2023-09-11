@@ -6,15 +6,15 @@
 
 {% block content %}
 
-    <h1 class="mt-5 fs-3"> Требования на должность {{ search.profession }}</h1>
-    <p class="fs-6 mt-3 mb-5">Анализ проведен {{ search.last_update}}, сотавлен на основе <a href="{{ search.url }}">поискового запороса.</a> Число вакансий: {{ search.amount_vacancies }}</p>
+    <h1 class="mt-5 fs-3"> Требования на должность {{ search.profession }} ({{ search.title }})</h1>
+    <p class="fs-6 mt-3 mb-5">Анализ проведен {{ search.last_update}}, на основе <a href="{{ search.url }}">поискового запороса.</a> Вакансий обработано: {{ search.amount_vacancies }}</p>
         <div class="row">
             <div class="col-2">
                 <form action="" method="get">
                     <p>Направление:</p>
                     <select class="form-select form-select" aria-label=".form-select-sm example" name="title">
                         <option selected>{{ search.title }}</option>
-                        {% for search in search_all %}
+                        {% for search in all_searches %}
                       <option  value="{{ search.title }}">{{ search.title }}</option>
                         {% endfor %}
                     </select>
@@ -26,6 +26,7 @@
                 <table class="table table-sm table-bordered table-hover ">
                     <thead>
                         <tr>
+                            <th>№</th>
                             <th>Навык</th>
                             <th>Упоминаний</th>
                         </tr>
@@ -33,6 +34,7 @@
                     <tbody>
                         {% for skill in skills %}
                         <tr>
+                            <td>{{ forloop.counter }}</td>
                             <td>{{ skill.title }}</td>
                             <td>{{ skill.amount }}</td>
                         </tr>
@@ -45,6 +47,7 @@
                 <table class="table table-sm table-bordered table-hover ">
                     <thead>
                         <tr>
+                            <th>№</th>
                             <th>Ключевое слово</th>
                             <th>Упоминаний</th>
                         </tr>
@@ -52,6 +55,7 @@
                     <tbody>
                         {% for keyword in keywords %}
                         <tr>
+                            <td>{{ forloop.counter }}</td>
                             <td>{{ keyword.title }}</td>
                             <td>{{ keyword.amount }}</td>
                         </tr>

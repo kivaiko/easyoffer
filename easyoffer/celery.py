@@ -8,9 +8,9 @@ app = Celery('easyoffer')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
-# app.conf.beat_schedule = {
-#     'get_printer': {
-#         'task': 'analytic.tasks.printer',
-#         'schedule': crontab(minute='*/1')
-#     },
-# }
+app.conf.beat_schedule = {
+    'get_analytic_from_hh': {
+        'task': 'analytic.tasks.get_analytic_from_hh_api',
+        'schedule': crontab(hour='*/23')
+    },
+}

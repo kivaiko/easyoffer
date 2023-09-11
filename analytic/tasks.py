@@ -3,10 +3,6 @@ from .service import count_words
 
 
 @app.task
-def count_words_for_search(url):
-    count_words(url)
+def get_analytic_from_hh_api():
+    count_words()
 
-
-# @app.task
-# def printer():
-#     print("i'm task")

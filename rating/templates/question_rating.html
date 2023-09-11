@@ -22,7 +22,7 @@
     {% endif %}
     <div class="row align-items-start">
             <div class="col-2">
-                <p class="">Сортировка:</p>
+                <p class="">Фильтр:</p>
                 <form action="">
                     <div class="form-check">
                       <input type="radio" class="form-check-input" id="Все" name="tag" value="Все">
@@ -34,7 +34,7 @@
                       <label class="form-check-label" for="{{ tag }}">{{ tag }}</label>
                     </div>
                     {% endfor %}
-                    <button type="submit" class="btn btn-sm btn-primary mt-3">Сортировать</button>
+                    <button type="submit" class="btn btn-sm btn-primary mt-3">Выбрать</button>
                 </form>
             </div>
             <div class="col">

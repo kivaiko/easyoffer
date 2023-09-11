@@ -5,7 +5,8 @@ import bleach
 from collections import Counter
 from .word_filter import words_filter
 from easyoffer.settings import HEADERS
-from .models import Search
+from .models import Search, Skill, KeyWord
+from datetime import datetime
 
 
 search_url = 'https://hh.ru/search/vacancy?search_field=name&search_field=company_name&search_field=description&text=NAME%3A%28%21%22flask%22%29+and+DESCRIPTION%3A%28%21%22flask%22%29&ored_clusters=true&enable_snippets=true&L_save_area=true'
@@ -19,11 +20,16 @@ def get_link(url):
     return search_link
 
 
-def get_vacancies_id(url):
+def get_vacancies_id(url, search):
     print('Start – get_vacancies_id')
     vacancies_ids = []
     response = requests.get(url, headers=HEADERS)
     data = json.loads(response.text)
+    search.amount_vacancies = data['found']
+    search.last_update = datetime.now()
+    search.save()
+    print(search.amount_vacancies)
+    print(search.last_update)
     pages = data['pages']
     for page in range(pages):
         response = requests.get(url, headers=HEADERS, params={'page': page})
@@ -62,7 +68,9 @@ def get_data_from_vacancies_id(ids):
         data = json.loads(response.text)
         skills_list += get_skills_from_id(data['key_skills'])
         keywords_list += get_keywords_from_id(data['description'])
-    return skills_list, keywords_list
+        skills_sorted = Counter(skills_list).most_common(100)
+        keywords_sorted = Counter(keywords_list).most_common(100)
+    return skills_sorted, keywords_sorted
 
 
 def clean(txt):
@@ -73,13 +81,37 @@ def clean(txt):
     return new_list
 
 
-def count_words(url):
-    link = get_link(url)
-    vacancies_ids = get_vacancies_id(link)
-    skills, keywords = get_data_from_vacancies_id(vacancies_ids)
-    print(Counter(skills).most_common(50))
-    print(' ')
-    print(Counter(keywords).most_common(50))
+def add_skills_to_db(skills, search):
+    Skill.objects.filter(search_id=search.id).delete()
+    for skill in skills:
+        Skill.objects.create(
+            title=skill[0],
+            amount=skill[1],
+            search_id=search.id
+        )
+
+
+def add_keywords_to_db(keywords, search):
+    KeyWord.objects.filter(search_id=search.id).delete()
+    for keyword in keywords:
+        KeyWord.objects.create(
+            title=keyword[0],
+            amount=keyword[1],
+            search_id=search.id
+        )
+
+
+def count_words():
+    searches_queryset = Search.objects.all().filter(public=True)
+    for search in searches_queryset:
+        link = get_link(search.url)
+        vacancies_ids = get_vacancies_id(link, search)
+        skills, keywords = get_data_from_vacancies_id(vacancies_ids)
+        add_skills_to_db(skills, search)
+        add_keywords_to_db(keywords, search)
+        print(skills)
+        print(' ')
+        print(keywords)
 
 
 # print(search_python)
