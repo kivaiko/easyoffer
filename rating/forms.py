@@ -12,6 +12,7 @@ class AddQuestion(forms.Form):
     title = forms.CharField(max_length=255, label='Вопрос:', widget=forms.TextInput(attrs={'class': 'form-control'}))
     tag = forms.ModelChoiceField(queryset=Tag.objects.all(), empty_label=None, label='Тег:',
                                  widget=forms.Select(attrs={'class': 'form-select'}))
+    rating = forms.IntegerField(label='Рейтинг:', widget=forms.NumberInput())
 
 
 class VideoAnswerForm(forms.Form):

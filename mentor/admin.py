@@ -1,9 +1,19 @@
 from django.contrib import admin
 
 from . import models
+from .models import Mentor, Review
 
 admin.site.register(models.Direction)
 admin.site.register(models.Skill)
 admin.site.register(models.Topic)
-admin.site.register(models.Mentor)
-admin.site.register(models.Review)
+
+
+@admin.register(Mentor)
+class MentorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'surname', 'username', 'public', 'telegram', 'created_at')
+    search_fields = ('username',)
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('author', 'mentor', 'rating', 'public', 'created_at')

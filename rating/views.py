@@ -24,13 +24,14 @@ def profession(request, prof_slug):
             )
             Rating.objects.create(
                 profession=Profession.objects.get(prof_slug=prof_slug),
-                question=Question.objects.latest('id')
+                question=Question.objects.latest('id'),
+                rating=form.cleaned_data["rating"]
             )
             return redirect('thx_data')
-    form = AddQuestion()
     prof_data = Profession.objects.get(prof_slug=prof_slug)
+    form = AddQuestion()
     tag = request.GET.get("tag")
-    if tag:
+    if tag and tag != 'Все':
         ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True, question__tag__title=tag).order_by(
             "-rating") \
             .annotate(chance=F('rating') * 100 / prof_data.votes)
