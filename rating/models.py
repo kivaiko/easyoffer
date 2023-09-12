@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.urls import reverse
+from ckeditor.fields import RichTextField
 
 
 class Tag(models.Model):
@@ -78,10 +79,10 @@ class Answer(models.Model):
         db_table = 'comments'
 
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    text = models.TextField()
+    text = RichTextField()
     author = models.CharField(max_length=50)
     rating = models.IntegerField(default=1)
-    public = models.BooleanField(default=False)
+    public = models.BooleanField(default=True)
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -109,7 +110,7 @@ class ExtraContentLink(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     url = models.URLField()
-    public = models.BooleanField(default=False)
+    public = models.BooleanField(default=True)
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -129,3 +130,14 @@ class MockInterview(models.Model):
 
     def __str__(self):
         return f"{self.title} – {self.profession} – {self.public}"
+
+
+class Access(models.Model):
+    class Meta:
+        db_table = 'accesses'
+
+    ip_address = models.CharField(max_length=20)
+    delete_date = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return self.ip_address

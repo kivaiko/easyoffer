@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
+from datetime import datetime, timedelta
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.db.models import F, Value, Q
 from django.core.paginator import Paginator
 from .forms import *
 from .models import *
+from .service import get_access_status, get_client_ip
 
 
 class IndexView(ListView):
@@ -28,6 +30,8 @@ def profession(request, prof_slug):
                 rating=form.cleaned_data["rating"]
             )
             return redirect('thx_data')
+    ip = get_client_ip(request)
+    access = get_access_status(ip)
     prof_data = Profession.objects.get(prof_slug=prof_slug)
     form = AddQuestion()
     tag = request.GET.get("tag")
@@ -39,14 +43,15 @@ def profession(request, prof_slug):
         ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by(
             "-rating") \
             .annotate(chance=F('rating') * 100 / prof_data.votes)
-    paginator = Paginator(ratings, 20)
+    paginator = Paginator(ratings, 100)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'question_rating.html', {
         'prof_data': prof_data,
         'ratings': ratings,
         'page_obj': page_obj,
-        'form': form
+        'form': form,
+        'access': access,
     })
 
 
@@ -162,3 +167,15 @@ def mock(request):
         'grade': grade,
     })
 
+
+def access(request):
+    ip = get_client_ip(request)
+    if not Access.objects.filter(ip_address=ip).exists():
+        current_datetime = datetime.now()
+        new_datetime = current_datetime + timedelta(days=10)
+        print(new_datetime)
+        Access.objects.create(
+            ip_address=ip,
+            delete_date=new_datetime,
+        )
+    return redirect('index')

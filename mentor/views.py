@@ -43,7 +43,7 @@ class MentorUpdate(UpdateView):
     """Страница обновления данных ментора"""
     model = Mentor
     form_class = MentorForm
-    template_name = 'mentors.html'
+    template_name = 'mentor_edit.html'
     success_url = reverse_lazy('mentors')
 
 

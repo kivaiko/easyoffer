@@ -153,8 +153,11 @@ CELERY_RESULT_SERIALIZER = 'json'
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': 600,
-    },
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', 'bbcode'],
+            ['Link', 'Unlink'],
+        ]
+    }
 }

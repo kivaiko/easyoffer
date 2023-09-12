@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
+    <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }} {{ access }}</h1>
     {% if prof_data.votes_access %}
     <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}. Проголосовавших: {{ prof_data.votes }}.
         Вы можете
