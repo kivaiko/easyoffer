@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }} {{ access }}</h1>
+    <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
     {% if prof_data.votes_access %}
     <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}. Проголосовавших: {{ prof_data.votes }}.
         Вы можете
@@ -37,6 +37,7 @@
                     <button type="submit" class="btn btn-sm btn-primary mt-3">Выбрать</button>
                 </form>
             </div>
+            {% if access %}
             <div class="col">
                 {% if prof_data.votes_access %}
                 <table class="table table-sm table-hover">
@@ -95,6 +96,58 @@
                 </nav>
                 {% endif %}
             </div>
+            {% else %}
+            <div class="col">
+                {% if prof_data.votes_access %}
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>Шанс</th>
+                            <th>Вопрос</th>
+                            <th>Тег</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rating in page_obj|slice:":20" %}
+                        <tr>
+                            {% if rating.chance >= 10 %}
+                            <td align="center" class=" text-success">{{ rating.chance }}%</td>
+                            {% else %}
+                            <td align="center" class=" text-warning">{{ rating.chance }}%</td>
+                            {% endif %}
+                            <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                            <td>{{ rating.question.tag }}</td>
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+                </table>
+                {% else %}
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>Вопрос</th>
+                            <th>Тег</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rating in page_obj|slice:":20" %}
+                        <tr>
+                            <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                            <td>{{ rating.question.tag }}</td>
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+                </table>
+                {% endif %}
+                <div class="card border-light text-center">
+                    <div class="card-body">
+                       <h5 class="card-title fs-4 mb-3">Доступно 20 вопросов из {{ ratings.count }}</h5>
+                         <p >Получите полный доступ <b>бесплатно</b>, подписавшись на Telegram</p>
+                       <a href="https://t.me/easyoffer_bot" target=»_blank class="btn btn-primary ms-2 mt-1" style="background-color: #28a9eb; border-color: #28a9eb"><i class="bi bi-telegram me-2"></i>Подписаться на Telegram</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

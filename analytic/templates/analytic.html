@@ -21,6 +21,8 @@
                     <button type="submit" class="btn btn-primary btn-sm mt-3">Применить</button>
                 </form>
             </div>
+            <div class="col row">
+            {% if access %}
             <div class="col">
                 <p><b>Навыки</b> – из раздела "навыки" в вакансиях на HeadHuner</p>
                 <table class="table table-sm table-bordered table-hover ">
@@ -62,6 +64,58 @@
                         {% endfor  %}
                     </tbody>
                 </table>
+            </div>
+            {% else %}
+            <div class="col">
+                <p><b>Навыки</b> – из раздела "навыки" в вакансиях на HeadHuner</p>
+                <table class="table table-sm table-bordered table-hover ">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Навык</th>
+                            <th>Упоминаний</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for skill in skills|slice:":7" %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ skill.title }}</td>
+                            <td>{{ skill.amount }}</td>
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col">
+                <p><b>Ключевые слова</b> – из описаний вакансий на HeadHuner</p>
+                <table class="table table-sm table-bordered table-hover ">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Ключевое слово</th>
+                            <th>Упоминаний</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for keyword in keywords|slice:":7" %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ keyword.title }}</td>
+                            <td>{{ keyword.amount }}</td>
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card border-light text-center">
+                    <div class="card-body">
+                       <h5 class="card-title fs-4 mb-3">Доступно 7 требований из 100</h5>
+                         <p >Получите полный доступ <b>бесплатно</b>, подписавшись на Telegram</p>
+                       <a href="https://t.me/easyoffer_bot" target=»_blank class="btn btn-primary ms-2 mt-1" style="background-color: #28a9eb; border-color: #28a9eb"><i class="bi bi-telegram me-2"></i>Подписаться на Telegram</a>
+                    </div>
+                </div>
+            {% endif %}
             </div>
         </div>
 

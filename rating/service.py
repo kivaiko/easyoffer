@@ -1,4 +1,5 @@
 from .models import Access
+from django.utils import timezone
 
 
 def get_client_ip(request):
@@ -12,3 +13,10 @@ def get_client_ip(request):
 
 def get_access_status(ip):
     return Access.objects.filter(ip_address=ip).exists()
+
+
+def delete_access():
+    current_date = timezone.now()
+    filtered_records = Access.objects.filter(delete_date__lt=current_date)
+    filtered_records.delete()
+    print('delete_access – отработала')

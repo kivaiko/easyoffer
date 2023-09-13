@@ -172,7 +172,7 @@ def access(request):
     ip = get_client_ip(request)
     if not Access.objects.filter(ip_address=ip).exists():
         current_datetime = datetime.now()
-        new_datetime = current_datetime + timedelta(days=10)
+        new_datetime = current_datetime + timedelta(days=30)
         print(new_datetime)
         Access.objects.create(
             ip_address=ip,

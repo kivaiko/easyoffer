@@ -112,6 +112,3 @@ def count_words():
         print(skills)
         print(' ')
         print(keywords)
-
-
-# print(search_python)
