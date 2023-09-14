@@ -8,7 +8,7 @@
 
     <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
     {% if prof_data.votes_access %}
-    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}. Проголосовавших: {{ prof_data.votes }}.
+    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ questions_amount }}. Проголосовавших: {{ prof_data.votes }}.
         Вы можете
         <a href="{{ prof_data.get_url_quiz }}">Поучаствовать в опросе</a>
         а также
@@ -39,6 +39,10 @@
             </div>
             {% if access %}
             <div class="col">
+                <form class="d-flex mb-3" role="search" method="get" action="">
+                    {{ search_form.search_query }}
+                    <button class="btn btn-outline-success" type="submit">Поиск</button>
+                </form>
                 {% if prof_data.votes_access %}
                 <table class="table table-sm table-hover">
                     <thead>
@@ -98,8 +102,8 @@
             </div>
             {% else %}
             <div class="col">
-                <form class="d-flex mb-3" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Поиск вопроса" aria-label="Search">
+                <form class="d-flex mb-3" role="search" method="get" action="">
+                    {{ search_form.search_query }}
                     <button class="btn btn-outline-success" type="submit">Поиск</button>
                 </form>
                 {% if prof_data.votes_access %}
@@ -145,7 +149,7 @@
                 {% endif %}
                 <div class="card border-0 text-center">
                     <div class="card-body">
-                       <h5 class="card-title fs-4 mb-3">Доступно 15 вопросов из {{ ratings.count }}</h5>
+                       <h5 class="card-title fs-4 mb-3">Доступно 15 вопросов из {{ questions_amount }}</h5>
                          <p >Получите полный доступ <b>бесплатно</b>, подписавшись на Telegram</p>
                        <a href="https://t.me/easyoffer_bot" target=»_blank class="btn btn-primary ms-2 mt-1" style="background-color: #28a9eb; border-color: #28a9eb"><i class="bi bi-telegram me-2"></i>Подписаться на Telegram</a>
                     </div>
@@ -171,10 +175,18 @@
                         <label for="{{ form.title.id_for_label }}" class="col-form-label">{{ form.title.label }}</label>
                         {{ form.title }}
                       </div>
-                      <div class="mb-3">
+                    <div class="mb-3">
                         <label for="{{ form.tag.id_for_label }}" class="col-form-label">{{ form.tag.label }}</label>
-                        {{ form.tag }}
-                      </div>
+                        <select name="tag" class="form-select">
+                            {% for tag in available_tags %}
+                                <option value="{{ tag.id }}">{{ tag.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+<!--                      <div class="mb-3">-->
+<!--                        <label for="{{ form.tag.id_for_label }}" class="col-form-label">{{ form.tag.label }}</label>-->
+<!--                        {{ form.tag }}-->
+<!--                      </div>-->
                       <div class="mb-3">
                         <label for="{{ form.tag.id_for_label }}" class="col-form-label">{{ form.rating.label }}</label>
                         {{ form.rating }}

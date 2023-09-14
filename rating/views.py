@@ -30,11 +30,16 @@ def profession(request, prof_slug):
                 rating=form.cleaned_data["rating"]
             )
             return redirect('thx_data')
+
     ip = get_client_ip(request)
-    access = get_access_status(ip)
+    access_status = get_access_status(ip)
     prof_data = Profession.objects.get(prof_slug=prof_slug)
-    form = AddQuestion()
+    available_tags = prof_data.tags.all()
+    add_question_form = AddQuestion()
+    search_form = QuestionSearchForm(request.GET)
     tag = request.GET.get("tag")
+    questions_amount = Rating.objects.select_related('question').filter(profession=prof_data, public=True).count()
+
     if tag and tag != 'Все':
         ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True, question__tag__title=tag).order_by(
             "-rating") \
@@ -43,15 +48,23 @@ def profession(request, prof_slug):
         ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by(
             "-rating") \
             .annotate(chance=F('rating') * 100 / prof_data.votes)
+    if search_form.is_valid():
+        search_query = search_form.cleaned_data['search_query']
+        if search_query:
+            ratings = ratings.filter(question__title__icontains=search_query)
+
     paginator = Paginator(ratings, 100)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'question_rating.html', {
         'prof_data': prof_data,
+        'available_tags': available_tags,
         'ratings': ratings,
+        'questions_amount': questions_amount,
         'page_obj': page_obj,
-        'form': form,
-        'access': access,
+        'form': add_question_form,
+        'search_form': search_form,
+        'access': access_status,
     })
 
 
@@ -64,7 +77,8 @@ def question(request, question_id):
             Answer.objects.create(
                 question_id=question_id,
                 text=comment_form.cleaned_data["text"],
-                author=comment_form.cleaned_data["author"]
+                author=comment_form.cleaned_data["author"],
+                # url=comment_form.cleaned_data["url"]
             )
             return redirect('thx_data')
         if video_form.is_valid():

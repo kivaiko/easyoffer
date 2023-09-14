@@ -11,10 +11,9 @@ def mentors(request):
     topic = request.GET.get("topics")
     if direction and topic:
         mentors_list = Mentor.objects.filter(public=True, topics=topic, directions=direction)
-        form = MentorFilterForm
     else:
         mentors_list = Mentor.objects.filter(public=True).annotate(avg=Avg('review__rating', filter=models.Q(review__public=True)), review_count=Count('review', filter=models.Q(review__public=True)))
-        form = ReviewForm
+        form = MentorFilterForm
     return render(request, 'mentors.html', {
         'mentors': mentors_list,
         'form': form,

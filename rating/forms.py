@@ -16,6 +16,10 @@ class AddQuestion(forms.Form):
     rating = forms.IntegerField(label='Рейтинг:', widget=forms.NumberInput())
 
 
+class QuestionSearchForm(forms.Form):
+    search_query = forms.CharField(label='Поиск', required=False, widget=forms.TextInput(attrs={'class': 'form-control me-2', 'placeholder': "Поиск вопроса", 'aria-label': "Search"}))
+
+
 class VideoAnswerForm(forms.Form):
     title = forms.CharField(max_length=255, label='Название видео: ',
                             widget=forms.TextInput(attrs={'class': 'form-control'}))

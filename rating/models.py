@@ -81,10 +81,10 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = RichTextField()
     author = models.CharField(max_length=50)
-    # url = models.URLField()
     rating = models.IntegerField(default=1)
     public = models.BooleanField(default=True)
     created_at = models.DateField(default=timezone.now)
+    # url = models.URLField()
 
     def __str__(self):
         return self.author
