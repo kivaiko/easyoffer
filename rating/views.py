@@ -167,12 +167,12 @@ def mock(request):
             return redirect('thx_data')
     profession_id = request.GET.get("profession")
     grade = request.GET.get("grade")
-    mocks = MockInterview.objects.filter(public=True).filter(Q(grade=grade) | Q(profession=profession_id))
-    # if profession_id and grade:
-    #     mocks = MockInterview.objects.filter(public=True).filter(Q(grade=grade) | Q(profession=profession_id))
-    # else:
-    #     mocks = MockInterview.objects.filter(public=True)
-    paginator = Paginator(mocks, 2)
+    # mocks = MockInterview.objects.filter(public=True).filter(Q(grade=grade) | Q(profession=profession_id))
+    if profession_id and grade:
+        mocks = MockInterview.objects.filter(public=True).filter(Q(grade=grade) | Q(profession=profession_id))
+    else:
+        mocks = MockInterview.objects.filter(public=True)
+    paginator = Paginator(mocks, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     form_filter = MockFilterForm
