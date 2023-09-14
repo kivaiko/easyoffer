@@ -98,6 +98,10 @@
             </div>
             {% else %}
             <div class="col">
+                <form class="d-flex mb-3" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Поиск вопроса" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Поиск</button>
+                </form>
                 {% if prof_data.votes_access %}
                 <table class="table table-sm table-hover">
                     <thead>
@@ -108,7 +112,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for rating in page_obj|slice:":20" %}
+                        {% for rating in page_obj|slice:":15" %}
                         <tr>
                             {% if rating.chance >= 10 %}
                             <td align="center" class=" text-success">{{ rating.chance }}%</td>
@@ -130,7 +134,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for rating in page_obj|slice:":20" %}
+                        {% for rating in page_obj|slice:":15" %}
                         <tr>
                             <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
                             <td>{{ rating.question.tag }}</td>
@@ -139,9 +143,9 @@
                     </tbody>
                 </table>
                 {% endif %}
-                <div class="card border-light text-center">
+                <div class="card border-0 text-center">
                     <div class="card-body">
-                       <h5 class="card-title fs-4 mb-3">Доступно 20 вопросов из {{ ratings.count }}</h5>
+                       <h5 class="card-title fs-4 mb-3">Доступно 15 вопросов из {{ ratings.count }}</h5>
                          <p >Получите полный доступ <b>бесплатно</b>, подписавшись на Telegram</p>
                        <a href="https://t.me/easyoffer_bot" target=»_blank class="btn btn-primary ms-2 mt-1" style="background-color: #28a9eb; border-color: #28a9eb"><i class="bi bi-telegram me-2"></i>Подписаться на Telegram</a>
                     </div>

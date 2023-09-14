@@ -5,7 +5,8 @@ from ckeditor.widgets import CKEditorWidget
 
 class CommentForm(forms.Form):
     text = forms.CharField(label='Ответ', widget=CKEditorWidget())
-    author = forms.CharField(max_length=50, label='Автор')
+    author = forms.CharField(max_length=50, label='Автор/Источник')
+    # url = forms.URLField(label='Ссылка на Автора/Источник (не обяз.)')
 
 
 class AddQuestion(forms.Form):

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
+from ckeditor.fields import RichTextField
 
 
 class Direction(models.Model):
@@ -45,7 +46,7 @@ class Mentor(models.Model):
     profession = models.CharField(max_length=50)
     topics = models.ManyToManyField(Topic)
     skills = models.ManyToManyField(Skill)
-    about_me = models.TextField(blank=True)
+    about_me = RichTextField()
     directions = models.ManyToManyField(Direction, blank=False)
     experience = models.PositiveIntegerField(blank=False)
     cost_30m = models.PositiveIntegerField(blank=False, validators=[MinValueValidator(500)])
@@ -96,7 +97,7 @@ class Review(models.Model):
     ]
 
     author = models.CharField(max_length=30)
-    text = models.TextField(max_length=1000)
+    text = RichTextField()
     mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
     rating = models.CharField(max_length=1, choices=GRADE)
     public = models.BooleanField(default=False)

@@ -8,14 +8,39 @@
 
     <div class="container mt-5">
         <div class="row align-items-start">
-            <div class="col-8">
-                <div class="container p-0">
-                  <div class="row">
-                    <div class="col-3">
-                      <img src="{{ mentor.image.url }}" class="img-fluid rounded" height="400" width="400">
-                    </div>
-                    <div class="col">
-                        <h1 class="fs-3">{{ mentor.name|title }} {{ mentor.surname|title }}</h1>
+            <div class="col-2">
+                <img src="{{ mentor.image.url }}" class="img-fluid rounded" height="400" width="400">
+                        <br><br>
+                        <p class="fs-5">
+                            {% if mentor.instagram %}
+                            <a href="https://www.instagram.com/{{ mentor.instagram }}" target="_blank" class="text-decoration-none text-reset fs-6"><i class="bi bi-instagram"></i></a>
+                            <a href="https://www.instagram.com/{{ mentor.instagram }}" target="_blank" class="fs-6">instagram</a>
+                            <br>
+                            {% endif %}
+                            {% if mentor.linkedin %}
+                            <a href="{{ mentor.linkedin }}" target="_blank" class="text-decoration-none text-reset fs-6"><i class="bi bi-linkedin"></i></a>
+                            <a href="{{ mentor.linkedin }}" target="_blank" class="fs-6">linkedin</a>
+                            <br>
+                            {% endif %}
+                            {% if mentor.github %}
+                            <a href="{{ mentor.github }}" target="_blank" class="text-decoration-none text-reset fs-6"><i class="bi bi-github"></i></a>
+                            <a href="{{ mentor.github }}" target="_blank" class="fs-6">github</a>
+                            <br>
+                            {% endif %}
+                            {% if mentor.behance %}
+                            <a href="{{ mentor.behance }}" target="_blank" class="text-decoration-none text-reset fs-6"><i class="bi bi-behance"></i></a>
+                            <a href="{{ mentor.behance }}" target="_blank" class="fs-6">behance</a>
+                            <br>
+                            {% endif %}
+                            {% if mentor.website %}
+                            <a href="{{ mentor.website }}" target="_blank" class="text-decoration-none text-reset fs-6"><i class="bi bi-box-arrow-up-right"></i></a>
+                            <a href="{{ mentor.website }}" target="_blank" class="fs-6">website</a>
+                            <br>
+                            {% endif %}
+                        </p>
+            </div>
+            <div class="col">
+                <h1 class="fs-3">{{ mentor.name|title }} {{ mentor.surname|title }}</h1>
                         <p>{{ mentor.profession }} |
                             {% if mentor.experience == 1 %}
                             {{ mentor.experience }} год опыта
@@ -24,32 +49,22 @@
                             {% else %}
                             {{ mentor.experience }} лет опыта
                             {% endif %}</p>
-                        <a href="https://telegram.me/{{ mentor.telegram }}" class="btn btn-sm btn-primary" style="background-color: #28a9eb; border-color: #28a9eb" target="_blank"><i class="bi bi-telegram me-2"></i>Написать в Telegram</a>
-                        <br><br>
-                        <p class="fs-5">
-                            {% if mentor.instagram %}
-                            <a href="https://www.instagram.com/{{ mentor.instagram }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-instagram"></i></a>
-                            {% endif %}
-                            {% if mentor.linkedin %}
-                            <a href="{{ mentor.linkedin }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-linkedin"></i></a>
-                            {% endif %}
-                            {% if mentor.github %}
-                            <a href="{{ mentor.github }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-github"></i></a>
-                            {% endif %}
-                            {% if mentor.behance %}
-                            <a href="{{ mentor.behance }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-behance"></i></a>
-                            {% endif %}
-                            {% if mentor.website %}
-                            <a href="{{ mentor.website }}" target="_blank" class="text-decoration-none text-reset"><i class="bi bi-box-arrow-up-right"></i></a>
-                            {% endif %}
-                        </p>
-                        {% if avg_rating %}
-                        <p> Ср. оценка: {{ avg_rating.rating__avg }} </p>
-                        {% endif %}
-                    </div>
-                  </div>
-                </div>
-                <br>
+
+                <a href="https://telegram.me/{{ mentor.telegram }}" class="btn btn-sm btn-primary me-3" style="background-color: #28a9eb; border-color: #28a9eb" target="_blank"><i class="bi bi-telegram me-2"></i>Написать в Telegram</a>
+                {% if reviews.count > 0 %}
+                    <i class="bi bi-star"></i> {{ avg_rating.rating__avg }} (
+                    {% if reviews.count == 1 %}
+                        {{ reviews.count }} отзыв
+                    {% elif 1 < reviews.count < 5 %}
+                        {{ reviews.count }} отзыва
+                    {% elif reviews.count > 4 %}
+                        {{ reviews.count }} отзывов
+                    {% endif %}
+                    )
+                {% endif %}
+                <h2 class="fs-5 mt-5 mb-3">О менторе:</h2>
+                <p>{{ mentor.about_me }}</p>
+                {% if reviews %}
                 <p>Направления:
                     {% for item in mentor.directions.all %}
                     <span class="badge rounded-pill text-bg-primary">{{ item.title }}</span>
@@ -65,9 +80,7 @@
                     <span class="badge rounded-pill text-bg-primary">{{ item.title }}</span>
                     {% endfor %}
                 </p>
-                <p>{{ mentor.about_me }}</p>
-                {% if reviews %}
-                <h2 class="fs-4">Отзывы:</h2>
+                <h2 class="fs-5 mt-5 mb-3">Отзывы:</h2>
                 {% endif%}
                 {% for review in reviews %}
                 <div class="card mb-3 col" >
@@ -78,21 +91,39 @@
                     </div>
                 </div>
                 {% endfor %}
+                <h2 class="fs-5 mt-5 mb-3">Оставить отзыв:</h2>
+                <form class="row g-3" action = "" method="post">
+                    {% csrf_token %}
+                  <div class="col-md-4">
+                    <label for="{{ form.author.id_for_label }}" class="form-label">{{ form.author.label }}</label>
+                      {{ form.author }}
+                  </div>
+                  <div class="col-md-2">
+                    <label for="{{ form.rating.id_for_label }}" class="form-label">{{ form.rating.label }}</label>
+                    {{ form.rating }}
+                  </div>
+                  <div>
+                    <label for="{{ form.text.id_for_label }}" class="form-label"></label>
+                    {{ form.text }}
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                  </div>
+                </form>
             </div>
-            <div class="col">
+            <div class="col-3">
                 <div class="card mb-3">
                   <div class="card-body">
-                    <h5 class="card-title">Консультация 30 минут</h5>
+                    <h3 class="card-title fs-5">Консультация 30 минут</h3>
                     <p class="card-text">{{ mentor.cost_30m }} руб.</p>
                   </div>
                 </div>
                 <div class="card mb-3">
                   <div class="card-body">
-                    <h5 class="card-title">Консультация 1 час</h5>
+                    <h3 class="card-title fs-5">Консультация 1 час</h3>
                     <p class="card-text">{{ mentor.cost_1h }} руб.</p>
                   </div>
                 </div>
             </div>
         </div>
-
 {% endblock %}

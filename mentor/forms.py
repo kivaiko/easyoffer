@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.conf import settings
+from ckeditor.widgets import CKEditorWidget
 from .models import *
 
 
@@ -65,5 +66,32 @@ class MentorFilterForm(forms.ModelForm):
         labels = {
             'directions': 'Направление:',
             'topics': 'Тип вопроса:',
+        }
+
+
+class DirectionFilterForm(forms.ModelForm):
+    class Meta:
+        model = Mentor
+        fields = ['directions']
+        widgets = {
+            'directions': forms.Select(attrs={'class': 'form-select'}),
+        }
+        labels = {
+            'directions': 'Направление:',
+        }
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        exclude = ['public', 'created_at', 'mentor']
+        widgets = {
+            'author': forms.TextInput(attrs={'class': 'form-control'}),
+            'text': forms.CharField(label='Ответ', widget=CKEditorWidget()),
+            'rating': forms.Select(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'author': 'Ваше имя:',
+            'rating': 'Оценка:',
         }
 

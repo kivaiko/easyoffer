@@ -128,6 +128,11 @@ class ThxView(TemplateView):
     template_name = 'thx_data.html'
 
 
+class ThxAccessSuccessView(TemplateView):
+    """Страница об успешном получении доступа"""
+    template_name = 'access_success.html'
+
+
 class MockView(ListView):
     """Список мок-интервью"""
     template_name = 'mock.html'
@@ -178,4 +183,4 @@ def access(request):
             ip_address=ip,
             delete_date=new_datetime,
         )
-    return redirect('index')
+    return redirect('access_success')

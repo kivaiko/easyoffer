@@ -9,10 +9,11 @@
     <p class="fs-5 mt-3 mb-5 fs-6">Вы можете <a href="/mentor/new_mentor">добавить себя</a> в список менторов или <a href="/mentor/new_mentor">войти как ментор</a> </p>
     <div class="container">
         <div class="row align-items-start">
-            <div class="col-3">
-                <form action="" method="get">
+            <div class="col-2">
+                <form method="POST">
+                    {% csrf_token %}
                     {{ form.as_p }}
-                    <button class="btn btn-sm btn-primary mt-3" type="submit">Применить</button>
+                    <button type="submit" class="btn btn-sm btn-primary mt-1">Выбрать</button>
                 </form>
             </div>
             <div class="col">
@@ -21,7 +22,7 @@
                     <tr>
                       <th scope="col">Ментор</th>
                       <th scope="col">Должность</th>
-                      <th scope="col">Опыт(г.)</th>
+                      <th scope="col">Опыт</th>
                       <th scope="col">Отзывы</th>
                       <th scope="col">30 мин.</th>
                       <th scope="col">1 ч.</th>
@@ -34,8 +35,22 @@
             link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ mentor.get_mentor_url }}">
                           {{ mentor.surname|title }} {{ mentor.name|title }}</a></td>
                       <td>{{ mentor.profession }}</td>
-                      <td>{{ mentor.experience }}</td>
-                      <td>4.34 </td>
+                      <td>
+                          {% if mentor.experience == 1 %}
+                          {{ mentor.experience }} год
+                          {% elif 1 < mentor.experience < 5  %}
+                          {{ mentor.experience }} года
+                          {% else %}
+                          {{ mentor.experience }} лет
+                          {% endif%}
+                      </td>
+                      <td>
+                          {% if mentor.avg != None %}
+                          {{ mentor.avg }} ({{ mentor.review_count }})
+                          {% else %}
+                          -
+                          {% endif %}
+                      </td>
                       <td>{{ mentor.cost_30m }} руб.</td>
                       <td>{{ mentor.cost_1h }} руб.</td>
                     </tr>
