@@ -57,7 +57,7 @@ class MentorFilterForm(forms.ModelForm):
         model = Mentor
         exclude = ['public', 'created_at', 'priority', 'name', 'surname', 'username', 'profession', 'experience',
                    'cost_30m', 'cost_1h', 'telegram', 'instagram', 'linkedin', 'github', 'behance', 'website',
-                   'about_me', 'image', 'skills']
+                   'about_me', 'image', 'skills', 'last_update']
         # 'additional_service_1_description', 'additional_service_1_price', 'additional_service_2_title', 'additional_service_2_description', 'additional_service_2_price', 'page_views', 'page_display', 'telegram_link_clicks', 'instagram_link_clicks', 'linkedin_link_clicks', 'github_link_clicks', 'behance_link_clicks', 'website_link_clicks', 'last_update'
         widgets = {
             'directions': forms.Select(attrs={'class': 'form-select'}),
