@@ -63,7 +63,7 @@
                     )
                 {% endif %}
                 <h2 class="fs-5 mt-5 mb-3">О менторе:</h2>
-                <p>{{ mentor.about_me }}</p>
+                <p>{{ mentor.about_me|safe }}</p>
                 {% if reviews %}
                 <p>Направления:
                     {% for item in mentor.directions.all %}
@@ -86,7 +86,7 @@
                 <div class="card mb-3 col" >
                     <div class="card-body">
                         <p class="card-text"> Оценка: {{ review.rating }} </p>
-                        <p class="card-text">{{ review.text }}</p>
+                        <p class="card-text">{{ review.text|safe }}</p>
                         <p class="card-text"><small class="text-muted">{{ review.created_at }}, {{ review.author }}</small></p>
                     </div>
                 </div>
