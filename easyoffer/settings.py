@@ -155,10 +155,11 @@ CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
         'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', 'bbcode'],
+            ['Bold', 'Italic', 'Underline', 'Strike'],
+            ['NumberedList', 'BulletedList'],
             ['Link', 'Unlink'],
-            ['Image'],
-        ]
-    }
+            ['Image', 'CodeSnippet'],
+        ],
+        'extraPlugins': 'codesnippet',
+    },
 }
