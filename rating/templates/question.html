@@ -14,26 +14,36 @@
                 <div class="card mb-3 col" >
                     <div class="card-body">
                         <p class="card-text">{{ answer.text|safe }}</p>
+                        {% if answer.url %}
+                        <p class="card-text"><small class="text-muted">{{ answer.created_at }}, <a class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank"  href="{{ answer.url }}">{{ answer.author }}</a></small></p>
+                        {% else %}
                         <p class="card-text"><small class="text-muted">{{ answer.created_at }}, {{ answer.author }}</small></p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
             {% endfor %}
 
-            <h2 class="mb-3 fs-5" >Добавить ответ:</h2>
+            <h2 class="mb-3 mt-5 fs-5" >Добавить ответ:</h2>
 
             <div class="form-error">{{ comment_form.non_field_errors }}</div>
-            <form action="" method="POST">
-                {% csrf_token %}
-                    <label class="form-text" for="{{ comment_form.text.id_for_label }}">
-                        {{ comment_form.text.label }}:
-                    </label> {{ comment_form.text }}
-                <p>
-                    <label class="form-label" for="{{ comment_form.author.id_for_label }}">
-                        {{ comment_form.author.label }}:
-                    </label> {{ comment_form.author }}
-                </p>
-                <button class="btn btn-primary btn-sm" type="submit">Добавить ответ</button>
+            <form class="row g-3" action = "" method="post">
+                    {% csrf_token %}
+                  <div class="col-md-4">
+                    <label for="{{ comment_form.author.id_for_label }}" class="form-label">{{ comment_form.author.label }}</label>
+                     {{ comment_form.author }}
+                  </div>
+                  <div class="col-md-4">
+                    <label for="{{ comment_form.url.id_for_label }}" class="form-label">{{ comment_form.url.label }}</label>
+                    {{ comment_form.url }}
+                  </div>
+                  <div>
+                    <label for="{{ comment_form.text.id_for_label }}" class="form-label"></label>
+                    {{ comment_form.text }}
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-primary btn-sm" type="submit">Добавить ответ</button>
+                  </div>
             </form>
         </div>
         <div class="col-4">

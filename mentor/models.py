@@ -66,7 +66,7 @@ class Mentor(models.Model):
     priority = models.BooleanField(default=False)
     public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
-    # last_update = models.DateField(default=timezone.now)
+    last_update = models.DateField(default=timezone.now)
     image = models.FileField(upload_to='mentors_images')
     # page_views = models.PositiveIntegerField(default=0)
     # page_display = models.PositiveIntegerField(default=0)

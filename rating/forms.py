@@ -3,10 +3,19 @@ from .models import *
 from ckeditor.widgets import CKEditorWidget
 
 
-class CommentForm(forms.Form):
-    text = forms.CharField(label='Ответ', widget=CKEditorWidget())
-    author = forms.CharField(max_length=50, label='Автор/Источник')
-    # url = forms.URLField(label='Ссылка на Автора/Источник (не обяз.)')
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        exclude = ['question', 'rating', 'public', 'created_at']
+        widgets = {
+            'author': forms.TextInput(attrs={'class': 'form-control'}),
+            'text': forms.CharField(widget=CKEditorWidget()),
+            'url': forms.URLInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'author': 'Автор/Источник:',
+            'url': 'Ссылка(не обяз.):',
+        }
 
 
 class AddQuestion(forms.Form):

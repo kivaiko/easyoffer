@@ -84,7 +84,7 @@ class Answer(models.Model):
     rating = models.IntegerField(default=1)
     public = models.BooleanField(default=True)
     created_at = models.DateField(default=timezone.now)
-    # url = models.URLField()
+    url = models.URLField(blank=True)
 
     def __str__(self):
         return self.author

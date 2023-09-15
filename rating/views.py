@@ -78,7 +78,7 @@ def question(request, question_id):
                 question_id=question_id,
                 text=comment_form.cleaned_data["text"],
                 author=comment_form.cleaned_data["author"],
-                # url=comment_form.cleaned_data["url"]
+                url=comment_form.cleaned_data["url"]
             )
             return redirect('thx_data')
         if video_form.is_valid():
