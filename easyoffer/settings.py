@@ -158,6 +158,7 @@ CKEDITOR_CONFIGS = {
             ['Bold', 'Italic', 'Underline'],
             ['NumberedList', 'BulletedList', 'bbcode'],
             ['Link', 'Unlink'],
+            ['Image'],
         ]
     }
 }
