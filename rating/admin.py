@@ -34,7 +34,7 @@ class ProfessionAdmin(admin.ModelAdmin):
 @admin.register(Rating)
 class RatingAdmin(admin.ModelAdmin):
     list_display = ('question', 'profession', 'rating', 'position', 'public', 'created_at')
-    search_fields = ('question',)
+    search_fields = ('question__title',)
 
 
 @admin.register(Question)
