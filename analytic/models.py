@@ -10,7 +10,7 @@ class Search(models.Model):
 
     title = models.CharField(max_length=255)
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
-    url = models.URLField()
+    url = models.URLField(max_length=5000)
     amount_vacancies = models.PositiveIntegerField()
     public = models.BooleanField(default=False)
     last_update = models.DateField(default=timezone.now)

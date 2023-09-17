@@ -17,6 +17,12 @@
     <meta name="theme-color" content="#ffffff">
     <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
     <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+
     <title>{% block title %}{% endblock %}</title>
 </head>
 
@@ -28,9 +34,6 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item active">
                 <a class="nav-link" href="/">Вопросы</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="/">Задачи</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/mock">Собесы</a>
@@ -50,7 +53,9 @@
         {% block content %}
         {% endblock %}
     </main>
+<script>hljs.highlightAll();</script>
 </body>
+
 <!--<div class="container">-->
 <!--  <footer class="py-3 my-4">-->
 <!--      <ul class="nav justify-content-center pb-1 mb-1">-->
