@@ -1,0 +1,98 @@
+Metadata-Version: 2.1
+Name: django-js-asset
+Version: 2.1.0
+Summary: script tag with additional attributes for django.forms.Media
+Project-URL: Homepage, https://github.com/matthiask/django-js-asset/
+Author-email: Matthias Kestenholz <mk@feinheit.ch>
+License: BSD-3-Clause
+License-File: LICENSE
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Requires-Python: >=3.8
+Requires-Dist: django>=3.2
+Provides-Extra: tests
+Requires-Dist: coverage; extra == 'tests'
+Description-Content-Type: text/x-rst
+
+===============================================================================
+django-js-asset -- script tag with additional attributes for django.forms.Media
+===============================================================================
+
+.. image:: https://github.com/matthiask/django-js-asset/workflows/Tests/badge.svg
+    :target: https://github.com/matthiask/django-js-asset
+
+Usage
+=====
+
+Use this to insert a script tag via ``forms.Media`` containing additional
+attributes (such as ``id`` and ``data-*`` for CSP-compatible data
+injection.):
+
+.. code-block:: python
+
+    from js_asset import JS
+
+    forms.Media(js=[
+        JS("asset.js", {
+            "id": "asset-script",
+            "data-answer": "42",
+        }),
+    ])
+
+The rendered media tag (via ``{{ media.js }}`` or ``{{ media }}`` will
+now contain a script tag as follows, without line breaks:
+
+.. code-block:: html
+
+    <script type="text/javascript" src="/static/asset.js"
+        data-answer="42" id="asset-script"></script>
+
+The attributes are automatically escaped. The data attributes may now be
+accessed inside ``asset.js``:
+
+.. code-block:: javascript
+
+    var answer = document.querySelector("#asset-script").dataset.answer;
+
+Also, because the implementation of ``static`` differs between supported
+Django versions (older do not take the presence of
+``django.contrib.staticfiles`` in ``INSTALLED_APPS`` into account), a
+``js_asset.static`` function is provided which does the right thing
+automatically.
+
+When adding external script assets, you should pass ``static=False`` to the
+``JS`` object to avoid passing the script URL through ``static()``. In this
+case, you probably want to add ``defer`` or ``async``, and maybe also
+``integrity`` and ``crossorigin`` attributes. Please note that boolean
+attributes are not properly supported when using Django before 4.1 so specify
+them as follows:
+
+.. code-block:: python
+
+    JS(
+        "https://cdn.example.com/script.js",
+        {"defer": "defer"},
+        static=False,
+    )
+
+
+Compatibility
+=============
+
+At the time of writing this app is compatible with Django 1.8 and better
+(up to and including the Django master branch), but have a look at the
+`tox configuration
+<https://github.com/matthiask/django-js-asset/blob/main/tox.ini>`_ for
+definitive answers.

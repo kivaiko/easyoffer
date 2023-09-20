@@ -1,0 +1,907 @@
+Metadata-Version: 2.1
+Name: django-ckeditor
+Version: 6.7.0
+Summary: Django admin CKEditor integration.
+Home-page: https://github.com/django-ckeditor/django-ckeditor
+Author: Shaun Sephton & Piotr Malinski
+Author-email: riklaunim@gmail.com
+Project-URL: Documentation, https://django-ckeditor.readthedocs.io/en/latest/
+Project-URL: Source, https://github.com/django-ckeditor/django-ckeditor
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 3.2
+Classifier: Framework :: Django :: 4.0
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.8
+License-File: LICENSE
+Requires-Dist: Django (>=3.2)
+Requires-Dist: django-js-asset (>=2.0)
+
+Django CKEditor
+===============
+
+.. image:: https://img.shields.io/pypi/v/django-ckeditor.svg
+   :target: https://pypi.python.org/pypi/django-ckeditor
+
+.. image:: https://img.shields.io/pypi/pyversions/django-ckeditor.svg
+   :target: https://pypi.org/project/django-ckeditor/
+
+.. image:: https://img.shields.io/pypi/djversions/django-ckeditor.svg
+   :target: https://pypi.org/project/django-ckeditor/
+
+.. image:: https://github.com/django-ckeditor/django-ckeditor/workflows/Tests/badge.svg
+   :target: https://github.com/django-ckeditor/django-ckeditor/actions
+
+.. image:: https://readthedocs.org/projects/django-ckeditor/badge/?version=latest&style=flat
+   :target: https://django-ckeditor.readthedocs.io/en/latest/
+
+
+**Django admin CKEditor integration.**
+
+Provides a ``RichTextField``, ``RichTextUploadingField``, ``CKEditorWidget`` and ``CKEditorUploadingWidget`` utilizing CKEditor with image uploading and browsing support included.
+
+This version also includes:
+
+#. support to django-storages (works with S3)
+#. updated ckeditor to version 4.18.0
+#. included all ckeditor language and plugin files to make everyone happy! ( `only the plugins maintained by the ckeditor develops team <https://github.com/ckeditor/ckeditor-dev/tree/4.6.2/plugins>`__ )
+
+.. contents:: Contents
+   :depth: 5
+
+Installation
+------------
+
+Required
+~~~~~~~~
+#. Install or add django-ckeditor to your python path.
+   ::
+
+        pip install django-ckeditor
+
+#. Add ``ckeditor`` to your ``INSTALLED_APPS`` setting.
+
+#. Run the ``collectstatic`` management command: ``$ ./manage.py collectstatic``. This will copy static CKEditor required media resources into the directory given by the ``STATIC_ROOT`` setting. See `Django's documentation on managing static files <https://docs.djangoproject.com/en/dev/howto/static-files>`__ for more info.
+
+#. CKEditor needs to know where its assets are located because it loads them
+   lazily only when needed. The location is determined in the ``ckeditor-init.js``
+   script. and defaults to ``static/ckeditor/ckeditor/``. This does not work all
+   the time, for example when using ``ManifestStaticFilesStorage``, any asset
+   packaging pipeline or whatnot. django-ckeditor is quite good at automatically
+   detecting the correct place even then, but sometimes you have to hardcode
+   ``CKEDITOR_BASEPATH`` somewhere. This can be hardcoded in settings, i.e.::
+
+        CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor/"
+
+   It is possible to override
+   the ``admin/change_form.html`` template with your own if you really need to do
+   this, i.e.::
+
+        {% extends "admin/change_form.html" %}
+
+        {% block extrahead %}
+        <script>window.CKEDITOR_BASEPATH = '/my_static/ckeditor/ckeditor/';</script>
+        {{ block.super }}
+        {% endblock %}
+
+   Of course, you should adapt this snippet to your needs when using
+   CKEditor outside the admin app.
+
+
+Required for using widget with file upload
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#. Add ``ckeditor_uploader`` to your ``INSTALLED_APPS`` setting.
+
+#. Add a ``CKEDITOR_UPLOAD_PATH`` setting to the project's ``settings.py`` file. This setting specifies a relative path to your CKEditor media upload directory. CKEditor uses Django's storage API. By default, Django uses the file system storage backend (it will use your ``MEDIA_ROOT`` and ``MEDIA_URL``) and if you don't use a different backend you have to have write permissions for the ``CKEDITOR_UPLOAD_PATH`` path within ``MEDIA_ROOT``, i.e.::
+
+        CKEDITOR_UPLOAD_PATH = "uploads/"
+
+   When using default file system storage, images will be uploaded to "uploads" folder in your ``MEDIA_ROOT`` and urls will be created against ``MEDIA_URL`` (``/media/uploads/image.jpg``).
+
+   If you want to be able to have control over filename generation, you have to add a custom filename generator to your settings::
+
+        # utils.py
+
+        def get_filename(filename, request):
+            return filename.upper()
+
+   ::
+
+        # settings.py
+
+        CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
+
+   CKEditor has been tested with django FileSystemStorage and S3BotoStorage.
+   There are issues using S3Storage from django-storages.
+
+#. For the default filesystem storage configuration, ``MEDIA_ROOT`` and ``MEDIA_URL`` must be set correctly for the media files to work (like those uploaded by the ckeditor widget).
+
+#. Add CKEditor URL include to your project's ``urls.py`` file::
+
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+
+#. Note that by adding those URLs you add views that can upload and browse through uploaded images. Since django-ckeditor 4.4.6, those views are decorated using ``@staff_member_required``. If you want a different permission decorator (``login_required``, ``user_passes_test`` etc.) then add views defined in ``ckeditor.urls`` manually to your urls.py.
+
+
+Optional - customizing CKEditor editor
+--------------------------------------
+
+#. Add a CKEDITOR_CONFIGS setting to the project's ``settings.py`` file. This specifies sets of CKEditor settings that are passed to CKEditor (see CKEditor's `Setting Configurations <http://docs.ckeditor.com/#!/guide/dev_configuration>`__), i.e.::
+
+       CKEDITOR_CONFIGS = {
+           'awesome_ckeditor': {
+               'toolbar': 'Basic',
+           },
+       }
+
+   The name of the settings can be referenced when instantiating a RichTextField::
+
+       content = RichTextField(config_name='awesome_ckeditor')
+
+   The name of the settings can be referenced when instantiating a CKEditorWidget::
+
+       widget = CKEditorWidget(config_name='awesome_ckeditor')
+
+   By specifying a set named ``default`` you'll be applying its settings to all RichTextField and CKEditorWidget objects for which ``config_name`` has not been explicitly defined ::
+
+       CKEDITOR_CONFIGS = {
+           'default': {
+               'toolbar': 'full',
+               'height': 300,
+               'width': 300,
+           },
+       }
+
+   It is possible to create a custom toolbar ::
+
+        CKEDITOR_CONFIGS = {
+            'default': {
+                'toolbar': 'Custom',
+                'toolbar_Custom': [
+                    ['Bold', 'Italic', 'Underline'],
+                    ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                    ['Link', 'Unlink'],
+                    ['RemoveFormat', 'Source']
+                ]
+            }
+        }
+
+   If you want or need plugins which are not part of django-ckeditor's
+   plugin set you may specify assets and plugins as follows::
+
+        text = RichTextField(
+            config_name='forum-post',
+
+            # CKEDITOR.config.extraPlugins:
+            extra_plugins=['someplugin'],
+
+            # CKEDITOR.plugins.addExternal(...)
+            external_plugin_resources=[(
+                'someplugin',
+                '/static/.../path-to-someplugin/',
+                'plugin.js',
+            )],
+        )
+
+    Alternatively, those settings can also be provided through
+    ``CKEDITOR_CONFIGS``.
+
+
+Optional for file upload
+~~~~~~~~~~~~~~~~~~~~~~~~
+#. All uploaded files are slugified by default. To disable this feature, set ``CKEDITOR_UPLOAD_SLUGIFY_FILENAME`` to ``False``.
+
+#. Set the ``CKEDITOR_RESTRICT_BY_USER`` setting to ``True`` in the project's ``settings.py`` file (default ``False``). This restricts access to uploaded images to the uploading user (e.g. each user only sees and uploads their own images).  Upload paths are prefixed by the string returned by ``get_username``.  If ``CKEDITOR_RESTRICT_BY_USER`` is set to a string, the named property is used instead.  Superusers can still see all images. **NOTE**: This restriction is only enforced within the CKEditor media browser.
+
+#. Set the ``CKEDITOR_BROWSE_SHOW_DIRS`` setting to ``True`` to show directories on the "Browse Server" page. This enables image grouping by directory they are stored in, sorted by date.
+
+#. Set the ``CKEDITOR_RESTRICT_BY_DATE`` setting to ``True`` to bucked uploaded files by year/month/day.
+
+#. You can set a custom file storage for CKEditor uploader by defining it under ``CKEDITOR_STORAGE_BACKEND`` variable in settings.
+
+#. You can set ``CKEDITOR_IMAGE_BACKEND`` to one of the supported backends to enable thumbnails in ckeditor gallery.
+   By default, no thumbnails are created and full-size images are used as preview.
+   Supported backends:
+
+   - ``ckeditor_uploader.backends.PillowBackend``: Uses Pillow
+
+#. With the ``PillowBackend`` backend, you can change the thumbnail size with the ``CKEDITOR_THUMBNAIL_SIZE`` setting (formerly ``THUMBNAIL_SIZE``).
+   Default value: (75, 75)
+
+#. With the ``PillowBackend`` backend, you can convert and compress the uploaded images to jpeg, to save disk space.
+   Set the ``CKEDITOR_FORCE_JPEG_COMPRESSION`` setting to ``True`` (default ``False``)
+   You can change the ``CKEDITOR_IMAGE_QUALITY`` setting (formerly ``IMAGE_QUALITY``), which is passed to Pillow:
+
+    The image quality, on a scale from 1 (worst) to 95 (best). The default is 75. Values above 95
+    should be avoided; 100 disables portions of the JPEG compression algorithm and results in
+    large files with hardly any gain in image quality.
+
+   This feature is disabled for animated images.
+
+Usage
+-----
+
+Field
+~~~~~
+The quickest way to add rich text editing capabilities to your models is to use the included ``RichTextField`` model field type. A CKEditor widget is rendered as the form field but in all other regards the field behaves like the standard Django ``TextField``. For example::
+
+    from django.db import models
+    from ckeditor.fields import RichTextField
+
+    class Post(models.Model):
+        content = RichTextField()
+
+**For file upload support** use ``RichTextUploadingField`` from ``ckeditor_uploader.fields``.
+
+
+Widget
+~~~~~~
+Alternatively, you can use the included ``CKEditorWidget`` as the widget for a formfield. For example::
+
+    from django import forms
+    from django.contrib import admin
+    from ckeditor.widgets import CKEditorWidget
+
+    from post.models import Post
+
+    class PostAdminForm(forms.ModelForm):
+        content = forms.CharField(widget=CKEditorWidget())
+        class Meta:
+            model = Post
+            fields = '__all__'
+
+    class PostAdmin(admin.ModelAdmin):
+        form = PostAdminForm
+
+    admin.site.register(Post, PostAdmin)
+
+**For file upload support** use ``CKEditorUploadingWidget`` from ``ckeditor_uploader.widgets``.
+
+
+**Overriding widget template**
+
+In Django >=1.11 for overriding ``ckeditor/widget.html`` you have three ways:
+
+
+#. Place ``ckeditor/widget.html`` in  ``BASE_DIR/templates``
+
+   - Change ``FORM_RENDERER`` to ``TemplateSettings``.
+
+   ::
+
+       FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+
+
+   - Include ``templates`` folder in ``DIRS``
+
+   ::
+
+       TEMPLATES = [{
+           ...
+           'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
+           ...
+       }]
+
+
+   - Add ``'django.forms'`` to ``INSTALLED_APPS``.
+
+
+#. Place ``ckeditor/widget.html`` in ``your_app/templates`` and place ``'your_app'`` **before** ``'ckeditor'`` and ``'ckeditor_uploader'`` in ``INSTALLED_APPS``.
+
+#. Inherit from ``CKEditorWidget`` and override ``template_name`` with a custom template available in TEMPLATES DIRS as defined settings.py.
+
+   ::
+
+      class MyCustomCKEditorWidget(CKEditorWidget):
+         template_name = "templates/custom_ckeditor/widget.html"
+
+Outside of django admin
+~~~~~~~~~~~~~~~~~~~~~~~
+
+When you are rendering a form outside the admin panel, you'll have to make sure all form media is present for the editor to work. One way to achieve this is like this::
+
+    <form>
+        {{ myform.media }}
+        {{ myform.as_p }}
+        <input type="submit"/>
+    </form>
+
+or you can load the media manually as it is done in the demo app::
+
+    {% load static %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+
+When you need to render ``RichTextField``'s HTML output in your templates safely, just use ``{{ content|safe }}``,  `Django's safe filter <https://docs.djangoproject.com/en/2.0/ref/templates/builtins/#std:templatefilter-safe>`_
+
+
+Management Commands
+~~~~~~~~~~~~~~~~~~~
+Included is a management command to create thumbnails for images already contained in ``CKEDITOR_UPLOAD_PATH``. This is useful to create thumbnails when using django-ckeditor with existing images. Issue the command as follows::
+
+    $ ./manage.py generateckeditorthumbnails
+
+**NOTE**: If you're using custom views remember to include ckeditor.js in your form's media either through ``{{ form.media }}`` or through a ``<script>`` tag. Admin will do this for you automatically. See `Django's Form Media docs <http://docs.djangoproject.com/en/dev/topics/forms/media/>`__ for more info.
+
+Using S3
+~~~~~~~~
+See https://django-storages.readthedocs.org/en/latest/
+
+**NOTE:** ``django-ckeditor`` will not work with S3 through ``django-storages`` without this line in ``settings.py``::
+
+    AWS_QUERYSTRING_AUTH = False
+
+If you want to use allowedContent
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To get allowedContent to work, disable **stylesheetparser** plugin.
+So include this in your settings.py.::
+
+    CKEDITOR_CONFIGS = {
+        "default": {
+            "removePlugins": "stylesheetparser",
+        }
+    }
+
+
+Plugins:
+--------
+
+django-ckeditor includes the following ckeditor plugins, but not all are enabled by default::
+
+    a11yhelp, about, adobeair, ajax, autoembed, autogrow, autolink, bbcode, clipboard, codesnippet,
+    codesnippetgeshi, colordialog, devtools, dialog, div, divarea, docprops, embed, embedbase,
+    embedsemantic, filetools, find, flash, forms, iframe, iframedialog, image, image2, language,
+    lineutils, link, liststyle, magicline, mathjax, menubutton, notification, notificationaggregator,
+    pagebreak, pastefromword, placeholder, preview, scayt, sharedspace, showblocks, smiley,
+    sourcedialog, specialchar, stylesheetparser, table, tableresize, tabletools, templates, uicolor,
+    uploadimage, uploadwidget, widget, wsc, xml
+
+The image/file upload feature is done by the `uploadimage` plugin.
+
+
+Restricting file upload
+-----------------------
+
+#. To restrict upload functionality to image files only, add ``CKEDITOR_ALLOW_NONIMAGE_FILES = False`` in your settings.py file. Currently non-image files are allowed by default.
+
+#. By default the upload and browse URLs use staff_member_required decorator - ckeditor_uploader/urls.py - if you want other decorators just insert two urls found in that urls.py and don't include it.
+
+
+Demo / Test application
+-----------------------
+
+If you clone the repository you will be able to run the ``ckeditor_demo`` application.
+
+#. ``pip install -r ckeditor_demo_requirements.txt``
+
+#. Run ``python manage.py migrate``
+
+#. Create a superuser if you want to test the widget in the admin panel
+
+#. Start the development server.
+
+There is a forms.Form on the main page (/) and a model in admin that uses the widget for a model field.
+Database is set to sqlite3 and STATIC/MEDIA_ROOT to folders in temporary directory.
+
+
+
+Running selenium test
+---------------------
+
+The recommended way to run selenium tests is using tox. Select the appropriate
+selenium driver using the ``SELENIUM`` environment variable and optionally
+specify that you want to run only one environment since selenium takes some
+time and/or since you do not have all supported versions of Python installed
+locally. The example uses the combination of Python 3.9 and Django 4.0 which is
+a supported combination at the time of writing::
+
+    # Either
+    SELENIUM=firefox tox -e py39-dj40
+
+    # Or
+    SELENIUM=chromium tox -e py39-dj40
+
+    # Or even
+    SELENIUM=firefox tox
+
+
+Troubleshooting
+---------------
+
+If your browser has problems displaying uploaded images in the image upload window you may need to change Django settings:
+
+::
+
+    X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+More on https://docs.djangoproject.com/en/1.11/ref/clickjacking/#setting-x-frame-options-for-all-responses
+
+
+Example ckeditor configuration
+------------------------------
+
+::
+
+    CKEDITOR_CONFIGS = {
+        'default': {
+            'skin': 'moono',
+            # 'skin': 'office2013',
+            'toolbar_Basic': [
+                ['Source', '-', 'Bold', 'Italic']
+            ],
+            'toolbar_YourCustomToolbarConfig': [
+                {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+                {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+                {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+                {'name': 'forms',
+                 'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+                           'HiddenField']},
+                '/',
+                {'name': 'basicstyles',
+                 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+                {'name': 'paragraph',
+                 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                           'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+                           'Language']},
+                {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+                {'name': 'insert',
+                 'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+                '/',
+                {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+                {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+                {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+                {'name': 'about', 'items': ['About']},
+                '/',  # put this to force next toolbar on new line
+                {'name': 'yourcustomtools', 'items': [
+                    # put the name of your editor.ui.addButton here
+                    'Preview',
+                    'Maximize',
+
+                ]},
+            ],
+            'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+            # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+            # 'height': 291,
+            # 'width': '100%',
+            # 'filebrowserWindowHeight': 725,
+            # 'filebrowserWindowWidth': 940,
+            # 'toolbarCanCollapse': True,
+            # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+            'tabSpaces': 4,
+            'extraPlugins': ','.join([
+                'uploadimage', # the upload image feature
+                # your extra plugins here
+                'div',
+                'autolink',
+                'autoembed',
+                'embedsemantic',
+                'autogrow',
+                # 'devtools',
+                'widget',
+                'lineutils',
+                'clipboard',
+                'dialog',
+                'dialogui',
+                'elementspath'
+            ]),
+        }
+    }
+
+AUTHORS
+=======
+
+
+Created By
+----------
+#. `shaunsephton <http://github.com/shaunsephton>`__
+
+
+Contributors
+------------
+#. `riklaunim <https://github.com/riklaunim>`__
+#. `3point2 <https://github.com/3point2>`__
+#. `buchuki <http://github.com/buchuki>`__
+#. `chr15m <http://github.com/chr15m>`__
+#. `hedleyroos <https://github.com/hedleyroos>`__
+#. `jeffh <https://github.com/jeffh>`__
+#. `lihan <https://github.com/lihan>`__
+#. `loop0 <http://github.com/loop0>`__
+#. `mwcz <https://github.com/mwcz>`__
+#. `tomwys <https://github.com/tomwys>`__
+#. `snbuback <https://github.com/snbuback>`__
+#. And others `<https://github.com/django-ckeditor/django-ckeditor/graphs/contributors>`__
+
+Changelog
+=========
+
+Unreleased
+----------
+
+6.7.0
+-----
+
+#. CKEditor 4.22.1
+#. Dark mode fixes.
+#. Added support for Pillow 10.
+
+6.6.0
+-----
+
+#. Required a newer version of django-js-asset which actually works with Django
+   4.1.
+#. CKEditor 4.21.0
+#. Fixed the CKEditor styles when used with the dark Django admin theme.
+
+6.5.0
+-----
+#. Avoided calling ``static()`` if ``CKEDITOR_BASEPATH`` is defined.
+#. Fixed ``./manage.py generateckeditorthumbnails`` to work again after the
+   image uploader backend rework.
+#. CKEditor 4.19.1
+#. Stopped calling ``static()`` during application startup.
+#. Added Django 4.1
+
+
+6.4.0
+-----
+#. Changed the context for the widget to deviate less from Django. Removed a
+   few template variables which are not used in the bundled
+   ``ckeditor/widget.html`` template. This only affects you if you are using a
+   customized widget or widget template.
+#. Dropped support for Python < 3.8, Django < 3.2.
+#. Added a pre-commit configuration.
+#. Removed the Travis CI configuration; Travis CI hasn't run our unit tests for
+   months now.
+#. Added a GitHub action for running tests.
+#. Made selenium tests require opt in using a ``SELENIUM=firefox`` or
+   ``SELENIUM=chromium`` environment variable.
+
+
+6.3.0
+-----
+#. CKEditor 4.18.0
+#. Made it possible to override the CKEditor template in the widget class.
+#. Changed ``CKEDITOR_IMAGE_BACKEND`` to require dotted module paths (the old
+   identifiers are still supported for now).
+
+
+6.2.0
+-----
+#. CKEditor 4.17.1
+
+
+6.1.0
+-----
+#. CKEditor 4.16.1
+
+
+6.0.0
+-----
+#. Replace ``ugettext_lazy()`` with ``gettext_lazy()``
+#. CKEditor 4.14.1
+#. Changed our JS script to listen for Django's ``formset:added``
+   signals instead of detecting clicks on inline buttons. This should
+   fix compatibility with various Django admin skins.
+#. Dropped compatibility guarantees for Django<2.2 and Python<3.6.
+#. Reformatted the code using black, isort.
+#. Added testing using Django 3.1.
+
+
+5.9.0
+-----
+#. Django 3.0 support
+#. Python 3.8 support
+#. Replace `staticfiles` templatetags library usage with `static`
+#. Add a templates validation step to the tests
+#. Internationalize ckeditor_upload `browse.html` template.
+#. Add ckeditor_upload features and custom configuration example to
+   `ckeditor_demo`
+#. CKEditor 4.13.1
+
+
+5.8.0
+-----
+#. CKEditor 4.13
+
+5.7.1
+-----
+#. CKEditor 4.11.4
+#. Fix JS handling again
+#. Allow using settings to configure ``extra_plugins`` and
+   ``external_plugin_resources``
+
+
+5.7.0
+-----
+#. Fix Django 1.8 - 1.10 regression
+#. Drop leftover support for Django older than 1.8
+#. Django 2.2 support
+#. Documentation updates
+#. Minor fixes to JS handling
+
+
+5.6.1
+-----
+#. Fix bad pypi package
+
+
+5.6.0
+-----
+#. Django 2.1 compatibility, minimal supported Django version is 1.11 LTS
+#. Option to set custom django file backend for CKEditor uploader app.
+
+
+5.5.0
+-----
+#. CKEditor 4.9.2
+#. Documentation improvements
+#. Allow non-string properties of user for CKEDITOR_RESTRICT_BY_USER
+
+
+5.4.0
+-----
+#. Django 2.0 compatibility
+
+
+5.3.1
+-----
+#. Actually include the code which sets ``CKEDITOR_BASEPATH``.
+#. CKEditor 4.7.3
+
+
+5.3.0
+-----
+#. CKEditor 4.7
+#. Fix storage problems by setting ``CKEDITOR_BASEPATH`` (hopefully for real
+   this time)
+#. Documentation updates
+#. Added a ``CKEDITOR_RESTRICT_BY_DATE`` setting to add uploaded files into
+   folders containing the current date.
+#. Added a ``CKEDITOR_FILEICONS`` setting that allows overriding the
+   icons used by Gallerific.
+#. Added a ``CKEDITOR_FILENAME_GENERATOR`` setting which allows
+   specifying a callable which mangles the filename of uploaded files.
+#. Added ``THUMBNAIL_SIZE`` and ``IMAGE_QUALITY`` settings for the
+   Pillow image backend.
+#. Actually include static assets for ``ckeditor_uploader`` in the
+   pip-installable package.
+#. Removed ``CKEDITOR_JQUERY_URL`` and the jQuery dependency. The
+   CKEditor activation now uses plain JavaScript. Dependencies are
+   `JSON.parse <http://caniuse.com/#search=json.parse>`__ and
+   `document.querySelectorAll <http://caniuse.com/#search=querySelectorAll>`__
+   which are supported in practically all used browsers these days.
+#. Fixed a bug where the CKEditor language was not set individually for
+   each request.
+
+
+5.2.2
+-----
+#. Django 1.11 support
+#. Drop South migrations
+#. Fix storage problems by setting CKEDITOR_BASEPATH
+
+
+5.2.1
+-----
+#. Fix CKEditor package static path
+
+5.2.0
+-----
+#. Django 1.10 updates
+#. Development dependencies bump
+#. CKEditor 4.6.1
+#. Paste image support
+#. Fix for ManifestStaticFilesStorage
+
+
+5.1.1
+-----
+#. Re-add missing additional CkEditor plugins
+
+
+5.1.0
+-----
+#. Updated CkEditor to 4.5.10
+#. Django 1.10 compatibility changes
+#. Documentation updates
+
+
+5.0.3
+-----
+#. Fix file/directory browsing and searching
+#. Editor width style fixes
+#. Added CKEDITOR_BROWSE_SHOW_DIRS
+#. Added CKEDITOR_ALLOW_NONIMAGE_FILES
+#. Python 2.6 compatibility fix
+
+
+5.0.2
+-----
+#. Added template missing in the package
+
+
+5.0.1
+-----
+#. Update Readme with backward-incompatible changes
+
+
+5.0.0 (4.5.3)
+-------------
+#. Moved file upload code to new Django application - ckeditor_uploader. `RichTextField` doesn't use file upload which have been moved to `RichTextUploadingField`.
+
+File upload support have been moved to ckeditor_uploader. The urls are in ckeditor_uploader.urls while for file uploading widget you have to use RichTextUploadingField from ckeditor_uploader.fields instead of RichTextField from  from ckeditor.fields.
+
+#. Updated ckeditor to 4.5.3 (from https://github.com/ckeditor/ckeditor-dev/tree/4.5.3)
+#. Added new plugins from ckeditor maintainers: adobeair, ajax, autoembed, autogrow, autolink, bbcode, codesnippet, codesnippetgeshi, devtools, divarea, docprops, embed, embedbase, embedsemantic, filetools, iframedialog, image2, language, lineutils, mathjax, menubutton, notification, notificationaggregator, placeholder, sharedspace, sourcedialog, stylesheetparser, tableresize, uicolor, uploadimage, uploadwidget, widget, xml
+#. Add `zip_safe=False` on setup config, to force does not create ".egg" file
+#. Add python Wheel package configuration
+#. Add setup.py functions to easy release ".egg" package and Wheel package, and tag version on git ( ``python setup.py publish`` and ``python setup.py tag`` )
+#. Improved Tox configuration to code coverage check, code quality check (flake8), imports order check (isort) and test with django master branch
+#. Add code quality configurations
+#. Add EditorConfig configuration file
+#. Refactored code to be in compliance with PEP8
+
+4.5.1
+-----
+#. Fixed unbound variable in non-image file upload
+
+
+4.5.0
+-----
+#. Updated ckeditor to 4.5.1
+#. Reverted django.contrib.staticfiles.templatetags.staticfiles.static usage causing problems with some storages
+#. Allow non-image files to be upload (the upload widget expects images so the user experience isn't best at the moment)
+#. Few refactors and fixes to selenium tests
+
+
+4.4.8
+-----
+#. Python 3 compatibility fixes
+#. Get static files paths in a proper way
+#. Fix Django 1.7 deprecation warning
+#. More examples in readme
+
+
+4.4.7
+-----
+#. Allow only POST requests on upload view.
+#. Exclude hidden files from image browser
+#. Prevent caching of image browser view
+#. Use lazy JSON encoder to support i18n in CKEditor settings.
+#. Misc documentation updates
+#. Check for jQuery presence correctly
+#. Update to CKEditor 4.4.6
+
+4.4.6
+-----
+#. Make upload/browse views be staff_member_required by default (can be overridden)
+#. Fix ckeditor initialisation code breaking with other jQuery versions.
+#. Support grappelli inline form widgets.
+#. Remove odd left margin from widget template.
+#. Allow running selenium tests with chromium.
+
+4.4.5
+-----
+#. Post merge package name fix in Readme
+
+4.4.4
+-----
+#. Update CKEditor to 4.4.4 full package - for all plugins and static files you may need
+#. Fixes for inline editor
+#. Editor initialisation uses jQuery. You need to specify CKEDITOR_JQUERY_URL for it to work. You can use::
+
+    CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+
+
+4.4.0
+-----
+#. Update CKEditor to 4.4.1
+#. Django 1.7 compatibility fix
+
+4.2.8
+-----
+#. Update CKEditor to 4.3.3
+
+4.2.7
+-----
+#. Fix slugifying to empty filename if only bad characters given in filename. Use random string as fallback.
+#. Don't use IMG tags for non image files in ckeditor file browser.
+#. Remove non-existing image reference from CSS files that broke collectstatic.
+#. Misc fixes
+
+4.2.5 / 4.2.6
+-------------
+#. Fix static files installation - switch from distutils to setuptools
+
+4.2.4
+-----
+#. Added new demo application with selenium integration test
+#. tox setup for Python 3.3 and 2.7 testing
+#. Extracted image processing to backends. PIL/Pillow is optional now. Other backends can be added.
+#. Fixed a bug with thumbnail generation
+
+4.2.3
+-----
+#. Python 3.3 compatibility
+#. All uploaded files are slugified by default (New settings CKEDITOR_SLUGIFY_FILENAME)
+#. Upload file when editing a link (<a href>) now works properly
+
+4.2.2
+-----
+#. Python 3.3 compatibility in widgets.py
+
+4.2.1
+-----
+#. Include CKEditor version 4.2.1.
+#. Support Django 1.6
+
+4.0.2
+-----
+#. Include CKEditor version 4.0.2.
+
+3.6.2.1
+-------
+#. Remove unwanted static files from distribution.
+#. Use Pillow instead of PIL since it builds on all systems.
+
+3.6.2
+-----
+#. Include CKEditor version 3.6.2.
+#. Initial work on Django aligned theme.
+#. Fix schema slash removal issue on media url generation. Thanks `mwcz <https://github.com/mwcz>`__
+#. Added compatibility for South. Thanks `3point2 <https://github.com/3point2>`__
+#. Prevented settings from leaking between widget instances. Thanks `3point2 <https://github.com/3point2>`__
+#. Fixed config_name conflict when verbose_name is used as first positional argument for a field. Thanks `3point2 <https://github.com/3point2>`__
+#. Refactored views to allow use of file walking with local paths. Thanks `3point2 <https://github.com/3point2>`__
+#. Added command to generate thumbnails. Thanks `3point2 <https://github.com/3point2>`__
+#. Migrated from using media to static file management.
+
+0.0.9
+-----
+
+#. Added ability to configure CKeditor through a CKEDITOR_CONFIGS settings. Thanks `jeffh <https://github.com/jeffh>`__ for the input.
+
+0.0.8
+-----
+
+#. Removed buggy url include check.
+
+0.0.7
+-----
+#. Egg package corrected to exclude testing admin.py and models.py.
+
+0.0.6
+-----
+#. Enforce correct configuration.
+#. Changed upload behavior to separate files into directories by upload date. Thanks `loop0 <http://github.com/loop0>`__ .
+#. Added ability to limit user access to uploaded content (see the CKEDITOR_RESTRICT_BY_USER setting). Thanks `chr15m <http://github.com/chr15m>`__ for the input.
+#. Added initial set of much needed tests.
+#. General cleanup, light refactor.
+
+0.0.5
+-----
+#. csrf_exempt backwards compatability. Thanks `chr15m <http://github.com/chr15m>`__ .
+
+0.0.4
+-----
+#. Include resources, sorry about that.
+
+0.0.3
+-----
+#. More robust PIL import. Thanks `buchuki <http://github.com/buchuki>`__ .
+#. Better CKEDITOR_MEDIA_PREFIX setting error.
+
+0.0.2
+-----
+#. Included README.rst in manifest.
+
+0.0.1
+-----
+#. Added CKEDITOR_UPLOAD_PREFIX setting. Thanks `chr15m <http://github.com/chr15m>`__ for the input.

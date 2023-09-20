@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'rating',
     'mentor',
     'analytic',
+    'user',
 ]
 
 MIDDLEWARE = [

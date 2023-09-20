@@ -20,27 +20,28 @@ class Profession(models.Model):
         db_table = 'professions'
 
     title = models.CharField(max_length=255)
-    prof_slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255)
     tags = models.ManyToManyField(Tag, blank=False)
     public_rating = models.BooleanField()
     public_mock = models.BooleanField()
     public_analytic = models.BooleanField()
+    public_mentor = models.BooleanField()
     description = models.TextField(max_length=500)
-    telegram_chat = models.URLField()
-    votes = models.PositiveIntegerField()
-    votes_access = models.BooleanField()
+    telegram_chat = models.URLField(blank=True)
+    votes = models.PositiveIntegerField(blank=True)
+    votes_access = models.BooleanField(blank=True)
 
     def __str__(self):
         return self.title
 
     def get_url(self):
-        return reverse('question_rating', args=[self.prof_slug])
+        return reverse('question_rating', args=[self.slug])
 
     def get_url_quiz(self):
-        return reverse('quiz', args=[self.prof_slug])
+        return reverse('quiz', args=[self.slug])
 
     def get_url_analytic(self):
-        return reverse('analytic', args=[self.prof_slug])
+        return reverse('analytic', args=[self.slug])
 
 
 class Question(models.Model):
