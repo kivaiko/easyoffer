@@ -81,6 +81,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": os.environ.get("POSTGRES_ENGINE", "django.db.backends.postgresql"),
+#         "NAME": os.environ.get("POSTGRES_DB", os.path.join(BASE_DIR, "db.postgresql")),
+#         "USER": os.environ.get("POSTGRES_USER", "user"),
+#         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
+#         "HOST": os.environ.get("POSTGRES_HOST", "127.0.0.1"),
+#         "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -131,6 +142,17 @@ GRADES = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# caches
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
 
 # hh_api
 CLIENT_ID = "GT11P1DLO4KP6OTSN0KQOQ4OA99KLPFAMRD4BJUKQ2RQS3SIA4COQEE738PRA5I7"

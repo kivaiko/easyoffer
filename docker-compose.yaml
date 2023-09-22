@@ -6,18 +6,26 @@ services:
     restart: always
     ports:
       - "6379:6379"
+#    networks:
+#      - db_net
 
   webapp:
     restart: always
     build: ./
     volumes:
       - ./:/app
+    env_file:
+      - ./.env
     ports:
       - "8000:8000"
     command: >
       sh -c "python manage.py makemigrations && 
       python manage.py migrate 
       && python manage.py runserver 0.0.0.0:8000"
+#    depends_on:
+#      - db
+#    networks:
+#      - db_net
 
   worker:
     restart: always
@@ -27,7 +35,10 @@ services:
     depends_on:
       - redis
       - webapp
+#      - db
     command: 'celery -A easyoffer worker -l info'
+#    networks:
+#      - db_net
 
   beat:
     restart: always
@@ -38,4 +49,25 @@ services:
       - redis
       - webapp
       - worker
+#      - db
     command: 'celery -A easyoffer beat -l info'
+#    networks:
+#      - db_net
+
+#  db:
+#    image: postgres:15
+#    container_name: postgre
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/
+#    env_file:
+#      - ./.env
+#    ports:
+#      - 5432:5432
+#    networks:
+#      - db_net
+
+volumes:
+  postgres_data:
+
+networks:
+  db_net:

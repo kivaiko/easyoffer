@@ -3,18 +3,13 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import CustomUser
 
 
-class CustomUserCreationForm(UserCreationForm):
+class CustomUserCreationForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ('email',)
+        exclude = ['create_at']
 
 
-class CustomUserAuthenticationForm(AuthenticationForm):
-    username = forms.EmailField(
-        max_length=150,
-        widget=forms.TextInput(attrs={'autofocus': True}),
-        label='Email'
-    )
-
+class CustomUserAuthenticationForm(forms.ModelForm):
     class Meta:
         model = CustomUser
+        exclude = ['create_at']
