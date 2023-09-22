@@ -41,7 +41,7 @@
             </div>
             <div class="col">
                 <h1 class="fs-3">{{ mentor.name|title }} {{ mentor.surname|title }}</h1>
-                        <p>{{ mentor.profession }} |
+                        <p>{{ mentor.description }} |
                             {% if mentor.experience == 1 %}
                             {{ mentor.experience }} год опыта
                             {% elif mentor.experience < 5 %}

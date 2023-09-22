@@ -12,7 +12,7 @@ def mentors(request):
     if direction and topic:
         mentors_list = Mentor.objects.filter(public=True, topics=topic, directions=direction)
     else:
-        mentors_list = Mentor.objects.filter(public=True).annotate(avg=Avg('review__rating', filter=models.Q(review__public=True)), review_count=Count('review', filter=models.Q(review__public=True)))
+        mentors_list = Mentor.objects.filter(public=True, permission=True).annotate(avg=Avg('review__rating', filter=models.Q(review__public=True)), review_count=Count('review', filter=models.Q(review__public=True)))
     form = MentorFilterForm()
     return render(request, 'mentors.html', {
         'mentors': mentors_list,
@@ -55,7 +55,7 @@ class MentorUpdate(UpdateView):
     """Страница обновления данных ментора"""
     model = Mentor
     form_class = MentorForm
-    template_name = 'mentor_edit.html'
+    template_name = 'new_mentor.html'
     success_url = reverse_lazy('mentors')
 
 

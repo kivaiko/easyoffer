@@ -34,7 +34,7 @@
                       <td><img src="{{ mentor.image.url }}" class="me-2" height="24" width="24"><a class="link-offset-2 link-offset-3-hover link-underline
             link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ mentor.get_mentor_url }}">
                           {{ mentor.surname|title }} {{ mentor.name|title }}</a></td>
-                      <td>{{ mentor.profession }}</td>
+                      <td>{{ mentor.description }}</td>
                       <td>
                           {% if mentor.experience == 1 %}
                           {{ mentor.experience }} год

@@ -8,14 +8,14 @@ from .models import *
 class MentorForm(forms.ModelForm):
     class Meta:
         model = Mentor
-        exclude = ['public', 'created_at', 'priority', 'last_update']
+        exclude = ['created_at', 'priority', 'last_update', 'permission']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'surname': forms.TextInput(attrs={'class': 'form-control'}),
             'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'profession': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.TextInput(attrs={'class': 'form-control'}),
             'topics': forms.CheckboxSelectMultiple(),
-            'directions': forms.CheckboxSelectMultiple(),
+            'profession': forms.CheckboxSelectMultiple(),
             'skills': forms.SelectMultiple(attrs={'class': 'form-select'}),
             'experience': forms.NumberInput(attrs={'class': 'form-control'}),
             'about_me': forms.Textarea(attrs={'class': 'form-control'}),
@@ -28,14 +28,15 @@ class MentorForm(forms.ModelForm):
             'github': forms.URLInput(attrs={'class': 'form-control'}),
             'website': forms.URLInput(attrs={'class': 'form-control'}),
             'image': forms.FileInput(attrs={'class': 'form-control'}),
+            'public': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
         labels = {
             'name': 'Имя:',
             'surname': 'Фамилия:',
             'username': 'Username:',
-            'profession': 'Должность:',
+            'description': 'Должность:',
             'topics': 'Могу помочь:',
-            'directions': 'Направление:',
+            'profession': 'Направление:',
             'skills': 'Навыки:',
             'experience': 'Опыт:',
             'cost_30m': '30 мин:',
@@ -48,23 +49,31 @@ class MentorForm(forms.ModelForm):
             'website': 'Сайт:',
             'about_me': 'О себе:',
             'image': 'Фото:',
+            'public': 'В публичном доступе',
         }
 
 
-class MentorFilterForm(forms.ModelForm):
-    class Meta:
-        model = Mentor
-        exclude = ['public', 'created_at', 'priority', 'name', 'surname', 'username', 'profession', 'experience',
-                   'cost_30m', 'cost_1h', 'telegram', 'instagram', 'linkedin', 'github', 'behance', 'website',
-                   'about_me', 'image', 'skills', 'last_update']
-        widgets = {
-            'directions': forms.Select(attrs={'class': 'form-select'}),
-            'topics': forms.CheckboxSelectMultiple(),
-        }
-        labels = {
-            'directions': 'Направление:',
-            'topics': 'Тип вопроса:',
-        }
+# class MentorFilterForm(forms.ModelForm):
+#     class Meta:
+#         model = Mentor
+#         exclude = ['public', 'created_at', 'priority', 'name', 'surname', 'username', 'profession', 'experience',
+#                    'cost_30m', 'cost_1h', 'telegram', 'instagram', 'linkedin', 'github', 'behance', 'website',
+#                    'about_me', 'image', 'skills', 'last_update', 'user', 'permission', 'description', 'topics']
+#         widgets = {
+#             'profession': forms.Select(attrs={'class': 'form-select'}),
+#         }
+#         labels = {
+#             'profession': 'Направление:',
+#         }
+
+
+class MentorFilterForm(forms.Form):
+    profession = forms.ModelChoiceField(
+        queryset=Profession.objects.all(),
+        required=False,
+        label='По профессии',
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
 
 
 class DirectionFilterForm(forms.ModelForm):
