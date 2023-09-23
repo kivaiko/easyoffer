@@ -64,7 +64,7 @@ def get_filtered_mocks(request):
 
 
 def get_pagination(request, queryset):
-    paginator = Paginator(queryset, 50)
+    paginator = Paginator(queryset, 100)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return page_obj

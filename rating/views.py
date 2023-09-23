@@ -89,12 +89,8 @@ def profession(request, slug):
     add_question_form = AddQuestion()
     prof_data, available_tags, questions_amount = func(slug)
     ratings = get_ratings(tag, search_form, prof_data)
-
     access_status = get_access_status(request)
-
-    paginator = Paginator(ratings, 100)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page_obj = get_pagination(request, ratings)
     return render(request, 'question_rating.html', {
         'prof_data': prof_data,
         'available_tags': available_tags,
@@ -104,6 +100,7 @@ def profession(request, slug):
         'form': add_question_form,
         'search_form': search_form,
         'access': access_status,
+        'tag': tag,
     })
 
 

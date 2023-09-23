@@ -93,7 +93,15 @@
                       <span class="page-link">{{ p }}</span>
                       </li>
                       {% else %}
-                      <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                        {% if tag %}
+                            <li class="page-item">
+                                  <a class="page-link" href="?tag={{ tag }}&page={{ p }}">{{ p }}</a>
+                              </li>
+                        {% else %}
+                              <li class="page-item">
+                                  <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                              </li>
+                        {% endif %}
                       {% endif %}
                       {% endfor %}
                   </ul>
