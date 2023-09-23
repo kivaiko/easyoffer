@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}
-{{ course.title }}
+Список менторов по программированию, тестированию, анализу и прочим IT профессиям
 {% endblock %}
 
 {% block content %}
-    <h1 class="mt-5 fs-3"> Менторы </h1>
+    <h1 class="mt-5 fs-3"> Список менторов </h1>
     <p class="fs-5 mt-3 mb-5 fs-6">Вы можете <a href="/mentor/new_mentor">добавить себя</a> в список менторов или <a href="/mentor/new_mentor">войти как ментор</a> </p>
-    <div class="container">
         <div class="row align-items-start">
             <div class="col-2">
                 <form method="POST">
@@ -58,6 +57,5 @@
                   </tbody>
                 </table>
         </div>
-    </div>
 
 {% endblock %}
