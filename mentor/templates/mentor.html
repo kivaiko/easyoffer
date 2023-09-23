@@ -52,7 +52,7 @@
 
                 <a href="https://telegram.me/{{ mentor.telegram }}" class="btn btn-sm btn-primary me-3" style="background-color: #28a9eb; border-color: #28a9eb" target="_blank"><i class="bi bi-telegram me-2"></i>Написать в Telegram</a>
                 {% if reviews.count > 0 %}
-                    <i class="bi bi-star"></i> {{ avg_rating.rating__avg }} (
+                    <i class="bi bi-star"></i> {{ avg_rating.rating__avg|floatformat:"1" }} (
                     {% if reviews.count == 1 %}
                         {{ reviews.count }} отзыв
                     {% elif 1 < reviews.count < 5 %}
@@ -64,7 +64,6 @@
                 {% endif %}
                 <h2 class="fs-5 mt-5 mb-3">О менторе:</h2>
                 <p>{{ mentor.about_me|safe }}</p>
-                {% if reviews %}
                 <p>Направления:
                     {% for item in mentor.directions.all %}
                     <span class="badge rounded-pill text-bg-primary">{{ item.title }}</span>
@@ -80,8 +79,8 @@
                     <span class="badge rounded-pill text-bg-primary">{{ item.title }}</span>
                     {% endfor %}
                 </p>
+                {% if reviews %}
                 <h2 class="fs-5 mt-5 mb-3">Отзывы:</h2>
-                {% endif%}
                 {% for review in reviews %}
                 <div class="card mb-3 col" >
                     <div class="card-body">
@@ -91,6 +90,7 @@
                     </div>
                 </div>
                 {% endfor %}
+                {% endif %}
                 <h2 class="fs-5 mt-5 mb-3">Оставить отзыв:</h2>
                 <form class="row g-3" action = "" method="post">
                     {% csrf_token %}

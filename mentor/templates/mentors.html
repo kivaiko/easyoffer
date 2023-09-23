@@ -46,7 +46,7 @@
                       </td>
                       <td>
                           {% if mentor.avg != None %}
-                          {{ mentor.avg }} ({{ mentor.review_count }})
+                          <i class="bi bi-star"></i> {{ mentor.avg|floatformat:"1" }} ({{ mentor.review_count }})
                           {% else %}
                           -
                           {% endif %}

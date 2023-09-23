@@ -10,8 +10,9 @@ class MentorForm(forms.ModelForm):
 
     class Meta:
         model = Mentor
-        # exclude = ['created_at', 'priority', 'last_update', 'permission']
-        fields = ['name', 'surname', 'username']
+        fields = ['name', 'surname', 'username', 'description', 'topics', 'profession', 'skills', 'experience',
+                  'about_me', 'cost_30m', 'cost_1h', 'telegram', 'instagram', 'linkedin', 'behance', 'github',
+                  'website', 'image', 'public']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'surname': forms.TextInput(attrs={'class': 'form-control'}),
@@ -92,16 +93,31 @@ class DirectionFilterForm(forms.ModelForm):
 
 
 class ReviewForm(forms.ModelForm):
+
+    RATING_CHOICES = (
+        (5, 5),
+        (4, 4),
+        (3, 3),
+        (2, 2),
+        (1, 1),
+    )
+
+    rating = forms.ChoiceField(
+        choices=RATING_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label='Оценка:'
+    )
+
     class Meta:
         model = Review
         exclude = ['public', 'created_at', 'mentor']
         widgets = {
             'author': forms.TextInput(attrs={'class': 'form-control'}),
             'text': forms.CharField(label='Ответ', widget=CKEditorWidget()),
-            'rating': forms.Select(attrs={'class': 'form-control'}),
+            # 'rating': forms.Select(attrs={'class': 'form-control'}),
         }
         labels = {
             'author': 'Ваше имя:',
-            'rating': 'Оценка:',
+            # 'rating': 'Оценка:',
         }
 

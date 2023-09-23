@@ -6,7 +6,9 @@ from django.db.models import F, Value, Q
 from django.core.paginator import Paginator
 from .forms import *
 from .models import *
-from .service import get_access_status, get_client_ip, func, get_ratings, get_filtered_mocks, get_pagination
+from .service import get_access_status, get_client_ip, get_prof_data, get_ratings, get_filtered_mocks, get_pagination, \
+    get_question_content, create_answer, create_video_link, create_extra_link, get_data_from_content_form, \
+    update_rating_from_quiz, create_mock, crete_question, giving_access
 
 
 class IndexView(ListView):
@@ -16,78 +18,16 @@ class IndexView(ListView):
     queryset = Profession.objects.filter(public_rating=True)
 
 
-# def profession(request, slug):
-#     if request.method == "POST":
-#         form = AddQuestion(request.POST)
-#         if form.is_valid():
-#             Question.objects.create(
-#                 title=form.cleaned_data["title"],
-#                 tag=form.cleaned_data["tag"]
-#             )
-#             Rating.objects.create(
-#                 profession=Profession.objects.get(slug=slug),
-#                 question=Question.objects.latest('id'),
-#                 rating=form.cleaned_data["rating"]
-#             )
-#             return redirect('thx_data')
-#
-#     ip = get_client_ip(request)
-#     access_status = get_access_status(ip)
-#     prof_data = Profession.objects.get(slug=slug)
-#     available_tags = prof_data.tags.all()
-#     add_question_form = AddQuestion()
-#     search_form = QuestionSearchForm(request.GET)
-#     tag = request.GET.get("tag")
-#     questions_amount = Rating.objects.select_related('question').filter(profession=prof_data, public=True).count()
-#
-#     if tag and tag != 'Все':
-#         ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True, question__tag__title=tag).order_by(
-#             "-rating") \
-#             .annotate(chance=F('rating') * 100 / prof_data.votes)
-#     else:
-#         ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by(
-#             "-rating") \
-#             .annotate(chance=F('rating') * 100 / prof_data.votes)
-#     if search_form.is_valid():
-#         search_query = search_form.cleaned_data['search_query']
-#         if search_query:
-#             ratings = ratings.filter(question__title__icontains=search_query)
-#
-#     paginator = Paginator(ratings, 100)
-#     page_number = request.GET.get('page')
-#     page_obj = paginator.get_page(page_number)
-#     return render(request, 'question_rating.html', {
-#         'prof_data': prof_data,
-#         'available_tags': available_tags,
-#         'ratings': ratings,
-#         'questions_amount': questions_amount,
-#         'page_obj': page_obj,
-#         'form': add_question_form,
-#         'search_form': search_form,
-#         'access': access_status,
-#     })
-
-
 def profession(request, slug):
     if request.method == "POST":
         form = AddQuestion(request.POST)
         if form.is_valid():
-            Question.objects.create(
-                title=form.cleaned_data["title"],
-                tag=form.cleaned_data["tag"]
-            )
-            Rating.objects.create(
-                profession=Profession.objects.get(slug=slug),
-                question=Question.objects.latest('id'),
-                rating=form.cleaned_data["rating"]
-            )
+            crete_question(form, slug)
             return redirect('thx_data')
 
     tag = request.GET.get("tag")
-    search_form = QuestionSearchForm(request.GET)
-
-    add_question_form = AddQuestion()
-    prof_data, available_tags, questions_amount = func(slug)
+    search_form, add_question_form = QuestionSearchForm(request.GET), AddQuestion()
+    prof_data, available_tags, questions_amount = get_prof_data(slug)
     ratings = get_ratings(tag, search_form, prof_data)
     access_status = get_access_status(request)
     page_obj = get_pagination(request, ratings)
@@ -106,38 +46,20 @@ def profession(request, slug):
 
 def question(request, question_id):
     if request.method == "POST":
-        comment_form = CommentForm(request.POST)
-        video_form = VideoAnswerForm(request.POST, prefix='video')
-        extra_content_form = ExtraContentForm(request.POST, prefix='content')
+        comment_form, video_form, extra_content_form = get_data_from_content_form(request)
         if comment_form.is_valid():
-            Answer.objects.create(
-                question_id=question_id,
-                text=comment_form.cleaned_data["text"],
-                author=comment_form.cleaned_data["author"],
-                url=comment_form.cleaned_data["url"]
-            )
+            create_answer(question_id, comment_form)
             return redirect('thx_data')
         if video_form.is_valid():
-            VideoAnswerLink.objects.create(
-                question_id=question_id,
-                title=video_form.cleaned_data["title"],
-                url=video_form.cleaned_data["url"]
-            )
+            create_video_link(question_id, video_form)
             return redirect('thx_data')
         if extra_content_form.is_valid():
-            ExtraContentLink.objects.create(
-                question_id=question_id,
-                title=extra_content_form.cleaned_data["title"],
-                url=extra_content_form.cleaned_data["url"]
-            )
+            create_extra_link(question_id, extra_content_form)
             return redirect('thx_data')
-    comment_form = CommentForm()
-    video_answer_form = VideoAnswerForm(prefix='video')
-    extra_content_form = ExtraContentForm(prefix='content')
-    question_data = Question.objects.get(id=question_id)
-    answers = Answer.objects.filter(question__id=question_data.id, public=True).order_by("-rating")
-    video_links = VideoAnswerLink.objects.filter(question__id=question_data.id, public=True)
-    extra_links = ExtraContentLink.objects.filter(question__id=question_data.id, public=True)
+
+    comment_form, video_answer_form, extra_content_form = CommentForm(), VideoAnswerForm(prefix='video'),\
+                                                          ExtraContentForm(prefix='content')
+    question_data, answers, video_links, extra_links = get_question_content(question_id)
     return render(request, 'question.html', {
         'comment_form': comment_form,
         'video_answer_form': video_answer_form,
@@ -151,16 +73,9 @@ def question(request, question_id):
 
 def quiz(request, prof_slug):
     if request.method == "POST":
-        for i in request.POST:
-            if request.POST[i] == "Встречался":
-                question = Rating.objects.get(id=i)
-                question.rating += 1
-                question.save()
-        profession_votes = Profession.objects.get(prof_slug=prof_slug)
-        profession_votes.votes += 1
-        profession_votes.save()
+        update_rating_from_quiz(request, prof_slug)
         return redirect('thx_quiz')
-    prof_data = Profession.objects.get(prof_slug=prof_slug)
+    prof_data = Profession.objects.get(slug=prof_slug)
     ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by("-rating")
     return render(request, 'quiz.html', {
         'prof_data': prof_data,
@@ -194,12 +109,7 @@ def mock(request):
     if request.method == "POST":
         form = AddMockForm(request.POST)
         if form.is_valid():
-            MockInterview.objects.create(
-                profession=form.cleaned_data["profession"],
-                title=form.cleaned_data["title"],
-                url=form.cleaned_data["url"],
-                grade=form.cleaned_data["grade"]
-            )
+            create_mock(form)
             return redirect('thx_data')
     mocks, profession_id, grade = get_filtered_mocks(request)
     page_obj = get_pagination(request, mocks)
@@ -215,13 +125,5 @@ def mock(request):
 
 
 def access(request):
-    ip = get_client_ip(request)
-    if not Access.objects.filter(ip_address=ip).exists():
-        current_datetime = datetime.now()
-        new_datetime = current_datetime + timedelta(days=30)
-        print(new_datetime)
-        Access.objects.create(
-            ip_address=ip,
-            delete_date=new_datetime,
-        )
+    giving_access(request)
     return redirect('access_success')
