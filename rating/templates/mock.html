@@ -40,7 +40,7 @@
                   {% endfor %}
                   </tbody>
                 </table>
-                {% if mocks.count > 1 %}
+                {% if mocks.count > 50 %}
                 <nav>
                   <ul class="pagination pagination-sm">
                       {% for p in page_obj.paginator.page_range %}
@@ -52,6 +52,10 @@
                           {% if profession_id != None and grade != None %}
                           <li class="page-item">
                               <a class="page-link" href="?profession={{ profession_id }}&grade={{ grade }}&page={{ p }}">{{ p }}</a>
+                          </li>
+                          {% elif profession_id != None %}
+                          <li class="page-item">
+                              <a class="page-link" href="?profession={{ profession_id }}&page={{ p }}">{{ p }}</a>
                           </li>
                           {% else %}
                            <li class="page-item">

@@ -55,8 +55,10 @@ class MentorUpdate(UpdateView):
     """Страница обновления данных ментора"""
     model = Mentor
     form_class = MentorForm
-    template_name = 'new_mentor.html'
+    template_name = 'mentor_edit.html'
     success_url = reverse_lazy('mentors')
+    slug_url_kwarg = 'username'
+    slug_field = 'username'
 
 
 class ThxView(TemplateView):

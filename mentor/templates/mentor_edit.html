@@ -152,7 +152,7 @@
             </div>
             <div class="col-auto">
                 <span class="form-text">
-                    username / обязательно для заполнения
+                    Только username <s>@username</s> / обязательно для заполнения
                 </span>
             </div>
         </div>
@@ -167,7 +167,7 @@
             </div>
             <div class="col-auto">
                 <span class="form-text">
-                    username
+                    Только username <s>@username</s>
                 </span>
             </div>
         </div>
@@ -182,7 +182,7 @@
             </div>
             <div class="col-auto">
                 <span class="form-text">
-                    Ссылка на профиль / обязательно для заполнения
+                    Ссылка на профиль
                 </span>
             </div>
         </div>
@@ -197,7 +197,7 @@
             </div>
             <div class="col-auto">
                 <span class="form-text">
-                    Ссылка на профиль / обязательно для заполнения прогерам
+                    Ссылка на профиль
                 </span>
             </div>
         </div>
@@ -212,7 +212,7 @@
             </div>
             <div class="col-auto">
                 <span class="form-text">
-                    Ссылка на профиль / обязательно для заполнения дизайнерам
+                    Ссылка на профиль
                 </span>
             </div>
         </div>
@@ -253,6 +253,12 @@
                 <label for="{{ form.about_me.id_for_label }}" class="form-label">{{ form.about_me.label }}</label>
                 {{ form.about_me }}
             </div>
+        </div>
+        <br>
+        <! -- Опубликовать -->
+        <div class="form-check">
+          <label class="form-check-label" for="{{ form.public.id_for_label }}">{{ form.public.label }}</label>
+            {{ form.public }}
         </div>
         <br>
         <button class="btn btn-primary mt-3 mb-3" type="submit" value="Submit">Отправить</button>

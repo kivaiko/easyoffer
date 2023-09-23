@@ -6,7 +6,7 @@ from django.db.models import F, Value, Q
 from django.core.paginator import Paginator
 from .forms import *
 from .models import *
-from .service import get_access_status, get_client_ip
+from .service import get_access_status, get_client_ip, func, get_ratings, get_filtered_mocks, get_pagination
 
 
 class IndexView(ListView):
@@ -16,7 +16,59 @@ class IndexView(ListView):
     queryset = Profession.objects.filter(public_rating=True)
 
 
-def profession(request, prof_slug):
+# def profession(request, slug):
+#     if request.method == "POST":
+#         form = AddQuestion(request.POST)
+#         if form.is_valid():
+#             Question.objects.create(
+#                 title=form.cleaned_data["title"],
+#                 tag=form.cleaned_data["tag"]
+#             )
+#             Rating.objects.create(
+#                 profession=Profession.objects.get(slug=slug),
+#                 question=Question.objects.latest('id'),
+#                 rating=form.cleaned_data["rating"]
+#             )
+#             return redirect('thx_data')
+#
+#     ip = get_client_ip(request)
+#     access_status = get_access_status(ip)
+#     prof_data = Profession.objects.get(slug=slug)
+#     available_tags = prof_data.tags.all()
+#     add_question_form = AddQuestion()
+#     search_form = QuestionSearchForm(request.GET)
+#     tag = request.GET.get("tag")
+#     questions_amount = Rating.objects.select_related('question').filter(profession=prof_data, public=True).count()
+#
+#     if tag and tag != 'Все':
+#         ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True, question__tag__title=tag).order_by(
+#             "-rating") \
+#             .annotate(chance=F('rating') * 100 / prof_data.votes)
+#     else:
+#         ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by(
+#             "-rating") \
+#             .annotate(chance=F('rating') * 100 / prof_data.votes)
+#     if search_form.is_valid():
+#         search_query = search_form.cleaned_data['search_query']
+#         if search_query:
+#             ratings = ratings.filter(question__title__icontains=search_query)
+#
+#     paginator = Paginator(ratings, 100)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+#     return render(request, 'question_rating.html', {
+#         'prof_data': prof_data,
+#         'available_tags': available_tags,
+#         'ratings': ratings,
+#         'questions_amount': questions_amount,
+#         'page_obj': page_obj,
+#         'form': add_question_form,
+#         'search_form': search_form,
+#         'access': access_status,
+#     })
+
+
+def profession(request, slug):
     if request.method == "POST":
         form = AddQuestion(request.POST)
         if form.is_valid():
@@ -25,33 +77,20 @@ def profession(request, prof_slug):
                 tag=form.cleaned_data["tag"]
             )
             Rating.objects.create(
-                profession=Profession.objects.get(prof_slug=prof_slug),
+                profession=Profession.objects.get(slug=slug),
                 question=Question.objects.latest('id'),
                 rating=form.cleaned_data["rating"]
             )
             return redirect('thx_data')
 
-    ip = get_client_ip(request)
-    access_status = get_access_status(ip)
-    prof_data = Profession.objects.get(prof_slug=prof_slug)
-    available_tags = prof_data.tags.all()
-    add_question_form = AddQuestion()
-    search_form = QuestionSearchForm(request.GET)
     tag = request.GET.get("tag")
-    questions_amount = Rating.objects.select_related('question').filter(profession=prof_data, public=True).count()
+    search_form = QuestionSearchForm(request.GET)
 
-    if tag and tag != 'Все':
-        ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True, question__tag__title=tag).order_by(
-            "-rating") \
-            .annotate(chance=F('rating') * 100 / prof_data.votes)
-    else:
-        ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by(
-            "-rating") \
-            .annotate(chance=F('rating') * 100 / prof_data.votes)
-    if search_form.is_valid():
-        search_query = search_form.cleaned_data['search_query']
-        if search_query:
-            ratings = ratings.filter(question__title__icontains=search_query)
+    add_question_form = AddQuestion()
+    prof_data, available_tags, questions_amount = func(slug)
+    ratings = get_ratings(tag, search_form, prof_data)
+
+    access_status = get_access_status(request)
 
     paginator = Paginator(ratings, 100)
     page_number = request.GET.get('page')
@@ -165,18 +204,9 @@ def mock(request):
                 grade=form.cleaned_data["grade"]
             )
             return redirect('thx_data')
-    profession_id = request.GET.get("profession")
-    grade = request.GET.get("grade")
-    # mocks = MockInterview.objects.filter(public=True).filter(Q(grade=grade) | Q(profession=profession_id))
-    if profession_id and grade:
-        mocks = MockInterview.objects.filter(public=True).filter(Q(grade=grade) | Q(profession=profession_id))
-    else:
-        mocks = MockInterview.objects.filter(public=True)
-    paginator = Paginator(mocks, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    form_filter = MockFilterForm
-    form = AddMockForm
+    mocks, profession_id, grade = get_filtered_mocks(request)
+    page_obj = get_pagination(request, mocks)
+    form_filter, form = MockFilterForm, AddMockForm
     return render(request, 'mock.html', {
         'mocks': mocks,
         'page_obj': page_obj,

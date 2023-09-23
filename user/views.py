@@ -1,17 +1,17 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import CustomUserCreationForm, CustomUserAuthenticationForm
 
 
 def register(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'register.html')
+
+
+def oauth(request):
+    print(request.body)
+    return HttpResponse("OK")
+    # return render(request, 'register.html')
 
 
 def user_login(request):

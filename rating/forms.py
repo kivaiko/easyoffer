@@ -46,7 +46,7 @@ class MockFilterForm(forms.ModelForm):
         exclude = ['public', 'url', 'title', 'created_at']
         widgets = {
             'profession': forms.Select(attrs={'class': 'form-select'}),
-            'grade': forms.CheckboxSelectMultiple(),
+            'grade': forms.RadioSelect(),
         }
         labels = {
             'profession': 'Должность:',

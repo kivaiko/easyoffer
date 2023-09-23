@@ -65,17 +65,17 @@ class Review(models.Model):
         db_table = 'reviews'
 
     GRADE = [
-        ('1', '1'),
-        ('2', '2'),
-        ('3', '3'),
-        ('4', '4'),
-        ('5', '5'),
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
     ]
 
     author = models.CharField(max_length=30)
     text = RichTextField()
     mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
-    rating = models.CharField(max_length=1, choices=GRADE)
+    rating = models.IntegerField(default=1)
     public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 

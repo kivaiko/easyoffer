@@ -6,9 +6,12 @@ from .models import *
 
 
 class MentorForm(forms.ModelForm):
+    image = forms.FileField(required=False)
+
     class Meta:
         model = Mentor
-        exclude = ['created_at', 'priority', 'last_update', 'permission']
+        # exclude = ['created_at', 'priority', 'last_update', 'permission']
+        fields = ['name', 'surname', 'username']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'surname': forms.TextInput(attrs={'class': 'form-control'}),
