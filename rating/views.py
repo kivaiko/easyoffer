@@ -46,15 +46,16 @@ class ProfessionView(View):
 class QuestionView(View):
     def post(self, request, question_id):
         comment_form, video_form, extra_content_form = get_data_from_content_form(request)
+        redirect_target = 'thx_data'
         if comment_form.is_valid():
             create_answer(question_id, comment_form)
-            return redirect('thx_data')
-        if video_form.is_valid():
+        elif video_form.is_valid():
             create_video_link(question_id, video_form)
-            return redirect('thx_data')
-        if extra_content_form.is_valid():
+        elif extra_content_form.is_valid():
             create_extra_link(question_id, extra_content_form)
-            return redirect('thx_data')
+        else:
+            redirect_target = 'error'
+        return redirect(redirect_target)
 
     def get(self, request, question_id):
         comment_form, video_answer_form, extra_content_form = CommentForm(), VideoAnswerForm(prefix='video'),\
@@ -100,6 +101,11 @@ class ThxAccessSuccessView(TemplateView):
     template_name = 'access_success.html'
 
 
+class ErrorView(TemplateView):
+    """Страница ошибки"""
+    template_name = 'error.html'
+
+
 class MockView(View):
     def post(self, request):
         form = AddMockForm(request.POST)
@@ -121,6 +127,7 @@ class MockView(View):
         })
 
 
-def access(request):
-    giving_access(request)
-    return redirect('access_success')
+class AccessView(View):
+    def get(self, request):
+        giving_access(request)
+        return redirect('access_success')
