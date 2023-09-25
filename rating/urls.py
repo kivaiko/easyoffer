@@ -1,5 +1,4 @@
 from django.urls import path
-from rating import views
 from rating.views import IndexView, ThxView, ThxQuizView, ThxAccessSuccessView, ProfessionView, QuestionView, QuizView,\
     MockView, AccessView, ErrorView
 

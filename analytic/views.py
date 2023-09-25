@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import *
 from django.views.generic import ListView
 from rating.models import Profession
-from rating.service import get_access_status, get_client_ip
+from rating.service import get_access_status
 
 
 class ChoiceProfession(ListView):
@@ -16,8 +16,7 @@ def analytic(request, prof_slug):
     title = request.GET.get("title")
     prof_data = Profession.objects.get(prof_slug=prof_slug)
     all_searches = Search.objects.filter(profession=prof_data)
-    ip = get_client_ip(request)
-    access = get_access_status(ip)
+    access_status = get_access_status(request)
     if title:
         search = Search.objects.get(profession=prof_data, title=title)
     else:
@@ -29,5 +28,5 @@ def analytic(request, prof_slug):
         'skills': skills,
         'keywords': keywords,
         'all_searches': all_searches,
-        'access': access,
+        'access': access_status,
     })

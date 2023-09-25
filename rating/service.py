@@ -4,6 +4,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django.db.models import F, Q
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 
 
 def get_client_ip(request):
@@ -29,25 +30,19 @@ def delete_access():
 
 def get_prof_data(slug):
     prof_data = Profession.objects.get(slug=slug)
-    available_tags = prof_data.tags.all()
     questions_amount = Rating.objects.select_related('question').filter(profession=prof_data, public=True).count()
-    return prof_data, available_tags, questions_amount
+    return prof_data, prof_data.tags.all(), questions_amount
 
 
 def get_ratings(tag, search_form, prof_data):
+    ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True)
     if tag and tag != 'Все':
-        ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True,
-                                                                   question__tag__title=tag).order_by(
-            "-rating") \
-            .annotate(chance=F('rating') * 100 / prof_data.votes)
-    else:
-        ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by(
-            "-rating") \
-            .annotate(chance=F('rating') * 100 / prof_data.votes)
+        ratings = ratings.filter(question__tag__title=tag)
     if search_form.is_valid():
         search_query = search_form.cleaned_data['search_query']
         if search_query:
-            ratings = ratings.filter(question__title__icontains=search_query)
+            ratings = ratings.filter(Q(question__title__icontains=search_query))
+    ratings = ratings.order_by("-rating").annotate(chance=F('rating') * 100 / prof_data.votes)
     return ratings
 
 
@@ -133,12 +128,16 @@ def crete_question(form, slug):
 
 
 def update_rating_from_quiz(request, slug):
-    for i in request.POST:
-        if request.POST[i] == "Встречался":
-            question = Rating.objects.get(id=i)
-            question.rating += 1
-            question.save()
-    profession_votes = Profession.objects.get(slug=slug)
+    question_ids_to_update = []
+
+    for i, value in request.POST.items():
+        if value == "Встречался":
+            question_ids_to_update.append(i)
+
+    if question_ids_to_update:
+        Rating.objects.filter(id__in=question_ids_to_update).update(rating=F('rating') + 1)
+
+    profession_votes = get_object_or_404(Profession, slug=slug)
     profession_votes.votes += 1
     profession_votes.save()
 
