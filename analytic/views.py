@@ -12,9 +12,9 @@ class ChoiceProfession(ListView):
     queryset = Profession.objects.filter(public_analytic=True)
 
 
-def analytic(request, prof_slug):
+def analytic(request, slug):
     title = request.GET.get("title")
-    prof_data = Profession.objects.get(prof_slug=prof_slug)
+    prof_data = Profession.objects.get(slug=slug)
     all_searches = Search.objects.filter(profession=prof_data)
     access_status = get_access_status(request)
     if title:

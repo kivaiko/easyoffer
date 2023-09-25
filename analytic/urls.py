@@ -4,6 +4,6 @@ from analytic.views import ChoiceProfession
 
 urlpatterns = [
     path('analytic', ChoiceProfession.as_view(), name='choice'),
-    path('analytic/<slug:prof_slug>', views.analytic, name='analytic')
+    path('analytic/<slug:slug>', views.analytic, name='analytic')
 ]
 

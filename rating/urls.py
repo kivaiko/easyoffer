@@ -11,6 +11,6 @@ urlpatterns = [
     path('access', AccessView.as_view(), name='access'),
     path('question/<int:question_id>', QuestionView.as_view(), name='question'),
     path('quiz/thx_quiz', ThxQuizView.as_view(), name='thx_quiz'),
-    path('quiz/<slug:prof_slug>', QuizView.as_view(), name='quiz'),
+    path('quiz/<slug:slug>', QuizView.as_view(), name='quiz'),
     path('rating/<slug:slug>', ProfessionView.as_view(), name='question_rating'),
 ]

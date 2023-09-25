@@ -73,12 +73,12 @@ class QuestionView(View):
 
 
 class QuizView(View):
-    def post(self, request, prof_slug):
-        update_rating_from_quiz(request, prof_slug)
+    def post(self, request, slug):
+        update_rating_from_quiz(request, slug)
         return redirect('thx_quiz')
 
-    def get(self, request, prof_slug):
-        prof_data = Profession.objects.get(slug=prof_slug)
+    def get(self, request, slug):
+        prof_data = Profession.objects.get(slug=slug)
         ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True).order_by("-rating")
         return render(request, 'quiz.html', {
             'prof_data': prof_data,
