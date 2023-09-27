@@ -102,12 +102,15 @@ def count_words():
     searches_queryset = Search.objects.all().filter(public=True)
     print(f'Queryset: {searches_queryset}')
     for search in searches_queryset:
-        print(f'Обработка {search} – запущена')
-        link = get_link(search.url)
-        vacancies_ids = get_vacancies_id(link, search)
-        skills, keywords = get_data_from_vacancies_id(vacancies_ids)
-        add_skills_to_db(skills, search)
-        add_keywords_to_db(keywords, search)
-        print(skills)
-        print(' ')
-        print(keywords)
+        try:
+            print(f'Обработка {search} – запущена')
+            link = get_link(search.url)
+            vacancies_ids = get_vacancies_id(link, search)
+            skills, keywords = get_data_from_vacancies_id(vacancies_ids)
+            print(f'Данные для {search} – Собраны')
+            add_skills_to_db(skills, search)
+            print(f'Скилы для {search} – Добавлены в базу')
+            add_keywords_to_db(keywords, search)
+            print(f'Ключевые для {search} – Добавлены в базу')
+        except:
+            continue

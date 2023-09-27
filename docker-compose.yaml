@@ -32,6 +32,8 @@ services:
     build: .
     volumes:
       - ./:/app
+    env_file:
+      - ./.env
     depends_on:
       - redis
       - webapp
