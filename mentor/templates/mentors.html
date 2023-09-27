@@ -10,7 +10,6 @@
         <div class="row align-items-start">
             <div class="col-2">
                 <form method="get">
-                    {% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit" class="btn btn-sm btn-primary mt-1">Выбрать</button>
                 </form>

@@ -13,7 +13,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites',
+    'django.contrib.sites',
 
     'allauth',
     'allauth.account',
@@ -185,11 +185,22 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 SOCIALACCOUNT_PROVIDERS = {
-    'github': {
+    'google': {
         'SCOPE': [
-            'user',
+            'profile',
+            'email',
         ],
-    }
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        ''
+        'OAUTH_PKCE_ENABLED': True,
+    },
+    'github': {
+            'SCOPE': [
+                'user',
+            ],
+        }
 }
 
 #debug toolbar

@@ -3,16 +3,22 @@ from django.views.generic import DetailView, CreateView, TemplateView, UpdateVie
 from django.urls import reverse_lazy
 from .models import *
 from .forms import MentorForm, MentorFilterForm, ReviewForm
-from django.db.models import Avg, Count
+from django.db.models import Avg, Count, Q
 
 
 def mentors(request):
-    direction = request.GET.get("directions")
-    topic = request.GET.get("topics")
-    if direction and topic:
-        mentors_list = Mentor.objects.filter(public=True, topics=topic, directions=direction)
-    else:
-        mentors_list = Mentor.objects.filter(public=True, permission=True).annotate(avg=Avg('review__rating', filter=models.Q(review__public=True)), review_count=Count('review', filter=models.Q(review__public=True)))
+
+    profession_id = request.GET.get("profession")
+    topic_id = request.GET.get("topics")
+    profession_filter = Q()
+    if profession_id:
+        profession_filter = Q(profession=profession_id)
+    topic_filter = Q()
+    if topic_id:
+        topic_filter = Q(topics=topic_id)
+    mentors_list = Mentor.objects.filter(public=True, permission=True).filter(profession_filter & topic_filter).annotate(avg=Avg('review__rating', filter=models.Q(review__public=True)), review_count=Count('review', filter=models.Q(review__public=True)))
+
+    # mentors_list = Mentor.objects.filter(public=True, permission=True).annotate(avg=Avg('review__rating', filter=models.Q(review__public=True)), review_count=Count('review', filter=models.Q(review__public=True)))
     form = MentorFilterForm()
     return render(request, 'mentors.html', {
         'mentors': mentors_list,

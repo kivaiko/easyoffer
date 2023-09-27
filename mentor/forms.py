@@ -74,9 +74,15 @@ class MentorForm(forms.ModelForm):
 class MentorFilterForm(forms.Form):
     profession = forms.ModelChoiceField(
         queryset=Profession.objects.all(),
-        required=False,
+        required=True,
         label='Профессия:',
         widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    topics = forms.ModelChoiceField(
+        queryset=Topic.objects.all(),
+        required=False,
+        label='Топик:',
+        widget=forms.RadioSelect()
     )
 
 

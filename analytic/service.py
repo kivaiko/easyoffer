@@ -98,8 +98,11 @@ def add_keywords_to_db(keywords, search):
 
 
 def count_words():
+    print('count_words – запущена')
     searches_queryset = Search.objects.all().filter(public=True)
+    print(f'Queryset: {searches_queryset}')
     for search in searches_queryset:
+        print(f'Обработка {search} – запущена')
         link = get_link(search.url)
         vacancies_ids = get_vacancies_id(link, search)
         skills, keywords = get_data_from_vacancies_id(vacancies_ids)

@@ -11,7 +11,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'get_analytic_from_hh': {
         'task': 'analytic.tasks.get_analytic_from_hh_api',
-        'schedule': crontab(day_of_week='sunday'),
+        'schedule': crontab(minute='*/5'),
     },
     'delete_access': {
         'task': 'rating.tasks.delete_access_data',
