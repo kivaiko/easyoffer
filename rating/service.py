@@ -29,13 +29,13 @@ def delete_access():
 
 
 def get_prof_data(slug):
-    prof_data = Profession.objects.get(slug=slug)
+    prof_data = Profession.objects.prefetch_related('tags').get(slug=slug)
     questions_amount = Rating.objects.select_related('question').filter(profession=prof_data, public=True).count()
     return prof_data, prof_data.tags.all(), questions_amount
 
 
 def get_ratings(tag, search_form, prof_data):
-    ratings = Rating.objects.select_related('question').filter(profession=prof_data, public=True)
+    ratings = Rating.objects.select_related('question__tag').filter(profession=prof_data, public=True)
     if tag and tag != 'Все':
         ratings = ratings.filter(question__tag__title=tag)
     if search_form.is_valid():
@@ -55,7 +55,7 @@ def get_filtered_mocks(request):
     grade_filter = Q()
     if grade:
         grade_filter = Q(grade=grade)
-    mocks = MockInterview.objects.filter(public=True).filter(profession_filter & grade_filter)
+    mocks = MockInterview.objects.filter(public=True).filter(profession_filter & grade_filter).select_related('profession')
     return mocks, profession_id, grade
 
 

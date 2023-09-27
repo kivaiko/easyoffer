@@ -3,6 +3,8 @@ import json
 import re
 import bleach
 from collections import Counter
+
+from rating.models import Profession
 from .word_filter import words_filter
 from easyoffer.settings import HEADERS
 from .models import Search, Skill, KeyWord
@@ -114,3 +116,16 @@ def count_words():
             print(f'Ключевые для {search} – Добавлены в базу')
         except:
             continue
+
+
+def get_search_data(request, slug):
+    title = request.GET.get("title")
+    prof_data = Profession.objects.get(slug=slug)
+    searches_for_prof = Search.objects.filter(profession=prof_data)
+    if title:
+        search = Search.objects.get(profession=prof_data, title=title)
+    else:
+        search = Search.objects.get(profession=prof_data, title='Все')
+    skills = Skill.objects.filter(search=search).order_by('-amount')
+    keywords = KeyWord.objects.filter(search=search).order_by('-amount')
+    return search, skills, keywords, searches_for_prof

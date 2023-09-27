@@ -65,7 +65,7 @@
                 <h2 class="fs-5 mt-5 mb-3">О менторе:</h2>
                 <p>{{ mentor.about_me|safe }}</p>
                 <p>Направления:
-                    {% for item in mentor.directions.all %}
+                    {% for item in mentor.profession.all %}
                     <span class="badge rounded-pill text-bg-primary">{{ item.title }}</span>
                     {% endfor %}
                 </p>
