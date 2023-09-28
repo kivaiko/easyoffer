@@ -7,8 +7,14 @@
 {% block content %}
 
     <h1 class="mt-5 mb-5 fs-3">Редактированние данных</h1>
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>Ошибка!</strong> Пожалуйста, исправьте следующие ошибки:
+            {{ form.errors }}
+        </div>
+        {% endif %}
         <! -- Имя -->
         <div class="row g-3 align-items-center">
             <div class="col-1">
@@ -30,7 +36,7 @@
         </div>
         <br>
         <! -- Username -->
-        <div class="row g-3 align-items-center">
+        <div class="row g-3 align-items-center" >
             <div class="col-1">
                 <label for="{{ form.username.id_for_label }}" class="col-form-label">{{ form.username.label }}</label>
             </div>

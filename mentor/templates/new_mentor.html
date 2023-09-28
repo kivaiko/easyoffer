@@ -9,6 +9,12 @@
     <h1 class="mt-5 mb-5 fs-3">Форма заявки на ментора</h1>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>Ошибка!</strong> Пожалуйста, исправьте следующие ошибки:
+            {{ form.errors }}
+        </div>
+        {% endif %}
         <! -- Имя -->
         <div class="row g-3 align-items-center">
             <div class="col-1">
