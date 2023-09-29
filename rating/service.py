@@ -1,4 +1,4 @@
-from .forms import AddQuestion, QuestionSearchForm, CommentForm, VideoAnswerForm, ExtraContentForm
+from .forms import CommentForm, VideoAnswerForm, ExtraContentForm
 from .models import Access, Profession, Rating, MockInterview, Question, Answer, VideoAnswerLink, ExtraContentLink
 from django.utils import timezone
 from datetime import datetime, timedelta

@@ -168,6 +168,7 @@ CKEDITOR_CONFIGS = {
             ['Image', 'CodeSnippet'],
         ],
         'extraPlugins': 'codesnippet',
+        'width': '550px',
     },
 }
 
