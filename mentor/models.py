@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from ckeditor.fields import RichTextField
-from user.models import CustomUser
+from users.models import User
 from rating.models import Profession
 
 
@@ -31,7 +31,7 @@ class Mentor(models.Model):
     class Meta:
         db_table = 'mentors'
 
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
