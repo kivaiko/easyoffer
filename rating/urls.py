@@ -1,6 +1,7 @@
 from django.urls import path
 from rating.views import IndexView, ThxView, ThxQuizView, ThxAccessSuccessView, ProfessionView, QuestionView, QuizView,\
     MockView, AccessView, ErrorView
+from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
@@ -13,4 +14,5 @@ urlpatterns = [
     path('quiz/thx_quiz', ThxQuizView.as_view(), name='thx_quiz'),
     path('quiz/<slug:slug>', QuizView.as_view(), name='quiz'),
     path('rating/<slug:slug>', ProfessionView.as_view(), name='question_rating'),
+    # path('rating/<slug:slug>', cache_page(30)(ProfessionView.as_view()), name='question_rating'),
 ]

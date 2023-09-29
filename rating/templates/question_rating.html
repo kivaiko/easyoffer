@@ -28,12 +28,14 @@
                       <input type="radio" class="form-check-input" id="Все" name="tag" value="Все">
                       <label class="form-check-label" for="Все">Все</label>
                     </div>
-                    {% for tag in prof_data.tags.all %}
-                    <div class="form-check">
-                      <input type="radio" class="form-check-input" id="{{ tag }}" name="tag" value="{{ tag }}">
-                      <label class="form-check-label" for="{{ tag }}">{{ tag }}</label>
-                    </div>
-                    {% endfor %}
+                    {% cache 30 prof_data.tags.all %}
+                        {% for tag in prof_data.tags.all %}
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="{{ tag }}" name="tag" value="{{ tag }}">
+                          <label class="form-check-label" for="{{ tag }}">{{ tag }}</label>
+                        </div>
+                        {% endfor %}
+                    {% endcache %}
                     <button type="submit" class="btn btn-sm btn-primary mt-3">Выбрать</button>
                 </form>
             </div>
