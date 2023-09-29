@@ -4,7 +4,7 @@ idea
 .env.dev
 .venv
 .env
-
+.gitignore
 
 *.egg-info/
 .installed.cfg
