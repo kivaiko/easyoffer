@@ -2,6 +2,9 @@
 idea
 .DS_Store
 .env.dev
+.venv
+.env
+
 
 *.egg-info/
 .installed.cfg
