@@ -5,6 +5,8 @@ from .models import *
 from django.views import View
 from .forms import MentorForm, MentorFilterForm, ReviewForm
 from .service import get_mentors_list, get_mentor_data, create_new_review
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 class MentorsListView(View):
@@ -33,12 +35,17 @@ class MentorView(View):
         })
 
 
+@method_decorator(login_required, name='dispatch')
 class NewMentor(CreateView):
     """Страница добавления нового ментора"""
     model = Mentor
     form_class = MentorForm
     template_name = 'new_mentor.html'
     success_url = reverse_lazy('thx')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class MentorUpdate(UpdateView):
@@ -59,3 +66,7 @@ class ThxView(TemplateView):
 class ThxReviewView(TemplateView):
     """Страница с успешным добавлением нового отзыва"""
     template_name = 'thx_review.html'
+
+
+def mentor_account(request):
+    return render(request, 'account.html')

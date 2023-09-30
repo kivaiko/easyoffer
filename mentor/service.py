@@ -35,3 +35,4 @@ def create_new_review(request, username):
             text=form.cleaned_data["text"],
             rating=form.cleaned_data["rating"]
         )
+
