@@ -6,15 +6,11 @@
 
 {% block content %}
     <h1 class="mt-5 fs-3"> Список менторов </h1>
-    <p class="fs-5 mt-3 mb-5 fs-6">Вы можете <a href="/mentor/new_mentor">добавить себя</a> в список менторов или <a href="/mentor/new_mentor">войти как ментор</a> </p>
-    <p>
-        {{ user }}
-        {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Выйти</a>
-        {% else %}
-            <a href="{% url 'login' %}">Войти</a> | <a href="{% url 'register' %}">Регистрация</a>
-        {% endif %}
-    </p>
+    {% if user.is_authenticated %}
+    <p class="fs-5 mt-3 mb-5 fs-6"><a href="mentor/account">Перейти в аккаунт ментора</a> или <a href="{% url 'logout' %}">Выйти</a></p>
+    {% else %}
+    <p class="fs-5 mt-3 mb-5 fs-6">Вы можете <a href="{% url 'register' %}">Добавить себя в список менторов</a> или <a href="{% url 'login' %}">Войти как ментор</a></p>
+    {% endif %}
     <div class="row align-items-start">
             <div class="col-2">
                 <form method="get">

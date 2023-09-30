@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
@@ -48,14 +49,15 @@ class NewMentor(CreateView):
         return super().form_valid(form)
 
 
-class MentorUpdate(UpdateView):
+class MentorUpdate(LoginRequiredMixin, UpdateView):
     """Страница обновления данных ментора"""
-    model = Mentor
+    model = User
     form_class = MentorForm
     template_name = 'mentor_edit.html'
     success_url = reverse_lazy('mentors')
-    slug_url_kwarg = 'username'
-    slug_field = 'username'
+
+    def get_object(self, queryset=None):
+        return self.request.user.mentor
 
 
 class ThxView(TemplateView):
@@ -69,4 +71,9 @@ class ThxReviewView(TemplateView):
 
 
 def mentor_account(request):
-    return render(request, 'account.html')
+    user = request.user
+    mentor = Mentor.objects.filter(user=user).first()
+    if mentor is not None:
+        return redirect('update_mentor')
+    else:
+        return render(request, 'account.html')

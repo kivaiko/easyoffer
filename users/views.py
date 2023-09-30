@@ -23,7 +23,7 @@ class Register(View):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=email, password=password)
             login(request, user)
-            return redirect('index')
+            return redirect('account')
         context = {
             'form': form
         }

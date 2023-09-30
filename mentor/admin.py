@@ -9,7 +9,7 @@ admin.site.register(models.Topic)
 
 @admin.register(Mentor)
 class MentorAdmin(admin.ModelAdmin):
-    list_display = ('username', 'name', 'surname', 'public', 'telegram', 'created_at')
+    list_display = ('username', 'name', 'surname', 'permission', 'public', 'telegram', 'created_at')
     search_fields = ('username',)
 
 

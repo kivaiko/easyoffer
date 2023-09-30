@@ -6,6 +6,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = 'account'
+LOGOUT_REDIRECT_URL = 'mentors'
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
