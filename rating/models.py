@@ -26,7 +26,7 @@ class Profession(models.Model):
     public_mock = models.BooleanField()
     public_analytic = models.BooleanField()
     public_mentor = models.BooleanField()
-    description = models.TextField(max_length=500)
+    description = models.TextField(max_length=500, blank=True)
     telegram_chat = models.URLField(blank=True)
     votes = models.PositiveIntegerField(blank=True)
     votes_access = models.BooleanField(blank=True)

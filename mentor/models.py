@@ -37,7 +37,7 @@ class Mentor(models.Model):
     surname = models.CharField(max_length=50)
     topics = models.ManyToManyField(Topic)
     skills = models.ManyToManyField(Skill)
-    description = models.CharField(max_length=100, unique=True)
+    description = models.CharField(max_length=100)
     about_me = RichTextField()
     profession = models.ManyToManyField(Profession, blank=False)
     experience = models.PositiveIntegerField(blank=False, default=1)
@@ -54,7 +54,7 @@ class Mentor(models.Model):
     permission = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
     last_update = models.DateField(default=timezone.now)
-    image = models.FileField(upload_to='mentors_images')
+    image = models.ImageField(upload_to='mentors_images')
 
     def get_mentor_url(self):
         return reverse('mentor', args=[self.username])
