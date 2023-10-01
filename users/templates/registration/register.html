@@ -5,11 +5,39 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="mt-5 fs-3"> Регистрация </h1>
-    <form action="{% url 'register' %}" method="post">
-        {{ form }}
-        {% csrf_token %}
-    <button type="submit" class="btn btn-primary">Отправить</button>
-    </form>
+<h1 class="mt-5 mb-5 fs-3"> Регистрация </h1>
+<!--    <form action="{% url 'register' %}" method="post">-->
+<!--        {{ form.as_p }}-->
+<!--        {% csrf_token %}-->
+<!--    <button type="submit" class="btn btn-primary">Отправить</button>-->
+<!--    </form>-->
+<form action="{% url 'register' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">Email:</label>
+        {{ form.email }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">Username:</label>
+        {{ form.username }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.password1.id_for_label }}">Password:</label>
+        {{ form.password1 }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+        {{ form.password2 }}
+    </div>
+    <br>
+    <ul>
+        <li>Ваш пароль не должен быть слишком похож на другую вашу личную информацию.</li>
+        <li>Ваш пароль должен содержать не менее 8 символов.</li>
+        <li>Ваш пароль не может быть широко используемым паролем.</li>
+        <li>Ваш пароль не может быть полностью числовым.</li>
+    </ul>
+    <br>
+    <button type="submit" class="btn btn-primary">Зарегестрироваться</button>
+</form>
 
 {% endblock %}
