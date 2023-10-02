@@ -126,11 +126,12 @@ CACHES = {
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN')
+EMAIL = os.environ.get('EMAIL')
 
 HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'User-Agent': 'skill rating (alexagree1@gmail.com)',
-    'Authorization': 'Bearer APPLPBBQB1CDN4DHJAPCSTR92M73395AU7RPU4K8LI6NSDDSUCFF87049KTUC9DR',
+    'User-Agent': f'skill rating ({EMAIL})',
+    'Authorization': f'Bearer {ACCESS_TOKEN}',
     'Content-Type': 'application/json'
 }
 
