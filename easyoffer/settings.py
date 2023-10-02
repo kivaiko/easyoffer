@@ -17,13 +17,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
-
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.github',
+    # 'django.contrib.sites',
+    #
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.github',
 
     'debug_toolbar',
     'ckeditor',
@@ -42,7 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "allauth.account.middleware.AccountMiddleware",
+    # "allauth.account.middleware.AccountMiddleware",
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
@@ -113,15 +113,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [STATIC_DIR]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/gallery/'
-
-GRADES = [
-    ('Junior', 'Junior'),
-    ('Middle', 'Middle'),
-    ('Senior', 'Senior'),
-]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -175,32 +168,6 @@ CKEDITOR_CONFIGS = {
     },
 }
 
-#oauth
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
-
-SITE_ID = 1
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        },
-        ''
-        'OAUTH_PKCE_ENABLED': True,
-    },
-    'github': {
-            'SCOPE': [
-                'user',
-            ],
-        }
-}
 
 #debug toolbar
 DEBUG_TOOLBAR_CONFIG = {

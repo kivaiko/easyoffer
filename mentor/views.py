@@ -41,7 +41,7 @@ class NewMentor(CreateView):
     """Страница добавления нового ментора"""
     model = Mentor
     form_class = MentorForm
-    template_name = 'new_mentor.html'
+    template_name = 'mentor_edit.html'
     success_url = reverse_lazy('thx')
 
     def form_valid(self, form):

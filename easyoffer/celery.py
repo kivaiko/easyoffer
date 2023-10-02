@@ -15,6 +15,8 @@ app.conf.beat_schedule = {
     },
     'delete_access': {
         'task': 'rating.tasks.delete_access_data',
-        'schedule': crontab(minute=0, hour=2),
+        'schedule': crontab(minute='*/5'),
+        # 'schedule': crontab(minute=0, hour=2),
+
     }
 }

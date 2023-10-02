@@ -1,5 +1,4 @@
 from django.db import models
-from django.conf import settings
 from django.utils import timezone
 from django.urls import reverse
 from ckeditor.fields import RichTextField
@@ -48,9 +47,15 @@ class Question(models.Model):
     class Meta:
         db_table = 'questions'
 
+    GRADES = [
+        ('Junior', 'Junior'),
+        ('Middle', 'Middle'),
+        ('Senior', 'Senior'),
+    ]
+
     title = models.CharField(max_length=255)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    grade = models.CharField(max_length=100, choices=settings.GRADES, default='Не указан')
+    grade = models.CharField(max_length=100, choices=GRADES, default='Не указан')
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -123,11 +128,17 @@ class MockInterview(models.Model):
     class Meta:
         db_table = 'mock_interviews'
 
+    GRADES = [
+        ('Junior', 'Junior'),
+        ('Middle', 'Middle'),
+        ('Senior', 'Senior'),
+    ]
+
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
     title = models.CharField(max_length=600)
     url = models.URLField()
     public = models.BooleanField(default=True)
-    grade = models.CharField(max_length=100, choices=settings.GRADES, default='Не указан')
+    grade = models.CharField(max_length=100, choices=GRADES, default='Не указан')
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
