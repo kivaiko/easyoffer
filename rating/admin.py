@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from . import models
-from .models import Rating, Question, Profession, Answer, VideoAnswerLink, ExtraContentLink, MockInterview, Access
+from .models import Rating, Question, Profession, Answer, VideoAnswerLink, ExtraContentLink, MockInterview
 
 admin.site.register(models.Tag)
 
@@ -41,9 +41,3 @@ class RatingAdmin(admin.ModelAdmin):
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('title', 'tag', 'grade', 'created_at')
     search_fields = ('title',)
-
-
-@admin.register(Access)
-class AccessAdmin(admin.ModelAdmin):
-    list_display = ('ip_address', 'delete_date')
-    search_fields = ('ip_address',)

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.views import View
 from rating.models import Profession
-from rating.service import get_access_status
+from access.service import get_access_status
 from .service import get_search_data
 
 

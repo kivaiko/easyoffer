@@ -4,9 +4,10 @@ from django.views.generic import ListView
 from django.views import View
 from .forms import *
 from .models import *
-from .service import get_access_status, get_prof_data, get_ratings, get_filtered_mocks, get_pagination, \
+from access.service import get_access_status
+from .service import get_prof_data, get_ratings, get_filtered_mocks, get_pagination, \
     get_question_content, create_answer, create_video_link, create_extra_link, get_data_from_content_form, \
-    update_rating_from_quiz, create_mock, crete_question, giving_access
+    update_rating_from_quiz, create_mock, crete_question
 
 
 class IndexView(ListView):
@@ -96,11 +97,6 @@ class ThxView(TemplateView):
     template_name = 'thx_data.html'
 
 
-class ThxAccessSuccessView(TemplateView):
-    """Страница об успешном получении доступа"""
-    template_name = 'access_success.html'
-
-
 class ErrorView(TemplateView):
     """Страница ошибки"""
     template_name = 'error.html'
@@ -125,9 +121,3 @@ class MockView(View):
             'profession_id': profession_id,
             'grade': grade,
         })
-
-
-class AccessView(View):
-    def get(self, request):
-        giving_access(request)
-        return redirect('access_success')

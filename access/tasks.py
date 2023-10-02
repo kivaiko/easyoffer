@@ -1,5 +1,5 @@
 from easyoffer.celery import app
-from rating.service import delete_access
+from .service import delete_access
 
 
 @app.task
