@@ -3,8 +3,10 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = True
-ALLOWED_HOSTS = []
+# DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', False)))
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1').split(' ')
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = 'account'
 LOGOUT_REDIRECT_URL = 'mentors'
@@ -21,6 +23,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'ckeditor',
     'ckeditor_uploader',
+    'corsheaders',
+
     'rating',
     'mentor',
     'analytic',
@@ -31,12 +35,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # "allauth.account.middleware.AccountMiddleware",
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
@@ -105,8 +109,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [STATIC_DIR]
+# STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [STATIC_DIR]
 MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/gallery/'
 
@@ -168,3 +173,10 @@ CKEDITOR_CONFIGS = {
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG
 }
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1',
+]

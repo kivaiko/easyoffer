@@ -11,17 +11,21 @@ services:
 
   webapp:
     restart: always
+    container_name: webapp
     build: ./
     volumes:
       - ./:/app
+      - ./static:/app/static
+      - ./media:/app/media
     env_file:
       - ./.env
     ports:
       - "8000:8000"
-    command: >
-      sh -c "python manage.py makemigrations && 
-      python manage.py migrate 
-      && python manage.py runserver 0.0.0.0:8000"
+    command: bash entrypoint.sh
+#    command: >
+#      sh -c "python manage.py makemigrations &&
+#      python manage.py migrate
+#      && gunicorn easyoffer.wsgi:application --bind 0.0.0.0:8000"
     depends_on:
       - db
     networks:
@@ -65,6 +69,20 @@ services:
       - ./.env
     ports:
       - 5432:5432
+    networks:
+      - db_net
+
+  nginx:
+    build: ./nginx
+    container_name: easyoffer_nginx
+    restart: on-failure
+    ports:
+      - 80:80
+    volumes:
+      - ./static:/static
+      - ./media:/media
+    depends_on:
+      - webapp
     networks:
       - db_net
 
