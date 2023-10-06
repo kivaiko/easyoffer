@@ -13,7 +13,9 @@
     <form action="{% url 'login' %}" method="post">
         {{ form.as_p }}
         {% csrf_token %}
-        <p><button type="submit" class="btn btn-primary"> Войти </button> <a href="{% url 'password_reset' %}">Забыл пароль</a></p>
+        <p><button type="submit" class="btn btn-primary"> Войти </button>
+<!--            <a href="{% url 'password_reset' %}">Забыл пароль</a>-->
+        </p>
     </form>
 
 {% endblock %}
