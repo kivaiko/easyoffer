@@ -9,6 +9,7 @@ admin.site.register(models.Tag)
 @admin.register(MockInterview)
 class MockInterviewAdmin(admin.ModelAdmin):
     list_display = ('title', 'profession', 'public', 'created_at', 'grade')
+    search_fields = ('title',)
 
 
 @admin.register(ExtraContentLink)
@@ -39,5 +40,5 @@ class RatingAdmin(admin.ModelAdmin):
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'tag', 'grade', 'created_at')
+    list_display = ('id', 'title', 'tag', 'grade', 'created_at')
     search_fields = ('title',)
