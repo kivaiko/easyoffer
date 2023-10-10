@@ -24,18 +24,17 @@
             <div class="col-2">
                 <p class="">Фильтр:</p>
                 <form action="">
-                    <div class="form-check">
-                      <input type="radio" class="form-check-input" id="Все" name="tag" value="Все">
-                      <label class="form-check-label" for="Все">Все</label>
-                    </div>
-                    {% cache 30 prof_data.tags.all %}
+                    <select class="form-select" aria-label="Default select example" name="tag">
+                        {% if tag == None %}
+                            <option selected>Все</option>
+                        {% else %}
+                            <option selected>{{ tag }}</option>
+                        {% endif %}
+                          <option value="Все">Все</option>
                         {% for tag in prof_data.tags.all %}
-                        <div class="form-check">
-                          <input type="radio" class="form-check-input" id="{{ tag }}" name="tag" value="{{ tag }}">
-                          <label class="form-check-label" for="{{ tag }}">{{ tag }}</label>
-                        </div>
+                          <option value="{{ tag }}">{{ tag }}</option>
                         {% endfor %}
-                    {% endcache %}
+                    </select>
                     <button type="submit" class="btn btn-sm btn-primary mt-3">Выбрать</button>
                 </form>
             </div>
@@ -63,7 +62,11 @@
                             <td align="center" class=" text-warning">{{ rating.chance }}%</td>
                             {% endif %}
                             <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                            {% if rating.question.tag == "Нет" %}
+                            <td><a class="" href="https://t.me/kivaiko" target="_blank">Предложить</a></td>
+                            {% else %}
                             <td>{{ rating.question.tag }}</td>
+                            {% endif %}
                         </tr>
                         {% endfor  %}
                     </tbody>
@@ -134,7 +137,11 @@
                             <td align="center" class=" text-warning">{{ rating.chance }}%</td>
                             {% endif %}
                             <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                            {% if rating.question.tag == Нет %}
+                            <td><a href="https://t.me/kivaiko" target="_blank">Предложить</a></td>
+                            {% else %}
                             <td>{{ rating.question.tag }}</td>
+                            {% endif %}
                         </tr>
                         {% endfor  %}
                     </tbody>
