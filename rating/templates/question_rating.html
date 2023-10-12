@@ -9,10 +9,15 @@
     <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
     {% if prof_data.votes_access %}
     <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ questions_amount }}. Проголосовавших: {{ prof_data.votes }}.
+        {% if access %}
         Вы можете
         <a href="{{ prof_data.get_url_quiz }}">Поучаствовать в опросе</a>
         а также
         <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
+        {% else %}
+        Вы можете
+        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
+        {% endif %}
     </p>
     {% else %}
     <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}. На данный момент мало вопросов,
@@ -21,7 +26,7 @@
     </p>
     {% endif %}
     <div class="row align-items-start">
-            <div class="col-2">
+            <div class="col-12 col-md-2 d-flex flex-column align-items-start">
                 <p class="">Фильтр:</p>
                 <form action="">
                     <select class="form-select" aria-label="Default select example" name="tag">
@@ -50,7 +55,7 @@
                         <tr>
                             <th>Шанс</th>
                             <th>Вопрос</th>
-                            <th>Тег</th>
+                            <th class="d-none d-sm-table-cell">Тег</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -63,9 +68,9 @@
                             {% endif %}
                             <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
                             {% if rating.question.tag == "Нет" %}
-                            <td><a class="" href="https://t.me/kivaiko" target="_blank">Предложить</a></td>
+                            <td class="d-none d-sm-table-cell"><a class="" href="https://t.me/kivaiko" target="_blank">Предложить</a></td>
                             {% else %}
-                            <td>{{ rating.question.tag }}</td>
+                            <td class="d-none d-sm-table-cell">{{ rating.question.tag }}</td>
                             {% endif %}
                         </tr>
                         {% endfor  %}
@@ -115,10 +120,6 @@
             </div>
             {% else %}
             <div class="col">
-                <form class="d-flex mb-3" role="search" method="get" action="">
-                    {{ search_form.search_query }}
-                    <button class="btn btn-outline-success" type="submit">Поиск</button>
-                </form>
                 {% if prof_data.votes_access %}
                 <table class="table table-sm table-hover">
                     <thead>
@@ -166,7 +167,7 @@
                 {% endif %}
                 <div class="card border-0 text-center">
                     <div class="card-body">
-                        <p class="card-title fs-4 mb-3">Вам доступно 15 вопросов из {{ questions_amount }}</p>
+                        <p class="card-title fs-4 mb-3">Вам доступно первые 15 вопросов из {{ questions_amount }}</p>
                        <p class="card-title fs-6 mb-3">Получите полный доступ <b>бесплатно</b>, подписавшись на Telegram</p>
                        <a href="https://t.me/easyoffer_bot" target=»_blank class="btn btn-primary ms-2 mt-1" style="background-color: #28a9eb; border-color: #28a9eb"><i class="bi bi-telegram me-2"></i>Бесплатно через Telegram</a>
                     </div>
