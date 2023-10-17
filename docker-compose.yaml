@@ -75,16 +75,24 @@ services:
   nginx:
     build: ./nginx
     container_name: easyoffer_nginx
-    restart: on-failure
+    restart: always
     ports:
       - 80:80
+      - 443:443
     volumes:
       - ./static:/static
       - ./media:/media
+      - ./nginx/:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
     depends_on:
       - webapp
     networks:
       - db_net
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
 
 volumes:
   postgres_data:
