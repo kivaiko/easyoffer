@@ -46,32 +46,27 @@
                   </div>
             </form>
         </div>
-        <div class="col-4">
-        <h2 class="mb-3 mt-5 fs-5" >Примеры ответов:</h2>
-
-        <ul class="list-group list-group-flush mb-3">
-            {% for link in video_links %}
-                <li class="list-group-item"><small><a href="{{ link.url }}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank">
-                    <i class="bi bi-youtube me-1"></i>{{ link.title|truncatechars:40 }}</a></small></li>
-            {% endfor %}
-        </ul>
-
-        <button type="button" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#VideoAnswerModal">
-          Добавить ссылку
-        </button>
-
-        <h2 class="mb-3 mt-5 fs-5">Доп. материалы:</h2>
-
-        <ul class="list-group list-group-flush mb-3">
-            {% for link in extra_links %}
-                <li class="list-group-item"><small><a href="{{ link.url}}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank">
-                    {{ link.title }}</a></small></li>
-            {% endfor %}
-        </ul>
-
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ExtraContentModal">
-          Добавить ссылку
-        </button>
+        <div class="col-12 col-sm-4">
+            <h2 class="mb-3 mt-5 fs-5" >Примеры ответов:</h2>
+            <ul class="list-group list-group-flush mb-3">
+                {% for link in video_links %}
+                    <li class="list-group-item"><small><a href="{{ link.url }}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank">
+                        <i class="bi bi-youtube me-1"></i>{{ link.title|truncatechars:37 }}</a></small></li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#VideoAnswerModal">
+              Добавить ссылку
+            </button>
+            <h2 class="mb-3 mt-5 fs-5">Доп. материалы:</h2>
+            <ul class="list-group list-group-flush mb-3">
+                {% for link in extra_links %}
+                    <li class="list-group-item"><small><a href="{{ link.url}}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank">
+                        {{ link.title }}</a></small></li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ExtraContentModal">
+              Добавить ссылку
+            </button>
         </div>
     </div>
 

@@ -11,7 +11,7 @@
         <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить мок-интервью </a>
     </p>
         <div class="row">
-            <div class="col-2">
+            <div class="col-12 col-md-2">
                 <form action="" method="get">
                     {{ form_filter.as_p }}
                     <button class="btn btn-primary btn-sm mt-3" type="submit">Выбрать</button>
@@ -24,8 +24,8 @@
                   <thead>
                     <tr>
                       <th scope="col">Название</th>
-                      <th scope="col">Должность</th>
-                      <th scope="col">Грейд</th>
+                      <th class="d-none d-sm-table-cell" scope="col">Должность</th>
+                      <th class="d-none d-sm-table-cell" scope="col">Грейд</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
@@ -33,8 +33,8 @@
                     <tr>
                       <td><a href="{{ mock.url }}" target="_blank" class="link-offset-2 link-offset-3-hover link-underline
             link-underline-opacity-0 link-underline-opacity-75-hover">{{ mock.title }}</a></td>
-                      <td>{{ mock.profession }}</td>
-                      <td>{{ mock.grade }}</td>
+                      <td class="d-none d-sm-table-cell">{{ mock.profession }}</td>
+                      <td class="d-none d-sm-table-cell">{{ mock.grade }}</td>
                     </tr>
                   {% endfor %}
                   </tbody>
