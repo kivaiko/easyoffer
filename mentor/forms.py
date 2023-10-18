@@ -59,7 +59,7 @@ class MentorForm(forms.ModelForm):
 
 class MentorFilterForm(forms.Form):
     profession = forms.ModelChoiceField(
-        queryset=Profession.objects.all(),
+        queryset=Profession.objects.all().order_by('title'),
         required=True,
         label='Направление:',
         widget=forms.Select(attrs={'class': 'form-select'})

@@ -41,6 +41,8 @@ class ExtraContentForm(forms.Form):
 
 
 class MockFilterForm(forms.ModelForm):
+    # profession = forms.ModelChoiceField(queryset=Profession.objects.all().order_by('title'))
+
     class Meta:
         model = MockInterview
         exclude = ['public', 'url', 'title', 'created_at']
@@ -52,6 +54,10 @@ class MockFilterForm(forms.ModelForm):
             'profession': 'Должность:',
             'grade': 'Грейд:',
         }
+
+    def __init__(self, *args, **kwargs):
+        super(MockFilterForm, self).__init__(*args, **kwargs)
+        self.fields['profession'].queryset = Profession.objects.all().order_by('title')
 
 
 class AddMockForm(forms.ModelForm):

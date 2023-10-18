@@ -14,7 +14,7 @@ class IndexView(ListView):
     """Список профессий"""
     template_name = 'index.html'
     model = Profession
-    queryset = Profession.objects.filter(public_rating=True)
+    queryset = Profession.objects.filter(public_rating=True).order_by('title')
 
 
 class ProfessionView(View):

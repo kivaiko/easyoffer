@@ -10,7 +10,7 @@ class ChoiceProfession(ListView):
     """Список профессий"""
     template_name = 'choice.html'
     model = Profession
-    queryset = Profession.objects.filter(public_analytic=True)
+    queryset = Profession.objects.filter(public_analytic=True).order_by('title')
 
 
 class SearchAnalytic(View):
