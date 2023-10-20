@@ -12,7 +12,7 @@
     <p class="fs-5 mt-3 mb-5 fs-6">Вы можете <a href="{% url 'register' %}">Добавить себя в список менторов</a> или <a href="{% url 'login' %}">Войти как ментор</a></p>
     {% endif %}
     <div class="row align-items-start">
-            <div class="col-2">
+            <div class="col-12 col-md-2">
                 <form method="get">
                     {{ form.as_p }}
                     <button type="submit" class="btn btn-sm btn-primary mt-1">Выбрать</button>
@@ -25,15 +25,15 @@
                       <th scope="col">Ментор</th>
                       <th scope="col">Должность</th>
                       <th scope="col">Опыт</th>
-                      <th scope="col">Отзывы</th>
-                      <th scope="col">30 мин.</th>
+                      <th scope="col" class="d-none d-sm-table-cell">Отзывы</th>
+                      <th scope="col" class="d-none d-sm-table-cell">30 мин.</th>
                       <th scope="col">1 ч.</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
                   {% for mentor in mentors %}
                     <tr>
-                      <td><img src="{{ mentor.image.url }}" class="me-2" height="24" width="24"><a class="link-offset-2 link-offset-3-hover link-underline
+                      <td><img src="{{ mentor.image.url }}" class="me-2 d-none d-md-inline-block" height="24" width="24"><a class="link-offset-2 link-offset-3-hover link-underline
             link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ mentor.get_mentor_url }}">
                           {{ mentor.surname|title }} {{ mentor.name|title }}</a></td>
                       <td>{{ mentor.description }}</td>
@@ -46,14 +46,14 @@
                           {{ mentor.experience }} лет
                           {% endif%}
                       </td>
-                      <td>
+                      <td class="d-none d-sm-table-cell">
                           {% if mentor.avg != None %}
                           <i class="bi bi-star"></i> {{ mentor.avg|floatformat:"1" }} ({{ mentor.review_count }})
                           {% else %}
                           -
                           {% endif %}
                       </td>
-                      <td>{{ mentor.cost_30m }} руб.</td>
+                      <td class="d-none d-md-table-cell">{{ mentor.cost_30m }} руб.</td>
                       <td>{{ mentor.cost_1h }} руб.</td>
                     </tr>
                   {% endfor %}
