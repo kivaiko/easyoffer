@@ -8,20 +8,13 @@
 
     <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
     {% if prof_data.votes_access %}
-    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ questions_amount }}. Проголосовавших: {{ prof_data.votes }}.
-        {% if access %}
-        Вы можете
-        <a href="{{ prof_data.get_url_quiz }}">Поучаствовать в опросе</a>
-        а также
-        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
-        {% else %}
+    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ questions_amount }}.
         Вы можете
         <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
-        {% endif %}
     </p>
     {% else %}
-    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}. На данный момент мало вопросов,
-        чтобы инициировать опрос. Вы можете
+    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}.
+        На данный момент мало данных для просчета вероятности. Вы можете
         <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
     </p>
     {% endif %}
@@ -201,14 +194,6 @@
                             {% endfor %}
                         </select>
                     </div>
-<!--                      <div class="mb-3">-->
-<!--                        <label for="{{ form.tag.id_for_label }}" class="col-form-label">{{ form.tag.label }}</label>-->
-<!--                        {{ form.tag }}-->
-<!--                      </div>-->
-                      <div class="mb-3">
-                        <label for="{{ form.tag.id_for_label }}" class="col-form-label">{{ form.rating.label }}</label>
-                        {{ form.rating }}
-                      </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                         <button type="submit" class="btn btn-primary">Добавить вопрос </button>

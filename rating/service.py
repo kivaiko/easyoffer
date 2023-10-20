@@ -100,7 +100,6 @@ def crete_question(form, slug):
     Rating.objects.create(
         profession=Profession.objects.get(slug=slug),
         question=Question.objects.latest('id'),
-        rating=form.cleaned_data["rating"]
     )
 
 

@@ -73,7 +73,7 @@ class Rating(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="ratings")
     rating = models.IntegerField(default=1)
     position = models.IntegerField(default=1000)
-    public = models.BooleanField(default=True)
+    public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -88,7 +88,7 @@ class Answer(models.Model):
     text = RichTextField()
     author = models.CharField(max_length=50)
     rating = models.IntegerField(default=1)
-    public = models.BooleanField(default=True)
+    public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
     url = models.URLField(blank=True)
 
@@ -103,7 +103,7 @@ class VideoAnswerLink(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     url = models.URLField()
-    public = models.BooleanField(default=True)
+    public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -117,7 +117,7 @@ class ExtraContentLink(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     url = models.URLField()
-    public = models.BooleanField(default=True)
+    public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -137,7 +137,7 @@ class MockInterview(models.Model):
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
     title = models.CharField(max_length=600)
     url = models.URLField()
-    public = models.BooleanField(default=True)
+    public = models.BooleanField(default=False)
     grade = models.CharField(max_length=100, choices=GRADES, default='Не указан')
     created_at = models.DateField(default=timezone.now)
 
