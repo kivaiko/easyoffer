@@ -82,6 +82,7 @@ services:
     volumes:
       - ./static:/static
       - ./media:/media
+      - ./uploads:/uploads
       - ./nginx/:/etc/nginx/conf.d/:ro
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
