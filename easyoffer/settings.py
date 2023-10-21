@@ -11,6 +11,7 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = 'account'
 LOGOUT_REDIRECT_URL = 'mentors'
 
+CSRF_TRUSTED_ORIGINS = ['https://easyoffer.ru', 'https://127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
