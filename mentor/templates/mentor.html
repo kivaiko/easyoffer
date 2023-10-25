@@ -41,14 +41,18 @@
             </div>
             <div class="col">
                 <h1 class="fs-3">{{ mentor.name|title }} {{ mentor.surname|title }}</h1>
-                        <p>{{ mentor.description }} |
-                            {% if mentor.experience == 1 %}
-                            {{ mentor.experience }} год опыта
-                            {% elif mentor.experience < 5 %}
-                            {{ mentor.experience }} года опыта
+                        <p>
+                            {{ mentor.description }} |
+                            {% if mentor.experience == 1 or mentor.experience == 21 or mentor.experience == 31 %}
+                                {{ mentor.experience }} год
+                            {% elif mentor.experience > 1 and mentor.experience < 5 %}
+                                {{ mentor.experience }} года
+                            {% elif mentor.experience > 21 and mentor.experience < 25 %}
+                                {{ mentor.experience }} года
                             {% else %}
-                            {{ mentor.experience }} лет опыта
-                            {% endif %}</p>
+                                {{ mentor.experience }} лет
+                            {% endif %}
+                        </p>
 
                 <a href="https://telegram.me/{{ mentor.telegram }}" class="btn btn-sm btn-primary me-3" style="background-color: #28a9eb; border-color: #28a9eb" target="_blank"><i class="bi bi-telegram me-2"></i>Написать в Telegram</a>
                 {% if reviews.count > 0 %}
