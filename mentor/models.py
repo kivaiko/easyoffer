@@ -4,6 +4,7 @@ from django.urls import reverse
 from ckeditor.fields import RichTextField
 from users.models import User
 from rating.models import Profession
+from django.core.validators import MaxValueValidator
 
 
 class Skill(models.Model):
@@ -40,9 +41,9 @@ class Mentor(models.Model):
     description = models.CharField(max_length=100)
     about_me = RichTextField()
     profession = models.ManyToManyField(Profession, blank=False)
-    experience = models.PositiveIntegerField(blank=False, default=1)
-    cost_30m = models.PositiveIntegerField(blank=False, default=0)
-    cost_1h = models.PositiveIntegerField(blank=False, default=0)
+    experience = models.PositiveIntegerField(blank=False, default=1, validators=[MaxValueValidator(30)])
+    cost_30m = models.PositiveIntegerField(blank=False, default=0, validators=[MaxValueValidator(50000)])
+    cost_1h = models.PositiveIntegerField(blank=False, default=0, validators=[MaxValueValidator(50000)])
     telegram = models.CharField(max_length=100, blank=False)
     instagram = models.CharField(max_length=100, blank=True)
     linkedin = models.URLField(blank=True)

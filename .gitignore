@@ -11,6 +11,7 @@ celerybeat-schedule
 *.egg-info/
 .installed.cfg
 *.egg
+certbot
 
 uploads/
 
