@@ -3,6 +3,11 @@ from django.contrib import admin
 from . import models
 from .models import Rating, Question, Profession, Answer, VideoAnswerLink, ExtraContentLink, MockInterview
 
+
+def make_public(modeladmin, request, queryset):
+    queryset.update(public=True)
+make_public.short_description = "Сделать выбранные ответы публичными"
+
 admin.site.register(models.Tag)
 
 
@@ -25,6 +30,7 @@ class VideoAnswerLinkAdmin(admin.ModelAdmin):
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
     list_display = ('question', 'author', 'public', 'created_at')
+    actions = [make_public]
 
 
 @admin.register(Profession)
