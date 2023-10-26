@@ -13,34 +13,34 @@ admin.site.register(models.Tag)
 
 @admin.register(MockInterview)
 class MockInterviewAdmin(admin.ModelAdmin):
-    list_display = ('title', 'profession', 'public', 'created_at', 'grade')
+    list_display = ('id', 'title', 'profession', 'public', 'created_at', 'grade')
     search_fields = ('title',)
 
 
 @admin.register(ExtraContentLink)
 class ExtraContentLinkAdmin(admin.ModelAdmin):
-    list_display = ('question', 'title', 'public', 'created_at')
+    list_display = ('id', 'question', 'title', 'public', 'created_at')
 
 
 @admin.register(VideoAnswerLink)
 class VideoAnswerLinkAdmin(admin.ModelAdmin):
-    list_display = ('question', 'title', 'public', 'created_at')
+    list_display = ('id', 'question', 'title', 'public', 'created_at')
 
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('question', 'author', 'public', 'created_at')
+    list_display = ('id', 'question', 'author', 'public', 'created_at')
     actions = [make_public]
 
 
 @admin.register(Profession)
 class ProfessionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'public_rating', 'public_mock', 'public_analytic', 'votes', 'votes_access')
+    list_display = ('id', 'title', 'public_rating', 'public_mock', 'public_analytic', 'votes', 'votes_access')
 
 
 @admin.register(Rating)
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ('question', 'profession', 'rating', 'position', 'public', 'created_at')
+    list_display = ('id', 'question', 'profession', 'rating', 'position', 'public', 'created_at')
     search_fields = ('question__title',)
 
 
