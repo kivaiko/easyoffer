@@ -20,15 +20,15 @@ class Profession(models.Model):
 
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
-    tags = models.ManyToManyField(Tag, blank=False)
+    tags = models.ManyToManyField(Tag) # blank=False можно не указывать, т.к. он False по умолчанию (https://docs.djangoproject.com/en/4.0/ref/models/fields/#blank)
     public_rating = models.BooleanField()
     public_mock = models.BooleanField()
     public_analytic = models.BooleanField()
     public_mentor = models.BooleanField()
     description = models.TextField(max_length=500, blank=True)
-    telegram_chat = models.URLField(blank=True)
-    votes = models.PositiveIntegerField(blank=True)
-    votes_access = models.BooleanField(blank=True)
+    telegram_chat = models.URLField(blank=True, null=True) # Необязательно для заполнения, но не разрешно значения NULL в БД. Не падает ли тут случайно IntegrityError? (https://docs.djangoproject.com/en/4.0/ref/models/fields/#null)
+    votes = models.PositiveIntegerField(blank=True, null=True) # аналогичено вышеуказанному комментарию
+    votes_access = models.BooleanField(blank=True, null=True) # аналогичено вышеуказанному комментарию
 
     def __str__(self):
         return self.title
@@ -70,14 +70,14 @@ class Rating(models.Model):
         db_table = 'ratings'
 
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="ratings")
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='ratings') # везде до этого используются кавычки '' а здесь "", лучше такого не допускать если это не обосновано технически
     rating = models.IntegerField(default=1)
     position = models.IntegerField(default=1000)
     public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.profession}, {self.question}"
+        return f'{self.profession}, {self.question}' # везде до этого используются кавычки '' а здесь "", лучше такого не допускать если это не обосновано технически
 
 
 class Answer(models.Model):
@@ -90,7 +90,7 @@ class Answer(models.Model):
     rating = models.IntegerField(default=1)
     public = models.BooleanField(default=False)
     created_at = models.DateField(default=timezone.now)
-    url = models.URLField(blank=True)
+    url = models.URLField(blank=True, null=True) # Необязательно для заполнения, но не разрешно значения NULL в БД. Не падает ли тут случайно IntegrityError? (https://docs.djangoproject.com/en/4.0/ref/models/fields/#null)
 
     def __str__(self):
         return self.author
@@ -142,4 +142,4 @@ class MockInterview(models.Model):
     created_at = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.title} – {self.profession} – {self.public}"
+        return f'{self.title} – {self.profession} – {self.public}' # везде до этого используются кавычки '' а здесь "", лучше такого не допускать если это не обосновано технически
