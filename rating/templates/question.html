@@ -24,27 +24,27 @@
             </div>
             {% endfor %}
 
-            <h2 class="mb-3 mt-5 fs-5" >Добавить ответ:</h2>
+<!--            <h2 class="mb-3 mt-5 fs-5" >Добавить ответ:</h2>-->
 
-            <div class="form-error">{{ comment_form.non_field_errors }}</div>
-            <form class="row g-3" action = "" method="post">
-                    {% csrf_token %}
-                  <div class="col-md-4">
-                    <label for="{{ comment_form.author.id_for_label }}" class="form-label">{{ comment_form.author.label }}</label>
-                     {{ comment_form.author }}
-                  </div>
-                  <div class="col-md-4">
-                    <label for="{{ comment_form.url.id_for_label }}" class="form-label">{{ comment_form.url.label }}</label>
-                    {{ comment_form.url }}
-                  </div>
-                  <div>
-                    <label for="{{ comment_form.text.id_for_label }}" class="form-label"></label>
-                    {{ comment_form.text }}
-                  </div>
-                  <div class="col-12">
-                    <button class="btn btn-primary btn-sm" type="submit">Добавить ответ</button>
-                  </div>
-            </form>
+<!--            <div class="form-error">{{ comment_form.non_field_errors }}</div>-->
+<!--            <form class="row g-3" action = "" method="post">-->
+<!--                    {% csrf_token %}-->
+<!--                  <div class="col-md-4">-->
+<!--                    <label for="{{ comment_form.author.id_for_label }}" class="form-label">{{ comment_form.author.label }}</label>-->
+<!--                     {{ comment_form.author }}-->
+<!--                  </div>-->
+<!--                  <div class="col-md-4">-->
+<!--                    <label for="{{ comment_form.url.id_for_label }}" class="form-label">{{ comment_form.url.label }}</label>-->
+<!--                    {{ comment_form.url }}-->
+<!--                  </div>-->
+<!--                  <div>-->
+<!--                    <label for="{{ comment_form.text.id_for_label }}" class="form-label"></label>-->
+<!--                    {{ comment_form.text }}-->
+<!--                  </div>-->
+<!--                  <div class="col-12">-->
+<!--                    <button class="btn btn-primary btn-sm" type="submit">Добавить ответ</button>-->
+<!--                  </div>-->
+<!--            </form>-->
         </div>
         <div class="col-12 col-sm-4">
             <h2 class="mb-3 mt-5 fs-5" >Примеры ответов:</h2>
@@ -54,9 +54,9 @@
                         <i class="bi bi-youtube me-1"></i>{{ link.title|truncatechars:37 }}</a></small></li>
                 {% endfor %}
             </ul>
-            <button type="button" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#VideoAnswerModal">
-              Добавить ссылку
-            </button>
+<!--            <button type="button" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#VideoAnswerModal">-->
+<!--              Добавить ссылку-->
+<!--            </button>-->
             <h2 class="mb-3 mt-5 fs-5">Доп. материалы:</h2>
             <ul class="list-group list-group-flush mb-3">
                 {% for link in extra_links %}
@@ -64,9 +64,9 @@
                         {{ link.title }}</a></small></li>
                 {% endfor %}
             </ul>
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ExtraContentModal">
-              Добавить ссылку
-            </button>
+<!--            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ExtraContentModal">-->
+<!--              Добавить ссылку-->
+<!--            </button>-->
         </div>
     </div>
 

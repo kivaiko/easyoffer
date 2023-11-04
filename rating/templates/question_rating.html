@@ -9,13 +9,14 @@
     <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
     {% if prof_data.votes_access %}
     <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ questions_amount }}.
-        Вы можете
-        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
+<!--        Вы можете-->
+<!--        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>-->
     </p>
     {% else %}
     <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}.
-        На данный момент мало данных для просчета вероятности. Вы можете
-        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>
+        На данный момент мало данных для просчета вероятности.
+<!--        Вы можете-->
+<!--        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>-->
     </p>
     {% endif %}
     <div class="row align-items-start">

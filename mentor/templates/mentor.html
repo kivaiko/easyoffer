@@ -95,25 +95,25 @@
                 </div>
                 {% endfor %}
                 {% endif %}
-                <h2 class="fs-5 mt-5 mb-3">Написать отзыв:</h2>
-                <form class="row g-3" action = "" method="post">
-                    {% csrf_token %}
-                  <div class="col-md-4">
-                    <label for="{{ form.author.id_for_label }}" class="form-label">{{ form.author.label }}</label>
-                      {{ form.author }}
-                  </div>
-                  <div class="col-md-2">
-                    <label for="{{ form.rating.id_for_label }}" class="form-label">{{ form.rating.label }}</label>
-                    {{ form.rating }}
-                  </div>
-                  <div>
-                    <label for="{{ form.text.id_for_label }}" class="form-label"></label>
-                    {{ form.text }}
-                  </div>
-                  <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Отправить</button>
-                  </div>
-                </form>
+<!--                <h2 class="fs-5 mt-5 mb-3">Написать отзыв:</h2>-->
+<!--                <form class="row g-3" action = "" method="post">-->
+<!--                    {% csrf_token %}-->
+<!--                  <div class="col-md-4">-->
+<!--                    <label for="{{ form.author.id_for_label }}" class="form-label">{{ form.author.label }}</label>-->
+<!--                      {{ form.author }}-->
+<!--                  </div>-->
+<!--                  <div class="col-md-2">-->
+<!--                    <label for="{{ form.rating.id_for_label }}" class="form-label">{{ form.rating.label }}</label>-->
+<!--                    {{ form.rating }}-->
+<!--                  </div>-->
+<!--                  <div>-->
+<!--                    <label for="{{ form.text.id_for_label }}" class="form-label"></label>-->
+<!--                    {{ form.text }}-->
+<!--                  </div>-->
+<!--                  <div class="col-12">-->
+<!--                    <button type="submit" class="btn btn-primary">Отправить</button>-->
+<!--                  </div>-->
+<!--                </form>-->
             </div>
             <div class="col-12 col-md-3">
                 <div class="card mb-3">
