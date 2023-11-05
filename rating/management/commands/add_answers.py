@@ -20,7 +20,7 @@ class Command(BaseCommand):
         response = openai.ChatCompletion.create(
             model=gpt_model,
             messages=[
-                {"role": "system", "content": f"Вы {prof_title} на техническом собеседовании и вам нужно ответить устно"},
+                {"role": "system", "content": f"Вы {prof_title} на техническом собеседовании, сформируй ответ в html формате и если нужно с примером кода"},
                 {"role": "user", "content": prompt}
             ],
             max_tokens=700,
