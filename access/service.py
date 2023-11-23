@@ -1,15 +1,11 @@
 from datetime import datetime, timedelta
 from django.utils import timezone
+import django_get_ip
 from .models import Access
 
 
 def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
+    return str(django_get_ip.get_client_ip(request))
 
 
 def get_access_status(request):
