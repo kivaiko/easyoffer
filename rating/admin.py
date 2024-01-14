@@ -30,6 +30,8 @@ class VideoAnswerLinkAdmin(admin.ModelAdmin):
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
     list_display = ('id', 'question', 'author', 'public', 'created_at')
+    search_fields = ('id', 'title')
+    raw_id_fields = ('question',)
     actions = [make_public]
 
 
@@ -47,4 +49,4 @@ class RatingAdmin(admin.ModelAdmin):
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'tag', 'grade', 'created_at')
-    search_fields = ('title',)
+    search_fields = ('id', 'title')
