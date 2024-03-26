@@ -9,7 +9,18 @@ class ThxAccessSuccessView(TemplateView):
     template_name = 'access_success.html'
 
 
+class ThxAccessSuccessOldView(TemplateView):
+    """Страница об устаревшей ссылке"""
+    template_name = 'access_success_old.html'
+
+
 class AccessView(View):
     def get(self, request):
         giving_access(request)
         return redirect('access_success')
+
+
+class AccessOldView(View):
+    def get(self, request):
+        giving_access(request)
+        return redirect('access_success_old')
