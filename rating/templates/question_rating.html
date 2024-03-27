@@ -163,7 +163,7 @@
                     <div class="card-body">
                         <p class="card-title fs-4 mb-3">Вам доступно первые 15 вопросов из {{ questions_amount }}</p>
                        <p class="card-title fs-6 mb-3">Получите полный доступ <b>бесплатно</b>, подписавшись на Telegram</p>
-                       <a href="https://t.me/easyoffer_bot" target=»_blank class="btn btn-primary ms-2 mt-1" style="background-color: #28a9eb; border-color: #28a9eb"><i class="bi bi-telegram me-2"></i>Бесплатно через Telegram</a>
+                       <a href="https://t.me/easyoffer_ru_bot" target=»_blank class="btn btn-primary ms-2 mt-1" style="background-color: #28a9eb; border-color: #28a9eb"><i class="bi bi-telegram me-2"></i>Бесплатно через Telegram</a>
                     </div>
                 </div>
             </div>
@@ -183,7 +183,7 @@
                 <form action="" method="POST">
                     {% csrf_token %}
                     <div class="mb-3">
-                           <p class="fs-5">Вы добавляете вопрос для {{ prof_data.title}}</p>
+                           <p class="fs-5">Вы добавляете вопрос для {{ prof_data.title }}</p>
                         <label for="{{ form.title.id_for_label }}" class="col-form-label">{{ form.title.label }}</label>
                         {{ form.title }}
                       </div>
