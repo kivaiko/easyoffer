@@ -25,6 +25,7 @@ class ExtraContentLinkAdmin(admin.ModelAdmin):
 @admin.register(VideoAnswerLink)
 class VideoAnswerLinkAdmin(admin.ModelAdmin):
     list_display = ('id', 'question', 'title', 'public', 'created_at')
+    autocomplete_fields = ['question']
 
 
 @admin.register(Answer)
