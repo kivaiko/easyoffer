@@ -43,7 +43,7 @@ class ProfessionAdmin(admin.ModelAdmin):
 
 @admin.register(Rating)
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'question', 'profession', 'rating', 'position', 'public', 'created_at')
+    list_display = ('id', 'question', 'rating', 'public', 'profession', 'position', 'created_at')
     list_editable = ('rating',)
     list_filter = ('profession',)
     search_fields = ('question__title', 'id')
