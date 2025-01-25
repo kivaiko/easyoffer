@@ -12,9 +12,10 @@ def get_mentors_list(request):
     topic_filter = Q()
     if topic_id:
         topic_filter = Q(topics=topic_id)
-    mentors_list = Mentor.objects.filter(public=True, permission=True).filter(
+    mentors_list = (Mentor.objects.filter(public=True, permission=True).filter(
         profession_filter & topic_filter).annotate(avg=Avg('review__rating', filter=models.Q(review__public=True)),
                                                    review_count=Count('review', filter=models.Q(review__public=True)))
+                    .order_by('-priority'))
     return mentors_list
 
 
