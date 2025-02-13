@@ -1,6 +1,7 @@
 from .forms import ReviewForm
 from .models import *
 from django.db.models import Avg, Count, Q
+from django.db.models.functions import Random
 
 
 def get_mentors_list(request):
@@ -15,7 +16,7 @@ def get_mentors_list(request):
     mentors_list = (Mentor.objects.filter(public=True, permission=True).filter(
         profession_filter & topic_filter).annotate(avg=Avg('review__rating', filter=models.Q(review__public=True)),
                                                    review_count=Count('review', filter=models.Q(review__public=True)))
-                    .order_by('-priority'))
+                    .order_by('-priority', Random()))
     return mentors_list
 
 
