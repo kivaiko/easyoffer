@@ -25,7 +25,6 @@
                       <th scope="col">Ментор</th>
                       <th scope="col">Должность</th>
                       <th scope="col">Опыт</th>
-                      <th scope="col" class="d-none d-sm-table-cell">Отзывы</th>
                       <th scope="col" class="d-none d-sm-table-cell">30 мин.</th>
                       <th scope="col">1 ч.</th>
                     </tr>
@@ -47,13 +46,6 @@
                             {% else %}
                                 {{ mentor.experience }} лет
                             {% endif %}
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                          {% if mentor.avg != None %}
-                          <i class="bi bi-star"></i> {{ mentor.avg|floatformat:"1" }} ({{ mentor.review_count }})
-                          {% else %}
-                          -
-                          {% endif %}
                       </td>
                       <td class="d-none d-md-table-cell">{{ mentor.cost_30m }} руб.</td>
                       <td>{{ mentor.cost_1h }} руб.</td>
