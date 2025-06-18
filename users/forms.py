@@ -7,6 +7,11 @@ User = get_user_model()
 
 
 class UserCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control';
+
     email = forms.EmailField(
         label=_("Email"),
         max_length=254,

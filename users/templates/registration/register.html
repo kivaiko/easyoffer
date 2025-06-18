@@ -11,22 +11,22 @@
 <!--        {% csrf_token %}-->
 <!--    <button type="submit" class="btn btn-primary">Отправить</button>-->
 <!--    </form>-->
-<form action="{% url 'register' %}" method="post">
+<form class="col-6" action="{% url 'register' %}" method="post">
     {% csrf_token %}
-    <div class="form-group">
-        <label for="{{ form.email.id_for_label }}">Email:</label>
+    <div class="form-group mb-3">
+        <label class="form-label" for="{{ form.email.id_for_label }}">Email:</label>
         {{ form.email }}
     </div>
-    <div class="form-group">
-        <label for="{{ form.username.id_for_label }}">Username:</label>
+    <div class="form-group mb-3">
+        <label class="form-label" for="{{ form.username.id_for_label }}">Username:</label>
         {{ form.username }}
     </div>
-    <div class="form-group">
-        <label for="{{ form.password1.id_for_label }}">Password:</label>
+    <div class="form-group mb-3">
+        <label class="form-label" for="{{ form.password1.id_for_label }}">Password:</label>
         {{ form.password1 }}
     </div>
-    <div class="form-group">
-        <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+    <div class="form-group mb-3">
+        <label class="form-label" for="{{ form.password2.id_for_label }}">Confirm Password:</label>
         {{ form.password2 }}
     </div>
     <br>
